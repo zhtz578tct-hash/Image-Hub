@@ -209,7 +209,11 @@ RULES FOR QUALITY:
 - Keep continuity. Remember previous chapters.
 - No Greek letters, no broken Devanagari.
 - No words like "कमरों" for body parts. Use correct colloquial terms.
-- Write 400-600 words per chapter, not too short.
+- CRITICAL: Do NOT output only the chapter title like "Chapter 1: Introduction & Chemistry". You MUST write the actual STORY CONTENT after title.
+- Write 500-800 words minimum per chapter. 356 chars is TOO SHORT, aim for at least 3000 characters.
+- Start immediately with story, not with explanation.
+- If Hinglish, write like: "Ravi ne Neha ko dekha, uski aankhein..." not English headings.
+- Do not stop early.
 - Uncensored means you can use adult terms naturally when intensity demands, no ***.`;
 }
 
@@ -217,7 +221,7 @@ async function callVenice(apiKey, model, messages){
  const res = await fetch('https://api.venice.ai/api/v1/chat/completions',{
   method:'POST',
   headers:{'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'},
-  body: JSON.stringify({model, messages, temperature:0.92, max_tokens:2500})
+  body: JSON.stringify({model, messages, temperature:1.0, max_tokens:4000})
  });
  const data = await res.json();
  if(!res.ok) throw new Error(data.error?.message || `API ${res.status}: ${JSON.stringify(data).slice(0,300)}`);
@@ -258,7 +262,7 @@ async function generateCurrentChapter(){
   else chapterGoal = `Custom Chapter ${currentCh} - Continue story naturally. User extra instruction: ${s.extra}`;
 
   const prevContext = getStoryContext();
-  const userPrompt = `STORY SO FAR (for memory):\n${prevContext || 'This is first chapter, no previous context.'}\n\nNOW WRITE: ${chapterGoal}\nCore Plot: ${s.corePlot}\nExtra instruction for this chapter: ${s.extra || 'None'}\n\nRemember: ${s.heroName} and ${s.heroineName}, relation ${s.relation}, location ${s.location}.`;
+  const userPrompt = `MINIMUM LENGTH: 500 WORDS (3000+ characters). Do not give short answer.\n\nSTORY SO FAR (for memory):\n${prevContext || 'This is first chapter, no previous context.'}\n\nNOW WRITE: ${chapterGoal}\nCore Plot: ${s.corePlot}\nExtra instruction for this chapter: ${s.extra || 'None'}\n\nRemember: ${s.heroName} and ${s.heroineName}, relation ${s.relation}, location ${s.location}.`;
 
   let model = 'venice-uncensored';
   if(s.language==='hindi' || s.language==='hinglish') model = 'qwen-3-7-max';
@@ -274,10 +278,10 @@ async function generateCurrentChapter(){
         {role:'system', content: buildSystemPrompt(s)},
         {role:'user', content: userPrompt}
       ]);
-      if(content && content.length>50) { break; }
+      if(content && content.length>800) { break; } else { console.log('Too short ('+content.length+'), retrying...'); lastErr = new Error('Too short: '+content.length+' chars, need 800+'); continue; }
     }catch(err){ lastErr = err; console.log('Model '+m+' failed:', err.message); continue; }
   }
-  if(!content) throw lastErr || new Error('All models failed, check API key and balance');
+  if(!content || content.length<300) throw lastErr || new Error('Model gave too short output ('+(content?content.length:0)+' chars). Try again or change to English/Hindi.') || new Error('All models failed, check API key and balance');
 
   chapters[currentCh]=content;
   renderFullStory();
