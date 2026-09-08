@@ -249,17 +249,28 @@ async function generateCurrentChapter(){
 
   // Choose best model per language - direct generation, no translation
   let model = 'venice-uncensored';
-  if(s.language==='hindi' || s.language==='hinglish') model = 'qwen-2.5-72b'; // best Hindi quality, still allows explicit when prompted
+  if(s.language==='hindi' || s.language==='hinglish') model = 'qwen-3-7-max'; // best Hindi quality, still allows explicit when prompted
   if(s.language==='english' && s.intensity==='hardcore') model='venice-uncensored';
-  if(s.language!=='english' && s.intensity==='hardcore') model='qwen-2.5-72b';
+  if(s.language!=='english' && s.intensity==='hardcore') model='qwen-3-7-max';
 
-  let content = await callVenice(s.apiKey, model, [
-   {role:'system', content: buildSystemPrompt(s)},
-   {role:'user', content: userPrompt}
-  ]);
+  let content = '';
+  let modelsToTry = [model, ...(modelFallbacks[model]||[])];
+  let lastErr = null;
+  for(let m of modelsToTry){
+    try{
+      document.getElementById('status').textContent = `Trying model ${m}...`;
+      content = await callVenice(s.apiKey, m, [
+        {role:'system', content: buildSystemPrompt(s)},
+        {role:'user', content: userPrompt}
+      ]);
+      if(content && content.length>50) { model = m; break; }
+    }catch(err){ lastErr = err; console.log('Model '+m+' failed:', err.message); continue; }
+  }
+  if(!content) throw lastErr || new Error('All models failed');
+
 
   // If qwen censored too much for hardcore, fallback to venice-uncensored with Hinglish
-  if(s.intensity==='hardcore' && content.length<200 && model!=='venice-uncensored'){
+  if(s.intensity==='hardcore' && content && content.length<200 && model!=='venice-uncensored'){
     content = await callVenice(s.apiKey, 'venice-uncensored', [
      {role:'system', content: buildSystemPrompt({...s, language:'hinglish'})},
      {role:'user', content: userPrompt + ' Write in Hinglish for better Hindi quality.'}
