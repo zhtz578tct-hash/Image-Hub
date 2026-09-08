@@ -135,6 +135,20 @@ let chapters = {1:"",2:"",3:"",4:"",5:""};
 let currentCh = 1;
 let customChCount = 0;
 
+
+// Save/load API key
+const apiInput = document.getElementById('apiKey');
+const savedKey = localStorage.getItem('venice_api_key');
+if(savedKey){ apiInput.value = savedKey; }
+apiInput.addEventListener('input', ()=>{
+  const v = apiInput.value.trim();
+  if(v) localStorage.setItem('venice_api_key', v);
+});
+apiInput.addEventListener('change', ()=>{
+  const v = apiInput.value.trim();
+  if(v) localStorage.setItem('venice_api_key', v);
+});
+
 document.querySelectorAll('.chip').forEach(c=>{
  c.addEventListener('click',()=>{
   document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
