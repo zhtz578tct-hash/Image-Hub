@@ -224,6 +224,7 @@ function getStoryContext(){
  return ctx;
 }
 
+
 async function generateCurrentChapter(){
  const s = getSettings();
  if(!s.apiKey || (!s.apiKey.startsWith('VENICE_INFERENCE_KEY_') && !s.apiKey.startsWith('vn_') && !s.apiKey.startsWith('venice_sk_') && !s.apiKey.startsWith('vapi_'))){
@@ -233,7 +234,12 @@ async function generateCurrentChapter(){
 
  hideMsg();
  document.getElementById('genBtn').disabled=true;
- document.getElementById('status').textContent = `Generating Chapter ${currentCh} with model...`;
+ document.getElementById('status').textContent = `Generating Chapter ${currentCh}...`;
+
+ const modelFallbacks = {
+    'qwen-3-7-max': ['qwen-3-7-plus', 'qwen-3-8-2-4t-a95b', 'venice-uncensored', 'llama-3.3-70b', 'mistral-31-24b'],
+    'venice-uncensored': ['qwen-3-7-max', 'llama-3.3-70b', 'mistral-31-24b']
+ };
 
  try{
   let chapterGoal = '';
@@ -247,14 +253,12 @@ async function generateCurrentChapter(){
   const prevContext = getStoryContext();
   const userPrompt = `STORY SO FAR (for memory):\n${prevContext || 'This is first chapter, no previous context.'}\n\nNOW WRITE: ${chapterGoal}\nCore Plot: ${s.corePlot}\nExtra instruction for this chapter: ${s.extra || 'None'}\n\nRemember: ${s.heroName} and ${s.heroineName}, relation ${s.relation}, location ${s.location}.`;
 
-  // Choose best model per language - direct generation, no translation
   let model = 'venice-uncensored';
-  if(s.language==='hindi' || s.language==='hinglish') model = 'qwen-3-7-max'; // best Hindi quality, still allows explicit when prompted
+  if(s.language==='hindi' || s.language==='hinglish') model = 'qwen-3-7-max';
   if(s.language==='english' && s.intensity==='hardcore') model='venice-uncensored';
-  if(s.language!=='english' && s.intensity==='hardcore') model='qwen-3-7-max';
 
+  let modelsToTry = [model, ...(modelFallbacks[model]||['venice-uncensored'])];
   let content = '';
-  let modelsToTry = [model, ...(modelFallbacks[model]||[])];
   let lastErr = null;
   for(let m of modelsToTry){
     try{
@@ -263,19 +267,10 @@ async function generateCurrentChapter(){
         {role:'system', content: buildSystemPrompt(s)},
         {role:'user', content: userPrompt}
       ]);
-      if(content && content.length>50) { model = m; break; }
+      if(content && content.length>50) { break; }
     }catch(err){ lastErr = err; console.log('Model '+m+' failed:', err.message); continue; }
   }
-  if(!content) throw lastErr || new Error('All models failed');
-
-
-  // If qwen censored too much for hardcore, fallback to venice-uncensored with Hinglish
-  if(s.intensity==='hardcore' && content && content.length<200 && model!=='venice-uncensored'){
-    content = await callVenice(s.apiKey, 'venice-uncensored', [
-     {role:'system', content: buildSystemPrompt({...s, language:'hinglish'})},
-     {role:'user', content: userPrompt + ' Write in Hinglish for better Hindi quality.'}
-    ]);
-  }
+  if(!content) throw lastErr || new Error('All models failed, check API key and balance');
 
   chapters[currentCh]=content;
   renderFullStory();
@@ -287,6 +282,7 @@ async function generateCurrentChapter(){
   document.getElementById('status').textContent='';
  }
 }
+
 
 function renderFullStory(){
  let full='';
