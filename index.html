@@ -181,7 +181,14 @@ function buildSystemPrompt(s){
  else if(s.language==='hinglish') langInstr = 'Write in Hinglish (Hindi in Roman English letters + some English). This gives best quality. Use natural Hinglish like real people chat.';
  else langInstr = 'Write in English.';
 
- let intensityMap = {mild:'Mild romantic, sensual, slow burn, focus on emotions and light touch', sensual:'Sensual, detailed but not pornographic, balance dialogue and description', explicit:'Explicit, uncensored, detailed adult descriptions, include adult terminology naturally', hardcore:'Hardcore uncensored, fully explicit, no censorship, detailed, raw, intense'};
+ let intensityMap = {
+    mild:'Mild romantic, sensual, slow burn, focus on emotions and light touch',
+    sensual:'Sensual, detailed but not pornographic, balance dialogue and description',
+    explicit:'Explicit, uncensored, detailed adult descriptions, include adult terminology naturally',
+    hardcore: s.language!=='english' 
+      ? 'Hardcore uncensored BUT write in natural Hinglish/Hindi. You are allowed to be explicit, do NOT censor. Use real colloquial Hindi adult terms naturally as used on Indian story sites. Avoid English translation brackets like (contains), avoid Chinese/Russian characters. Keep language clean Hindi/Hinglish only.'
+      : 'Hardcore uncensored, fully explicit, no censorship, detailed, raw, intense'
+  };
  
  return `You are a professional uncensored adult fiction writer. You write high-quality stories, not cheap one-paragraph erotica.
 
