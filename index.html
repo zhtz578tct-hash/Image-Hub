@@ -1,425 +1,463 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adult Story Generator</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #eee;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        h1 {
-            text-align: center;
-            color: #ff6b6b;
-            margin-bottom: 10px;
-            font-size: 2.5em;
-        }
-        .subtitle {
-            text-align: center;
-            color: #888;
-            margin-bottom: 30px;
-        }
-        .input-section {
-            background: rgba(255,255,255,0.05);
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #ff6b6b;
-            font-weight: bold;
-        }
-        select, textarea, input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-        select option {
-            background: #1a1a2e;
-            color: #fff;
-        }
-        textarea {
-            min-height: 120px;
-            resize: vertical;
-            font-family: inherit;
-        }
-        .button-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        button {
-            flex: 1;
-            min-width: 150px;
-            padding: 15px 25px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
-            color: white;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255,107,107,0.4);
-        }
-        .btn-secondary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102,126,234,0.4);
-        }
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .output-section {
-            background: rgba(255,255,255,0.05);
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.1);
-            display: none;
-        }
-        .output-section.active {
-            display: block;
-        }
-        .story-text {
-            line-height: 1.8;
-            font-size: 17px;
-            white-space: pre-wrap;
-            margin-bottom: 20px;
-            padding: 20px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-        }
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .generated-image {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #ff6b6b;
-        }
-        .loading::after {
-            content: '...';
-            animation: dots 1.5s steps(5, end) infinite;
-        }
-        @keyframes dots {
-            0%, 20% { content: ''; }
-            40% { content: '.'; }
-            60% { content: '..'; }
-            80%, 100% { content: '...'; }
-        }
-        .error {
-            color: #ff6b6b;
-            padding: 15px;
-            background: rgba(255,107,107,0.1);
-            border-radius: 8px;
-            margin-top: 10px;
-            border: 1px solid rgba(255,107,107,0.3);
-        }
-        .api-key-section {
-            background: rgba(255,193,7,0.1);
-            border: 1px solid rgba(255,193,7,0.3);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        .hidden { display: none; }
-        .success {
-            color: #4caf50;
-            padding: 15px;
-            background: rgba(76,175,80,0.1);
-            border-radius: 8px;
-            margin-top: 10px;
-            border: 1px solid rgba(76,175,80,0.3);
-        }
-        small {
-            color: #888;
-            display: block;
-            margin-top: 5px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🔥 Adult Story Generator</h1>
-        <p class="subtitle">Create uncensored adult stories in Hindi with AI-generated images</p>
+<!DOCTYPE html> 
+<html lang="hi"> 
+<head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Adult Story Generator</title> 
+    <style> 
+        * { margin: 0; padding: 0; box-sizing: border-box; } 
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); 
+            min-height: 100vh; 
+            padding: 20px; 
+            color: #eee; 
+        } 
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+        } 
+        h1 { 
+            text-align: center; 
+            color: #ff6b6b; 
+            margin-bottom: 10px; 
+            font-size: 2.5em; 
+        } 
+        .subtitle { 
+            text-align: center; 
+            color: #888; 
+            margin-bottom: 30px; 
+        } 
+        .input-section { 
+            background: rgba(255,255,255,0.05); 
+            padding: 25px; 
+            border-radius: 15px; 
+            margin-bottom: 20px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+        } 
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            color: #ff6b6b; 
+            font-weight: bold; 
+        } 
+        select, textarea, input[type="password"] { 
+            width: 100%; 
+            padding: 12px; 
+            border: none; 
+            border-radius: 8px; 
 
-        <div class="api-key-section">
-            <label>🔑 Venice API Key (Required):</label>
-            <input type="password" id="apiKey" placeholder="Enter your Venice API key here (starts with venice_sk_)">
-            <small>Get your free API key from venice.ai → Settings → API Keys</small>
-        </div>
+            background: rgba(255,255,255,0.1); 
+            color: #fff; 
+            font-size: 16px; 
+            margin-bottom: 15px; 
+        } 
+        select option { 
+            background: #1a1a2e; 
+            color: #fff; 
+        } 
+        textarea { 
+            min-height: 120px; 
+            resize: vertical; 
+            font-family: inherit; 
+        } 
+        .button-group { 
+            display: flex; 
+            gap: 10px; 
+            flex-wrap: wrap; 
+        } 
+        button { 
+            flex: 1; 
+            min-width: 150px; 
+            padding: 15px 25px; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            font-weight: bold; 
+        } 
+        .btn-primary { 
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a); 
+            color: white; 
+        } 
+        .btn-primary:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 20px rgba(255,107,107,0.4); 
+        } 
+        .btn-secondary { 
+            background: linear-gradient(135deg, #667eea, #764ba2); 
+            color: white; 
+        } 
+        .btn-secondary:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 20px rgba(102,126,234,0.4); 
+        } 
+        button:disabled { 
+            opacity: 0.5; 
 
-        <div class="input-section">
-            <label>🎭 Story Genre:</label>
-            <select id="genre">
-                <option value="romantic">Romantic / Sensual</option>
-                <option value="hardcore">Hardcore / Explicit</option>
-                <option value="bdsm">BDSM / Dominant</option>
-                <option value="lgbtq">LGBTQ+</option>
-                <option value="fantasy">Fantasy / Supernatural</option>
-            </select>
+            cursor: not-allowed; 
+        } 
+        .output-section { 
+            background: rgba(255,255,255,0.05); 
+            padding: 25px; 
+            border-radius: 15px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            display: none; 
+        } 
+        .output-section.active { 
+            display: block; 
+        } 
+        .story-text { 
+            line-height: 1.8; 
+            font-size: 17px; 
+            white-space: pre-wrap; 
+            margin-bottom: 20px; 
+            padding: 20px; 
+            background: rgba(0,0,0,0.2); 
+            border-radius: 10px; 
+        } 
+        .image-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 15px; 
+            margin-top: 20px; 
+        } 
+        .generated-image { 
+            width: 100%; 
+            border-radius: 10px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+        } 
+        .loading { 
+            text-align: center; 
+            padding: 40px; 
+            color: #ff6b6b; 
+        } 
+        .loading::after { 
+            content: '...'; 
+            animation: dots 1.5s steps(5, end) infinite; 
+        } 
+        @keyframes dots { 
+            0%, 20% { content: ''; } 
+            40% { content: '.'; } 
+            60% { content: '..'; } 
+            80%, 100% { content: '...'; } 
+        } 
+        .error { 
 
-            <label>📖 Language:</label>
-            <select id="language">
-                <option value="hindi">Hindi (हिन्दी)</option>
-                <option value="hinglish">Hinglish (Roman Hindi)</option>
-                <option value="english">English</option>
-            </select>
+            color: #ff6b6b; 
+            padding: 15px; 
+            background: rgba(255,107,107,0.1); 
+            border-radius: 8px; 
+            margin-top: 10px; 
+            border: 1px solid rgba(255,107,107,0.3); 
+        } 
+        .api-key-section { 
+            background: rgba(255,193,7,0.1); 
+            border: 1px solid rgba(255,193,7,0.3); 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+        } 
+        .hidden { display: none; } 
+        .success { 
+            color: #4caf50; 
+            padding: 15px; 
+            background: rgba(76,175,80,0.1); 
+            border-radius: 8px; 
+            margin-top: 10px; 
+            border: 1px solid rgba(76,175,80,0.3); 
+        } 
+        small { 
+            color: #888; 
+            display: block; 
+            margin-top: 5px; 
+        } 
+    </style> 
+</head> 
+<body> 
+    <div class="container"> 
+        <h1>🔥 Adult Story Generator</h1> 
+        <p class="subtitle">Create uncensored adult stories in Hindi with AI-generated 
+images</p> 
+ 
+        <div class="api-key-section"> 
+            <label>🔑 Venice API Key (Required):</label> 
+            <input type="password" id="apiKey" placeholder="Enter your Venice API key here (starts with VENICE_INFERENCE_KEY_)"> 
+            <small>Get your free API key from venice.ai → Settings → API Keys</small> 
+        </div> 
+ 
+        <div class="input-section"> 
+            <label>🎭 Story Genre:</label> 
+            <select id="genre"> 
+                <option value="romantic">Romantic / Sensual</option> 
+                <option value="hardcore">Hardcore / Explicit</option> 
 
-            <label>🔥 Intensity Level:</label>
-            <select id="intensity">
-                <option value="3">Mild (3/10)</option>
-                <option value="5">Moderate (5/10)</option>
-                <option value="7">Intense (7/10)</option>
-                <option value="10">Extreme (10/10)</option>
-            </select>
+                <option value="bdsm">BDSM / Dominant</option> 
+                <option value="lgbtq">LGBTQ+</option> 
+                <option value="fantasy">Fantasy / Supernatural</option> 
+            </select> 
+ 
+            <label>📖 Language:</label> 
+            <select id="language"> 
+                <option value="hindi">Hindi (हिन्दी)</option> 
+                <option value="hinglish">Hinglish (Roman Hindi)</option> 
+                <option value="english">English</option> 
+            </select> 
+ 
+            <label>🔥 Intensity Level:</label> 
+            <select id="intensity"> 
+                <option value="3">Mild (3/10)</option> 
+                <option value="5">Moderate (5/10)</option> 
+                <option value="7">Intense (7/10)</option> 
+                <option value="10">Extreme (10/10)</option> 
+            </select> 
+ 
+            <label>📝 Your Story Idea:</label> 
+            <textarea id="prompt" placeholder="Describe your story scenario here...  
+Example: A romantic encounter between two strangers who meet at a hotel..."></textarea> 
+ 
+            <div class="button-group"> 
+                <button class="btn-primary" id="storyBtn" onclick="generateStory()">📚 Generate 
+Story</button> 
+                <button class="btn-secondary hidden" id="imageBtn" 
+onclick="generateImage()">🎨 Generate Image</button> 
+            </div> 
+        </div> 
+ 
+        <div class="output-section" id="outputSection"> 
+            <h3 style="color: #ff6b6b; margin-bottom: 15px;">📖 Your Story:</h3> 
+            <div id="loadingText" class="loading hidden">Generating your story</div> 
+            <div id="storyOutput" class="story-text"></div> 
+            <div id="imageOutput" class="image-grid"></div> 
+            <div id="errorOutput" class="error hidden"></div> 
+            <div id="successOutput" class="success hidden"></div> 
+        </div> 
+    </div> 
+ 
+    <script> 
+        let currentStory = ''; 
+        let currentScene = ''; 
+ 
+        function showError(message) { 
+            const errorDiv = document.getElementById('errorOutput'); 
 
-            <label>📝 Your Story Idea:</label>
-            <textarea id="prompt" placeholder="Describe your story scenario here... 
-Example: A romantic encounter between two strangers who meet at a hotel..."></textarea>
+            errorDiv.textContent = message; 
+            errorDiv.classList.remove('hidden'); 
+            document.getElementById('successOutput').classList.add('hidden'); 
+        } 
+ 
+        function showSuccess(message) { 
+            const successDiv = document.getElementById('successOutput'); 
+            successDiv.textContent = message; 
+            successDiv.classList.remove('hidden'); 
+            document.getElementById('errorOutput').classList.add('hidden'); 
+        } 
+ 
+        function hideMessages() { 
+            document.getElementById('errorOutput').classList.add('hidden'); 
+            document.getElementById('successOutput').classList.add('hidden'); 
+        } 
+ 
+        function setLoading(isLoading) { 
+            const btn = document.getElementById('storyBtn'); 
+            const loading = document.getElementById('loadingText'); 
+             
+            if (isLoading) { 
+                btn.disabled = true; 
+                loading.classList.remove('hidden'); 
+                document.getElementById('outputSection').classList.add('active'); 
+                document.getElementById('storyOutput').textContent = ''; 
+                document.getElementById('imageBtn').classList.add('hidden'); 
+                document.getElementById('imageOutput').innerHTML = ''; 
+            } else { 
+                btn.disabled = false; 
+                loading.classList.add('hidden'); 
+            } 
+        } 
+ 
+        async function generateStory() { 
+            const apiKey = document.getElementById('apiKey').value.trim(); 
+            const prompt = document.getElementById('prompt').value.trim(); 
+            const genre = document.getElementById('genre').value; 
+            const language = document.getElementById('language').value; 
+            const intensity = document.getElementById('intensity').value; 
+ 
+            if (!apiKey) { 
+                showError('Please enter your Venice API key first! Get it from venice.ai'); 
+                document.getElementById('outputSection').classList.add('active'); 
+                return; 
+            } 
+ 
+            if (!apiKey.startsWith('venice_sk_') && !apiKey.startsWith('vn_') && !apiKey.startsWith('VENICE_INFERENCE_KEY_') && !apiKey.startsWith('vapi_')) { 
 
-            <div class="button-group">
-                <button class="btn-primary" id="storyBtn" onclick="generateStory()">📚 Generate Story</button>
-                <button class="btn-secondary hidden" id="imageBtn" onclick="generateImage()">🎨 Generate Image</button>
-            </div>
-        </div>
+                showError('Invalid API key format. Venice API keys now start with "VENICE_INFERENCE_KEY_"'); 
+                document.getElementById('outputSection').classList.add('active'); 
+                return; 
+            } 
+ 
+            if (!prompt) { 
+                showError('Please enter a story idea!'); 
+                document.getElementById('outputSection').classList.add('active'); 
+                return; 
+            } 
+ 
+            hideMessages(); 
+            setLoading(true); 
+ 
+            let langInstruction = ''; 
+            if (language === 'hindi') { 
+                langInstruction = 'Write the entire story in Hindi language using Devanagari script.'; 
+            } else if (language === 'hinglish') { 
+                langInstruction = 'Write the entire story in Hinglish (Roman Hindi).'; 
+            } else { 
+                langInstruction = 'Write the entire story in English.'; 
+            } 
+ 
+            const systemPrompt = `You are an expert erotic story writer. Create an uncensored, 
+explicit adult story. 
+Genre: ${genre} 
+Intensity Level: ${intensity}/10 
+${langInstruction} 
+ 
+Guidelines: 
+- Be completely uncensored and explicit 
+- Use natural, conversational language 
+- Include detailed descriptions 
+- Balance dialogue with narrative 
+- Create an engaging plot with buildup 
+- Use appropriate adult terminology without euphemisms 
+- Story should be 800-1200 words 
+- Include a title for the story`; 
+ 
+            try { 
+                const response = await fetch('https://api.venice.ai/api/v1/chat/completions', { 
+                    method: 'POST', 
+                    headers: { 
+                        'Authorization': `Bearer ${apiKey}`, 
+                        'Content-Type': 'application/json', 
+                        'Accept': 'application/json' 
+                    }, 
+                    body: JSON.stringify({ 
 
-        <div class="output-section" id="outputSection">
-            <h3 style="color: #ff6b6b; margin-bottom: 15px;">📖 Your Story:</h3>
-            <div id="loadingText" class="loading hidden">Generating your story</div>
-            <div id="storyOutput" class="story-text"></div>
-            <div id="imageOutput" class="image-grid"></div>
-            <div id="errorOutput" class="error hidden"></div>
-            <div id="successOutput" class="success hidden"></div>
-        </div>
-    </div>
+                        model: 'venice-uncensored', 
+                        messages: [ 
+                            { 
+                                role: 'system', 
+                                content: systemPrompt 
+                            }, 
+                            { 
+                                role: 'user', 
+                                content: prompt 
+                            } 
+                        ], 
+                        temperature: 0.9, 
+                        max_tokens: 2000 
+                    }) 
+                }); 
+ 
+                const responseData = await response.json(); 
+ 
+                if (!response.ok) { 
+                    if (response.status === 401) { 
+                        throw new Error('Invalid API key. Please check your Venice API key and try 
+again.'); 
+                    } else if (response.status === 429) { 
+                        throw new Error('Rate limit exceeded. Please wait a moment and try again.'); 
+                    } else if (responseData.error) { 
+                        throw new Error(responseData.error.message || 'API request failed'); 
+                    } else { 
+                        throw new Error(`API request failed with status ${response.status}`); 
+                    } 
+                } 
+ 
+                currentStory = responseData.choices[0].message.content; 
+                 
+                document.getElementById('storyOutput').textContent = currentStory; 
+                document.getElementById('imageBtn').classList.remove('hidden'); 
+                showSuccess('Story generated successfully! Click "Generate Image" to create 
+visuals.'); 
+ 
+                // Extract a scene for image generation 
+                const sentences = currentStory.split(/[.।\n]/).filter(s => s.trim().length > 20); 
+                currentScene = sentences.slice(1, 4).join('. '); 
+ 
+            } catch (error) { 
+                showError('Error: ' + error.message); 
+            } finally { 
+                setLoading(false); 
+            } 
+        } 
 
-    <script>
-        let currentStory = '';
-        let currentScene = '';
+ 
+        async function generateImage() { 
+            const apiKey = document.getElementById('apiKey').value.trim(); 
+             
+            hideMessages(); 
+            const imageDiv = document.getElementById('imageOutput'); 
+            imageDiv.innerHTML = '<div class="loading">Generating image</div>'; 
+ 
+            const imagePrompt = `Adult scene: ${currentScene}. High quality, detailed, artistic, 
+cinematic lighting`; 
+ 
+            try { 
+                const response = await fetch('https://api.venice.ai/api/v1/image/generate', { 
+                    method: 'POST', 
+                    headers: { 
+                        'Authorization': `Bearer ${apiKey}`, 
+                        'Content-Type': 'application/json', 
+                        'Accept': 'application/json' 
+                    }, 
+                    body: JSON.stringify({ 
+                        model: 'fluently-xl', 
+                        prompt: imagePrompt, 
+                        width: 1024, 
+                        height: 1024, 
+                        steps: 20 
+                    }) 
+                }); 
+ 
+                const data = await response.json(); 
+ 
+                if (!response.ok) { 
+                    if (data.error) { 
+                        throw new Error(data.error.message || 'Image generation failed'); 
+                    } 
+                    throw new Error('Image generation failed'); 
+                } 
+ 
+                const imageUrl = data.images[0].url; 
+                imageDiv.innerHTML = `<img src="${imageUrl}" class="generated-image" 
+alt="Generated scene">`; 
+                showSuccess('Image generated successfully!'); 
+ 
+            } catch (error) { 
+                imageDiv.innerHTML = ''; 
+                showError('Image generation failed: ' + error.message); 
+            } 
+        } 
+    </script> 
 
-        function showError(message) {
-            const errorDiv = document.getElementById('errorOutput');
-            errorDiv.textContent = message;
-            errorDiv.classList.remove('hidden');
-            document.getElementById('successOutput').classList.add('hidden');
-        }
-
-        function showSuccess(message) {
-            const successDiv = document.getElementById('successOutput');
-            successDiv.textContent = message;
-            successDiv.classList.remove('hidden');
-            document.getElementById('errorOutput').classList.add('hidden');
-        }
-
-        function hideMessages() {
-            document.getElementById('errorOutput').classList.add('hidden');
-            document.getElementById('successOutput').classList.add('hidden');
-        }
-
-        function setLoading(isLoading) {
-            const btn = document.getElementById('storyBtn');
-            const loading = document.getElementById('loadingText');
-            
-            if (isLoading) {
-                btn.disabled = true;
-                loading.classList.remove('hidden');
-                document.getElementById('outputSection').classList.add('active');
-                document.getElementById('storyOutput').textContent = '';
-                document.getElementById('imageBtn').classList.add('hidden');
-                document.getElementById('imageOutput').innerHTML = '';
-            } else {
-                btn.disabled = false;
-                loading.classList.add('hidden');
-            }
-        }
-
-        async function generateStory() {
-            const apiKey = document.getElementById('apiKey').value.trim();
-            const prompt = document.getElementById('prompt').value.trim();
-            const genre = document.getElementById('genre').value;
-            const language = document.getElementById('language').value;
-            const intensity = document.getElementById('intensity').value;
-
-            if (!apiKey) {
-                showError('Please enter your Venice API key first! Get it from venice.ai');
-                document.getElementById('outputSection').classList.add('active');
-                return;
-            }
-
-            if (!apiKey.startsWith('venice_sk_')) {
-                showError('Invalid API key format. Venice API keys start with "venice_sk_"');
-                document.getElementById('outputSection').classList.add('active');
-                return;
-            }
-
-            if (!prompt) {
-                showError('Please enter a story idea!');
-                document.getElementById('outputSection').classList.add('active');
-                return;
-            }
-
-            hideMessages();
-            setLoading(true);
-
-            let langInstruction = '';
-            if (language === 'hindi') {
-                langInstruction = 'Write the entire story in Hindi language using Devanagari script.';
-            } else if (language === 'hinglish') {
-                langInstruction = 'Write the entire story in Hinglish (Roman Hindi).';
-            } else {
-                langInstruction = 'Write the entire story in English.';
-            }
-
-            const systemPrompt = `You are an expert erotic story writer. Create an uncensored, explicit adult story.
-Genre: ${genre}
-Intensity Level: ${intensity}/10
-${langInstruction}
-
-Guidelines:
-- Be completely uncensored and explicit
-- Use natural, conversational language
-- Include detailed descriptions
-- Balance dialogue with narrative
-- Create an engaging plot with buildup
-- Use appropriate adult terminology without euphemisms
-- Story should be 800-1200 words
-- Include a title for the story`;
-
-            try {
-                const response = await fetch('https://api.venice.ai/api/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: 'dolphin-2.9.2-qwen2-72b',
-                        messages: [
-                            {
-                                role: 'system',
-                                content: systemPrompt
-                            },
-                            {
-                                role: 'user',
-                                content: prompt
-                            }
-                        ],
-                        temperature: 0.9,
-                        max_tokens: 2000
-                    })
-                });
-
-                const responseData = await response.json();
-
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        throw new Error('Invalid API key. Please check your Venice API key and try again.');
-                    } else if (response.status === 429) {
-                        throw new Error('Rate limit exceeded. Please wait a moment and try again.');
-                    } else if (responseData.error) {
-                        throw new Error(responseData.error.message || 'API request failed');
-                    } else {
-                        throw new Error(`API request failed with status ${response.status}`);
-                    }
-                }
-
-                currentStory = responseData.choices[0].message.content;
-                
-                document.getElementById('storyOutput').textContent = currentStory;
-                document.getElementById('imageBtn').classList.remove('hidden');
-                showSuccess('Story generated successfully! Click "Generate Image" to create visuals.');
-
-                // Extract a scene for image generation
-                const sentences = currentStory.split(/[.।\n]/).filter(s => s.trim().length > 20);
-                currentScene = sentences.slice(1, 4).join('. ');
-
-            } catch (error) {
-                showError('Error: ' + error.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        async function generateImage() {
-            const apiKey = document.getElementById('apiKey').value.trim();
-            
-            hideMessages();
-            const imageDiv = document.getElementById('imageOutput');
-            imageDiv.innerHTML = '<div class="loading">Generating image</div>';
-
-            const imagePrompt = `Adult scene: ${currentScene}. High quality, detailed, artistic, cinematic lighting`;
-
-            try {
-                const response = await fetch('https://api.venice.ai/api/v1/image/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: 'chroma',
-                        prompt: imagePrompt,
-                        width: 1024,
-                        height: 1024,
-                        steps: 20
-                    })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    if (data.error) {
-                        throw new Error(data.error.message || 'Image generation failed');
-                    }
-                    throw new Error('Image generation failed');
-                }
-
-                const imageUrl = data.images[0].url;
-                imageDiv.innerHTML = `<img src="${imageUrl}" class="generated-image" alt="Generated scene">`;
-                showSuccess('Image generated successfully!');
-
-            } catch (error) {
-                imageDiv.innerHTML = '';
-                showError('Image generation failed: ' + error.message);
-            }
-        }
-    </script>
-</body>
-</html>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body> 
+</html> 
