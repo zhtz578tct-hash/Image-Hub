@@ -41,7 +41,7 @@
             color: #ff6b6b;
             font-weight: bold;
         }
-        select, textarea {
+        select, textarea, input[type="password"] {
             width: 100%;
             padding: 12px;
             border: none;
@@ -91,6 +91,10 @@
         .btn-secondary:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(102,126,234,0.4);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         .output-section {
             background: rgba(255,255,255,0.05);
@@ -143,6 +147,7 @@
             background: rgba(255,107,107,0.1);
             border-radius: 8px;
             margin-top: 10px;
+            border: 1px solid rgba(255,107,107,0.3);
         }
         .api-key-section {
             background: rgba(255,193,7,0.1);
@@ -151,16 +156,20 @@
             border-radius: 8px;
             margin-bottom: 20px;
         }
-        .api-key-section input {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            margin-top: 10px;
-            background: rgba(0,0,0,0.3);
-            color: #fff;
-        }
         .hidden { display: none; }
+        .success {
+            color: #4caf50;
+            padding: 15px;
+            background: rgba(76,175,80,0.1);
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 1px solid rgba(76,175,80,0.3);
+        }
+        small {
+            color: #888;
+            display: block;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -170,8 +179,8 @@
 
         <div class="api-key-section">
             <label>🔑 Venice API Key (Required):</label>
-            <input type="password" id="apiKey" placeholder="Enter your Venice API key here">
-            <small>Get your free API key from venice.ai</small>
+            <input type="password" id="apiKey" placeholder="Enter your Venice API key here (starts with venice_sk_)">
+            <small>Get your free API key from venice.ai → Settings → API Keys</small>
         </div>
 
         <div class="input-section">
@@ -204,7 +213,7 @@
 Example: A romantic encounter between two strangers who meet at a hotel..."></textarea>
 
             <div class="button-group">
-                <button class="btn-primary" onclick="generateStory()">📚 Generate Story</button>
+                <button class="btn-primary" id="storyBtn" onclick="generateStory()">📚 Generate Story</button>
                 <button class="btn-secondary hidden" id="imageBtn" onclick="generateImage()">🎨 Generate Image</button>
             </div>
         </div>
@@ -215,6 +224,7 @@ Example: A romantic encounter between two strangers who meet at a hotel..."></te
             <div id="storyOutput" class="story-text"></div>
             <div id="imageOutput" class="image-grid"></div>
             <div id="errorOutput" class="error hidden"></div>
+            <div id="successOutput" class="success hidden"></div>
         </div>
     </div>
 
@@ -226,10 +236,36 @@ Example: A romantic encounter between two strangers who meet at a hotel..."></te
             const errorDiv = document.getElementById('errorOutput');
             errorDiv.textContent = message;
             errorDiv.classList.remove('hidden');
+            document.getElementById('successOutput').classList.add('hidden');
         }
 
-        function hideError() {
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successOutput');
+            successDiv.textContent = message;
+            successDiv.classList.remove('hidden');
             document.getElementById('errorOutput').classList.add('hidden');
+        }
+
+        function hideMessages() {
+            document.getElementById('errorOutput').classList.add('hidden');
+            document.getElementById('successOutput').classList.add('hidden');
+        }
+
+        function setLoading(isLoading) {
+            const btn = document.getElementById('storyBtn');
+            const loading = document.getElementById('loadingText');
+            
+            if (isLoading) {
+                btn.disabled = true;
+                loading.classList.remove('hidden');
+                document.getElementById('outputSection').classList.add('active');
+                document.getElementById('storyOutput').textContent = '';
+                document.getElementById('imageBtn').classList.add('hidden');
+                document.getElementById('imageOutput').innerHTML = '';
+            } else {
+                btn.disabled = false;
+                loading.classList.add('hidden');
+            }
         }
 
         async function generateStory() {
@@ -240,20 +276,25 @@ Example: A romantic encounter between two strangers who meet at a hotel..."></te
             const intensity = document.getElementById('intensity').value;
 
             if (!apiKey) {
-                alert('Please enter your Venice API key first!');
+                showError('Please enter your Venice API key first! Get it from venice.ai');
+                document.getElementById('outputSection').classList.add('active');
+                return;
+            }
+
+            if (!apiKey.startsWith('venice_sk_')) {
+                showError('Invalid API key format. Venice API keys start with "venice_sk_"');
+                document.getElementById('outputSection').classList.add('active');
                 return;
             }
 
             if (!prompt) {
-                alert('Please enter a story idea!');
+                showError('Please enter a story idea!');
+                document.getElementById('outputSection').classList.add('active');
                 return;
             }
 
-            hideError();
-            document.getElementById('outputSection').classList.add('active');
-            document.getElementById('loadingText').classList.remove('hidden');
-            document.getElementById('storyOutput').textContent = '';
-            document.getElementById('imageBtn').classList.add('hidden');
+            hideMessages();
+            setLoading(true);
 
             let langInstruction = '';
             if (language === 'hindi') {
@@ -284,7 +325,8 @@ Guidelines:
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${apiKey}`,
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
                         model: 'dolphin-2.9.2-qwen2-72b',
@@ -303,31 +345,41 @@ Guidelines:
                     })
                 });
 
+                const responseData = await response.json();
+
                 if (!response.ok) {
-                    throw new Error('API request failed. Check your API key.');
+                    if (response.status === 401) {
+                        throw new Error('Invalid API key. Please check your Venice API key and try again.');
+                    } else if (response.status === 429) {
+                        throw new Error('Rate limit exceeded. Please wait a moment and try again.');
+                    } else if (responseData.error) {
+                        throw new Error(responseData.error.message || 'API request failed');
+                    } else {
+                        throw new Error(`API request failed with status ${response.status}`);
+                    }
                 }
 
-                const data = await response.json();
-                currentStory = data.choices[0].message.content;
+                currentStory = responseData.choices[0].message.content;
                 
-                document.getElementById('loadingText').classList.add('hidden');
                 document.getElementById('storyOutput').textContent = currentStory;
                 document.getElementById('imageBtn').classList.remove('hidden');
+                showSuccess('Story generated successfully! Click "Generate Image" to create visuals.');
 
                 // Extract a scene for image generation
                 const sentences = currentStory.split(/[.।\n]/).filter(s => s.trim().length > 20);
                 currentScene = sentences.slice(1, 4).join('. ');
 
             } catch (error) {
-                document.getElementById('loadingText').classList.add('hidden');
-                showError('Error: ' + error.message + '. Please check your API key and try again.');
+                showError('Error: ' + error.message);
+            } finally {
+                setLoading(false);
             }
         }
 
         async function generateImage() {
             const apiKey = document.getElementById('apiKey').value.trim();
             
-            hideError();
+            hideMessages();
             const imageDiv = document.getElementById('imageOutput');
             imageDiv.innerHTML = '<div class="loading">Generating image</div>';
 
@@ -338,7 +390,8 @@ Guidelines:
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${apiKey}`,
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
                         model: 'chroma',
@@ -349,14 +402,18 @@ Guidelines:
                     })
                 });
 
+                const data = await response.json();
+
                 if (!response.ok) {
+                    if (data.error) {
+                        throw new Error(data.error.message || 'Image generation failed');
+                    }
                     throw new Error('Image generation failed');
                 }
 
-                const data = await response.json();
                 const imageUrl = data.images[0].url;
-
                 imageDiv.innerHTML = `<img src="${imageUrl}" class="generated-image" alt="Generated scene">`;
+                showSuccess('Image generated successfully!');
 
             } catch (error) {
                 imageDiv.innerHTML = '';
