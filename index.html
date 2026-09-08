@@ -179,7 +179,7 @@
 
         <div class="api-key-section">
             <label>🔑 Venice API Key (Required):</label>
-            <input type="password" id="apiKey" placeholder="Enter your Venice API key here (starts with VENICE_INFERENCE_KEY_)">
+            <input type="password" id="apiKey" placeholder="Enter your Venice API key here (starts with venice_sk_)">
             <small>Get your free API key from venice.ai → Settings → API Keys</small>
         </div>
 
@@ -281,8 +281,8 @@ Example: A romantic encounter between two strangers who meet at a hotel..."></te
                 return;
             }
 
-            if (!apiKey.startsWith('VENICE_INFERENCE_KEY_')) {
-                showError('Invalid API key format. Venice API keys start with "VENICE_INFERENCE_KEY_"');
+            if (!apiKey.startsWith('venice_sk_')) {
+                showError('Invalid API key format. Venice API keys start with "venice_sk_"');
                 document.getElementById('outputSection').classList.add('active');
                 return;
             }
