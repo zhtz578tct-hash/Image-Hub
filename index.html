@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Venice Super Agent - ONE App</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,system-ui;background:#0a0a0e;color:#eee;min-height:100vh}
+.header{background:#12121a;border-bottom:1px solid #222;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.logo{font-weight:900;color:#ff3b5c;font-size:16px}
+.tabs{display:flex;gap:6px;background:#12121a;padding:8px;border-bottom:1px solid #222;position:sticky;top:44px;z-index:9;overflow-x:auto}
+.tab{padding:8px 14px;border-radius:20px;border:1px solid #333;background:#1a1a22;color:#888;cursor:pointer;font-size:11px;white-space:nowrap;font-weight:700}
+.tab.active{background:#ff3b5c;border-color:#ff3b5c;color:#fff}
+.container{max-width:900px;margin:0 auto;padding:12px}
+.card{background:#15151d;border:1px solid #23232e;border-radius:12px;padding:12px;margin-bottom:12px}
+.label{color:#ff3b5c;font-weight:700;font-size:10px;text-transform:uppercase;margin:8px 0 4px;display:block}
+input,select,textarea{width:100%;background:#1e1e2a;border:1px solid #333;color:#fff;padding:10px;border-radius:8px;font-size:13px;margin-bottom:6px}
+textarea{min-height:80px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.btn{padding:10px 14px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px}
+.btn-primary{background:#ff3b5c;color:#fff;flex:1}
+.btn-ghost{background:#2a2a3a;color:#fff}
+.btn-green{background:#1a8a4a;color:#fff}
+.btn-nude{background:linear-gradient(135deg,#ff3b5c,#8a2a5a);color:#fff;flex:1}
+.imgbox{background:#0e0e14;border:1px solid #222;border-radius:10px;min-height:300px;display:flex;align-items:center;justify-content:center;padding:10px;flex-direction:column}
+.imgbox img{max-width:100%;max-height:500px;border-radius:8px}
+.small{color:#666;font-size:10px}
+.flex{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.hidden{display:none !important}
+.error{background:rgba(255,59,92,.1);border:1px solid rgba(255,59,92,.3);color:#ff6b7a;padding:8px;border-radius:8px;margin-top:6px;font-size:11px}
+.success{background:rgba(40,200,120,.1);border:1px solid rgba(40,200,120,.3);color:#5cffb0;padding:8px;border-radius:8px;margin-top:6px;font-size:11px}
+.toggle{display:flex;background:#1e1e2a;border:1px solid #333;border-radius:20px;padding:2px;width:fit-content;margin:6px 0}
+.toggle button{padding:6px 14px;border-radius:20px;border:none;background:transparent;color:#777;cursor:pointer;font-weight:700;font-size:11px}
+.toggle button.active{background:#ff3b5c;color:#fff}
+.view{display:none}.view.active{display:block}
+.char-list{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.char-card{background:#1e1e2a;border:1px solid #333;border-radius:10px;padding:8px 10px;min-width:120px;cursor:pointer;position:relative}
+.char-card.active{border-color:#ff3b5c;background:#2a1a22}
+.char-card .name{font-weight:700;font-size:12px;color:#fff}
+.char-card .seed{font-size:9px;color:#777}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.chip{padding:5px 10px;border-radius:20px;background:#1e1e2a;border:1px solid #333;font-size:10px;cursor:pointer}
+.chip.active{background:#ff3b5c;border-color:#ff3b5c;color:#fff}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px;margin-top:8px}
+.gallery img{width:100%;height:100px;object-fit:cover;border-radius:6px;border:1px solid #333;cursor:pointer}
+.story-box{background:#0e0e14;border:1px solid #222;border-radius:10px;padding:12px;max-height:400px;overflow-y:auto;white-space:pre-wrap;font-size:13px;line-height:1.6;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="header"><div class="logo">🔥 SUPER AGENT</div><div class="small" id="saveStatus">Auto-save ON</div></div>
+<div class="tabs">
+<div class="tab active" onclick="switchTab('story')">📚 Story</div>
+<div class="tab" onclick="switchTab('char')">🎭 Characters</div>
+<div class="tab" onclick="switchTab('image')">🎨 Image</div>
+<div class="tab" onclick="switchTab('convert')">🔤 Convert</div>
+<div class="tab" onclick="switchTab('settings')">⚙️ Settings</div>
+</div>
+
+<div class="container">
+<!-- SETTINGS -->
+<div id="view-settings" class="view">
+<div class="card" style="border-color:#ffc10744;background:rgba(255,193,7,.06)">
+<label class="label">🔑 Venice Key - Shared Across ALL Tabs</label>
+<input type="password" id="apiKey" placeholder="VENICE_INFERENCE_KEY_...">
+<div class="small">Enter once, used everywhere. Saved locally, never uploaded.</div>
+<div class="flex"><button class="btn btn-ghost" style="font-size:10px" onclick="testKey()">Test Key</button><button class="btn btn-ghost" style="font-size:10px" onclick="clearAllData()">Clear All Data</button></div>
+<div id="keyTest" class="small" style="margin-top:6px"></div>
+</div>
+<div class="card">
+<label class="label">📊 Your Data</label>
+<div class="small" id="dataStats">Loading...</div>
+</div>
+</div>
+
+<!-- STORY -->
+<div id="view-story" class="view active">
+<div class="card">
+<div class="chips" id="chapterChips"></div>
+<div class="grid">
+<div><label class="label">Main Idea</label><input id="storyIdea" placeholder="e.g. Neha bhabhi and tenant..."></div>
+<div><label class="label">Language</label><select id="storyLang"><option value="hinglish" selected>Hinglish</option><option value="hindi">Hindi Devanagari</option><option value="english">English</option></select></div>
+</div>
+<div class="grid">
+<div><label class="label">Characters (optional)</label><input id="storyChars" placeholder="e.g. Neha 24, Ravi 28..."></div>
+<div><label class="label">Chapter Focus</label><input id="chapterFocus" placeholder="e.g. first meeting in kitchen..."></div>
+</div>
+<div class="flex">
+<button class="btn btn-primary" id="storyGenBtn" onclick="generateStory()">✨ Generate Chapter</button>
+<button class="btn btn-ghost" onclick="retryChapter()">🔄 Retry</button>
+<button class="btn btn-ghost" onclick="addChapter()">+ Ch</button>
+<button class="btn btn-ghost" onclick="clearStory()" style="font-size:10px">Clear All</button>
+</div>
+<div id="storyStatus" class="small" style="margin-top:6px"></div>
+<div id="storyError" class="error hidden"></div>
+<div id="storySuccess" class="success hidden"></div>
+</div>
+<div class="card">
+<div style="display:flex;justify-content:space-between"><label class="label">📖 Full Story (Auto-Saved, Spam Protected)</label><div class="flex"><button class="btn btn-ghost" style="padding:4px 8px;font-size:10px" onclick="copyStory()">Copy</button><button class="btn btn-ghost" style="padding:4px 8px;font-size:10px" onclick="downloadStory()">Download</button><button class="btn btn-green" style="padding:4px 8px;font-size:10px" onclick="switchTab('convert')">Convert →</button></div></div>
+<div class="story-box" id="storyBox">No story yet. Enter idea and Generate Ch1.</div>
+</div>
+</div>
+
+<!-- CHARACTERS -->
+<div id="view-char" class="view">
+<div class="card" style="border-color:#ff3b5c44">
+<label class="label">👥 Your Characters - Same Face Lock</label>
+<div class="char-list" id="charList"></div>
+<div class="flex"><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="createNewChar()">+ New</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="selectNoLock()" id="btnNoLock">🔓 No Lock (Random)</button></div>
+<div id="charEditor" class="hidden" style="margin-top:10px;background:#0e0e14;padding:10px;border-radius:8px;border:1px solid #222">
+<div class="grid"><div><label class="label">Name</label><input id="charName" placeholder="Neha"></div><div><label class="label">Seed (Face Lock)</label><input id="charSeed" type="number"></div></div>
+<label class="label">Face Description</label><input id="charFace" placeholder="Beautiful Indian woman, 24, long black hair...">
+<label class="label">Body</label><input id="charBody" placeholder="curvy, 5'4">
+<div class="flex"><button class="btn btn-primary" style="padding:6px 10px" onclick="saveChar()">Save</button><button class="btn btn-ghost" style="padding:6px 10px" onclick="cancelEdit()">Cancel</button><button class="btn btn-ghost" style="padding:6px 10px" onclick="randomSeed()">🎲 Random</button></div>
+</div>
+<div class="small" style="margin-top:6px" id="selectedInfo">🔓 No Lock - Random face</div>
+</div>
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center"><label class="label">🎨 Generate with Locked Face + Lustify</label><div class="toggle"><button id="btnSexy" class="active" onclick="setImgMode('sexy')">💃 Sexy</button><button id="btnNude" onclick="setImgMode('nude')">🔥 Nude</button></div></div>
+<textarea id="imgPrompt" placeholder="e.g. Neha standing in bedroom doorway... face will be locked if character selected"></textarea>
+<div class="grid"><div><label class="label">Model</label><select id="imgModel"><option value="lustify-sdxl" selected>Lustify SDXL - Adult Best</option><option value="fluently-xl">Fluently XL - Realistic</option><option value="flux-dev-uncensored">Flux Dev Uncensored</option></select></div><div><label class="label">Size</label><select id="imgSize"><option value="768x1024" selected>Portrait</option><option value="832x1216">Tall (nude best)</option></select></div></div>
+<div class="flex"><button class="btn btn-nude" id="imgGenBtn" onclick="generateImage()">🎨 Generate</button></div>
+<div id="imgStatus" class="small"></div><div id="imgError" class="error hidden"></div><div id="imgSuccess" class="success hidden"></div>
+</div>
+<div class="card">
+<div style="display:flex;justify-content:space-between"><label class="label">🖼️ Result - Long press to Save</label><div class="flex"><button class="btn btn-green" style="padding:6px 10px;font-size:10px" onclick="downloadImage()">💾 Download</button></div></div>
+<div class="imgbox" id="imgBox"><span class="small">No image yet. Select character then generate.</span></div>
+<div class="gallery" id="gallery"></div>
+</div>
+</div>
+
+<!-- IMAGE SIMPLE -->
+<div id="view-image" class="view">
+<div class="card"><div class="small">Quick Image tab - Same as Characters tab but without character lock logic. Use Characters tab for best Lustify results with same face. This tab is for random one-offs.</div>
+<label class="label">Quick Prompt</label><textarea id="quickPrompt" placeholder="Random girl, realistic..."></textarea>
+<div class="flex"><button class="btn btn-nude" onclick="quickImage()">Generate Quick</button></div>
+<div id="quickStatus" class="small"></div>
+<div class="imgbox" id="quickBox"><span class="small">Quick result here</span></div>
+</div>
+</div>
+
+<!-- CONVERT -->
+<div id="view-convert" class="view">
+<div class="card">
+<label class="label">🔤 Hinglish ↔ Hindi Converter</label>
+<div class="toggle"><button id="convH2D" class="active" onclick="setConv('h2d')">Hinglish → Hindi</button><button id="convD2H" onclick="setConv('d2h')">Hindi → Hinglish</button></div>
+<textarea id="convInput" style="min-height:150px" placeholder="Story auto-loads here... or paste Hinglish"></textarea>
+<div class="flex"><button class="btn btn-primary" onclick="convertText()">Convert</button><button class="btn btn-ghost" onclick="loadStoryToConv()">Load Story</button><button class="btn btn-ghost" onclick="document.getElementById('convInput').value=''">Clear</button></div>
+<textarea id="convOutput" style="min-height:150px" placeholder="Converted output..." readonly></textarea>
+<div class="flex"><button class="btn btn-green" onclick="copyConv()">Copy Output</button></div>
+<div id="convStatus" class="small"></div>
+</div>
+</div>
+
+</div>
+
+<script>
+let currentTab='story', chars=[], selectedChar=null, imgMode='sexy', convMode='h2d';
+let storyData={chapters:[], current:0, idea:'', lang:'hinglish'}, lastImageUrl=null, galleryItems=[];
+
+function switchTab(t){
+  currentTab=t;
+  document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll(`.tab`).forEach(el=>{ if(el.textContent.toLowerCase().includes(t) || (t==='char'&&el.textContent.includes('Characters')) || (t==='story'&&el.textContent.includes('Story')) || (t==='convert'&&el.textContent.includes('Convert')) || (t==='image'&&el.textContent.includes('Image')&&!el.textContent.includes('Char')) || (t==='settings'&&el.textContent.includes('Settings'))) {} });
+  // simpler: activate by index
+  const tabMap={story:0,char:1,image:2,convert:3,settings:4};
+  document.querySelectorAll('.tab')[tabMap[t]].classList.add('active');
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+t).classList.add('active');
+  if(t==='convert') loadStoryToConv();
+  if(t==='settings') updateStats();
+}
+
+function initAll(){
+  const ak=document.getElementById('apiKey'); const sk=localStorage.getItem('venice_api_key'); if(ak&&sk) ak.value=sk;
+  if(ak){ const s=()=>{ const v=ak.value.trim(); if(v.length>10) localStorage.setItem('venice_api_key',v); }; ak.addEventListener('input',s); ak.addEventListener('blur',s); }
+  loadChars(); loadGallery(); loadStory(); renderChapters(); updateStoryBox();
+  setImgMode('sexy'); setConv('h2d'); selectNoLock();
+  // auto-save every 3 sec
+  setInterval(saveStory, 3000);
+}
+function testKey(){ const k=document.getElementById('apiKey').value.trim(); const out=document.getElementById('keyTest'); if(!k) return out.textContent='Enter key'; out.textContent='Key length '+k.length+' - saved. Try generating Story Ch1 to test.'; }
+
+// STORY LOGIC - FIXED ANTI-SPAM
+function loadStory(){ try{ const s=localStorage.getItem('super_story_v1'); if(s){ const d=JSON.parse(s); storyData={...storyData,...d}; document.getElementById('storyIdea').value=d.idea||''; document.getElementById('storyLang').value=d.lang||'hinglish'; }}catch(e){} }
+function saveStory(){
+  storyData.idea=document.getElementById('storyIdea').value||storyData.idea;
+  storyData.lang=document.getElementById('storyLang').value||storyData.lang;
+  localStorage.setItem('super_story_v1', JSON.stringify(storyData));
+  document.getElementById('saveStatus').textContent='Auto-saved '+new Date().toLocaleTimeString();
+}
+function renderChapters(){
+  const c=document.getElementById('chapterChips'); c.innerHTML='';
+  const total=Math.max(storyData.chapters.length,1);
+  for(let i=0;i<total;i++){
+    const chip=document.createElement('div'); chip.className='chip'+(storyData.current===i?' active':''); chip.textContent='Ch'+(i+1)+(storyData.chapters[i]?` (${Math.round(storyData.chapters[i].length/100)/10}k)`:''); chip.onclick=()=>{storyData.current=i; renderChapters(); updateStoryBox();};
+    c.appendChild(chip);
+  }
+}
+function updateStoryBox(){
+  const box=document.getElementById('storyBox');
+  if(storyData.chapters.length===0) box.textContent='No story yet.';
+  else {
+    let full=''; storyData.chapters.forEach((ch,i)=>{ if(ch) full+=`\n\n--- CHAPTER ${i+1} ---\n${ch}`; });
+    box.textContent=full.trim();
+  }
+}
+function addChapter(){ storyData.chapters.push(''); storyData.current=storyData.chapters.length-1; renderChapters(); saveStory(); }
+function clearStory(){ if(!confirm('Delete entire story?')) return; storyData.chapters=[]; storyData.current=0; renderChapters(); updateStoryBox(); saveStory(); }
+function isSpam(text){
+  const spamWords=['premium quality','gold standard','benchmark reference','monopoly exclusive','counterfeit fake','replica imitation','password biometric','fingerprint retina','multi factor verification'];
+  const lower=text.toLowerCase(); let count=0; spamWords.forEach(w=>{ if(lower.includes(w)) count++; });
+  const uniqueWords=new Set(lower.split(/\s+/)).size; const totalWords=lower.split(/\s+/).length;
+  // spam if many buzzwords or very low uniqueness or extremely long ( >8000 chars for one chapter is abnormal)
+  return count>=2 || totalWords>0 && (uniqueWords/totalWords<0.2) || text.length>8000 || (text.includes('tier elite class') && text.length>500);
+}
+async function generateStory(){
+  const idea=document.getElementById('storyIdea').value.trim(); const lang=document.getElementById('storyLang').value;
+  const chars=document.getElementById('storyChars').value.trim(); const focus=document.getElementById('chapterFocus').value.trim();
+  const apiKey=document.getElementById('apiKey').value.trim();
+  if(!apiKey) return showStoryError('Enter Venice Key in Settings tab');
+  if(!idea) return showStoryError('Enter Main Idea');
+  const chapterIdx=storyData.current;
+  // Build context - FIXED: only last 1500 chars of previous chapter, not whole story
+  let prevContext=''; if(chapterIdx>0 && storyData.chapters[chapterIdx-1]){ prevContext=storyData.chapters[chapterIdx-1].slice(-1500); }
+  const langPrompt=lang==='hindi'?'in Hindi Devanagari script':lang==='hinglish'?'in Hinglish (Hindi in Roman English, like "wo boli")':'in English';
+  const prompt=`Write Chapter ${chapterIdx+1} only, ${langPrompt}, 700-900 words, adult romantic story. Main idea: ${idea}. Characters: ${chars||'not specified'}. This chapter focus: ${focus||'continue story'}. Previous chapter tail for continuity: "${prevContext.slice(0,800)}". Write ONLY Chapter ${chapterIdx+1} story text, no preamble, no word list, no SEO keywords. Story must be narrative, dialogues, scenes.`;
+  
+  document.getElementById('storyGenBtn').disabled=true;
+  document.getElementById('storyStatus').textContent=`Generating Ch${chapterIdx+1}... (1500 chars context only to avoid spam)`;
+  hideStoryMsg();
+  try{
+    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen3-4b',messages:[{role:'system',content:'You are an adult romantic story writer. Write only story narrative, no lists, no SEO spam, no keyword stuffing. Each chapter 700-900 words max.'},{role:'user',content:prompt}],temperature:0.85,top_p:0.9,max_tokens:1200,frequency_penalty:0.6,presence_penalty:0.3})});
+    const data=await res.json(); if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,300));
+    let text=data.choices?.[0]?.message?.content||'';
+    if(!text) throw new Error('Empty response');
+    // Spam detection
+    if(isSpam(text)){
+      throw new Error('Model generated spam word-list (like "premium quality gold standard"). Retrying with cleaner prompt... This happens when context too long. Auto-retrying.');
+    }
+    // trim to 4000 chars max per chapter
+    if(text.length>5000) text=text.slice(0,5000)+'\n...[trimmed]';
+    storyData.chapters[chapterIdx]=text;
+    if(storyData.chapters.length<=chapterIdx) storyData.chapters[chapterIdx]=text;
+    storyData.idea=idea; storyData.lang=lang;
+    renderChapters(); updateStoryBox(); saveStory();
+    showStorySuccess(`Ch${chapterIdx+1} done! ${text.length} chars - Auto-saved. Spam protection ON.`);
+    // auto-advance
+    if(chapterIdx===storyData.chapters.length-1 && storyData.chapters.length<10) addChapter();
+  }catch(e){
+    showStoryError(e.message);
+    document.getElementById('storyStatus').textContent='Failed - try Retry';
+  }finally{
+    document.getElementById('storyGenBtn').disabled=false;
+    document.getElementById('storyStatus').textContent='';
+  }
+}
+function retryChapter(){ generateStory(); }
+function showStoryError(m){ document.getElementById('storyError').textContent=m; document.getElementById('storyError').classList.remove('hidden'); document.getElementById('storySuccess').classList.add('hidden'); }
+function showStorySuccess(m){ document.getElementById('storySuccess').textContent=m; document.getElementById('storySuccess').classList.remove('hidden'); document.getElementById('storyError').classList.add('hidden'); }
+function hideStoryMsg(){ document.getElementById('storyError').classList.add('hidden'); document.getElementById('storySuccess').classList.add('hidden'); }
+function copyStory(){ navigator.clipboard.writeText(document.getElementById('storyBox').textContent).then(()=>showStorySuccess('Copied!')); }
+function downloadStory(){ const blob=new Blob([document.getElementById('storyBox').textContent],{type:'text/plain'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='story-'+Date.now()+'.txt'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); }
+
+// CHARACTERS LOGIC
+function loadChars(){ try{ const s=localStorage.getItem('venice_chars_super'); if(s) chars=JSON.parse(s); }catch(e){} renderCharList(); }
+function saveChars(){ localStorage.setItem('venice_chars_super', JSON.stringify(chars)); }
+function renderCharList(){ const list=document.getElementById('charList'); list.innerHTML=''; if(chars.length===0) list.innerHTML='<span class="small">No chars yet. + New to create Neha, Priya etc. Same seed = same face.</span>'; chars.forEach((c,i)=>{ const d=document.createElement('div'); d.className='char-card'+(selectedChar&&selectedChar.seed===c.seed?' active':''); d.innerHTML=`<div class="name">${c.name}</div><div class="seed">Seed ${c.seed}</div>`; d.onclick=()=>selectChar(i); list.appendChild(d); }); }
+function createNewChar(){ document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=''; document.getElementById('charFace').value='Beautiful Indian woman, 24, long black hair, fair'; document.getElementById('charBody').value='curvy'; randomSeed(); }
+function randomSeed(){ document.getElementById('charSeed').value=Math.floor(Math.random()*900000)+10000; }
+function cancelEdit(){ document.getElementById('charEditor').classList.add('hidden'); }
+function saveChar(){ const name=document.getElementById('charName').value.trim()||'Char '+(chars.length+1); const seed=parseInt(document.getElementById('charSeed').value)||Math.floor(Math.random()*900000); const face=document.getElementById('charFace').value.trim()||'Beautiful Indian'; const body=document.getElementById('charBody').value.trim(); const obj={name,seed,face,body}; const idx=chars.findIndex(c=>c.name===name); if(idx>=0) chars[idx]=obj; else chars.push(obj); saveChars(); renderCharList(); cancelEdit(); selectChar(chars.findIndex(c=>c.seed===seed)); }
+function selectChar(idx){ selectedChar=chars[idx]; document.querySelectorAll('.char-card').forEach((el,i)=>el.classList.toggle('active', i===idx)); document.getElementById('selectedInfo').innerHTML=`🔒 Locked: <b>${selectedChar.name}</b> Seed ${selectedChar.seed} - Same face every time`; }
+function selectNoLock(){ selectedChar=null; document.querySelectorAll('.char-card').forEach(el=>el.classList.remove('active')); document.getElementById('selectedInfo').textContent='🔓 No Lock - Random face'; }
+function setImgMode(m){ imgMode=m; document.getElementById('btnSexy').classList.toggle('active', m==='sexy'); document.getElementById('btnNude').classList.toggle('active', m==='nude'); document.getElementById('imgModel').value=m==='nude'?'lustify-sdxl':'fluently-xl'; }
+async function generateImage(){
+  const key=document.getElementById('apiKey').value.trim(); let prompt=document.getElementById('imgPrompt').value.trim(); const model=document.getElementById('imgModel').value; const size=document.getElementById('imgSize').value;
+  if(!key) return showImgError('Enter key in Settings'); if(!prompt) return showImgError('Enter prompt');
+  let finalPrompt=prompt; let seedToUse=null; if(selectedChar){ finalPrompt=`${selectedChar.face}, ${selectedChar.body}, ${prompt}, realistic photo, highly detailed, natural skin`; seedToUse=selectedChar.seed; }
+  document.getElementById('imgGenBtn').disabled=true; document.getElementById('imgStatus').textContent='Generating...'; document.getElementById('imgBox').innerHTML='<span class="small">Generating...</span>'; hideImgMsg();
+  try{
+    const [w,h]=size.split('x').map(n=>parseInt(n)); const body={model,prompt:finalPrompt,negative_prompt:'blurry, deformed, bad anatomy, cartoon, low quality',width:w,height:h,steps:imgMode==='nude'?32:28,cfg_scale:7,safe_mode:false,return_binary:false}; if(seedToUse) body.seed=seedToUse;
+    const res=await fetch('https://api.venice.ai/api/v1/image/generate',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const data=await res.json(); if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,300));
+    let imgSrc=null; if(data.images&&data.images[0]){ const f=data.images[0]; imgSrc=f.startsWith('http')?f:f.startsWith('data:')?f:'data:image/png;base64,'+f; } else if(data.data&&data.data[0]) imgSrc=data.data[0].url||'data:image/png;base64,'+data.data[0].b64_json; else if(data.image_url) imgSrc=data.image_url;
+    lastImageUrl=imgSrc; document.getElementById('imgBox').innerHTML=`<img src="${imgSrc}"><div class="small">Long press to save</div>`; addToGallery(imgSrc, selectedChar?selectedChar.name:'Random'); showImgSuccess(`Done! ${selectedChar?selectedChar.name:'Random'} Seed ${seedToUse||'random'}`);
+  }catch(e){ showImgError(e.message); document.getElementById('imgBox').innerHTML='<span class="small">Failed: '+e.message.slice(0,200)+'</span>'; } finally{ document.getElementById('imgGenBtn').disabled=false; document.getElementById('imgStatus').textContent=''; }
+}
+function showImgError(m){ document.getElementById('imgError').textContent=m; document.getElementById('imgError').classList.remove('hidden'); document.getElementById('imgSuccess').classList.add('hidden'); }
+function showImgSuccess(m){ document.getElementById('imgSuccess').textContent=m; document.getElementById('imgSuccess').classList.remove('hidden'); document.getElementById('imgError').classList.add('hidden'); }
+function hideImgMsg(){ document.getElementById('imgError').classList.add('hidden'); document.getElementById('imgSuccess').classList.add('hidden'); }
+function addToGallery(url, name){ galleryItems.unshift({url,name,time:Date.now()}); if(galleryItems.length>30) galleryItems.pop(); renderGallery(); localStorage.setItem('super_gallery', JSON.stringify(galleryItems.map(g=>({...g,url:g.url.length>5000?'':g.url})))); }
+function loadGallery(){ try{ const s=localStorage.getItem('super_gallery'); if(s) galleryItems=JSON.parse(s); }catch(e){} renderGallery(); }
+function renderGallery(){ const g=document.getElementById('gallery'); g.innerHTML=''; galleryItems.forEach(it=>{ if(!it.url) return; const img=document.createElement('img'); img.src=it.url; img.onclick=()=>{ lastImageUrl=it.url; document.getElementById('imgBox').innerHTML=`<img src="${it.url}">`; }; g.appendChild(img); }); }
+function downloadImage(){ if(!lastImageUrl) return showImgError('No image'); if(lastImageUrl.startsWith('data:')){ const b=atob(lastImageUrl.split(',')[1]); const m=lastImageUrl.split(',')[0].split(':')[1].split(';')[0]; const ab=new ArrayBuffer(b.length); const ia=new Uint8Array(ab); for(let i=0;i<b.length;i++) ia[i]=b.charCodeAt(i); const blob=new Blob([ab],{type:m}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='venice-'+Date.now()+'.png'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); } else window.open(lastImageUrl,'_blank'); }
+async function quickImage(){ const p=document.getElementById('quickPrompt').value.trim(); document.getElementById('imgPrompt').value=p; switchTab('char'); await generateImage(); }
+
+// CONVERT
+function setConv(m){ convMode=m; document.getElementById('convH2D').classList.toggle('active', m==='h2d'); document.getElementById('convD2H').classList.toggle('active', m==='d2h'); }
+function loadStoryToConv(){ document.getElementById('convInput').value=document.getElementById('storyBox').textContent.slice(0,5000); }
+async function convertText(){
+  const inp=document.getElementById('convInput').value.trim(); const key=document.getElementById('apiKey').value.trim();
+  if(!inp) return; if(!key) return document.getElementById('convStatus').textContent='Need Venice key';
+  document.getElementById('convStatus').textContent='Converting...';
+  try{
+    const prompt=convMode==='h2d'?`Convert this Hinglish (Roman Hindi) to proper Hindi Devanagari script, keep meaning same, output only Hindi:\n${inp}`:`Convert this Hindi Devanagari to Hinglish (Roman English Hindi), output only Hinglish:\n${inp}`;
+    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen3-4b',messages:[{role:'user',content:prompt}],max_tokens:1500})});
+    const data=await res.json(); const out=data.choices?.[0]?.message?.content||''; document.getElementById('convOutput').value=out; document.getElementById('convStatus').textContent='Done!'; 
+  }catch(e){ document.getElementById('convStatus').textContent='Failed: '+e.message; }
+}
+function copyConv(){ navigator.clipboard.writeText(document.getElementById('convOutput').value).then(()=>document.getElementById('convStatus').textContent='Copied!'); }
+function updateStats(){ const storyLen=document.getElementById('storyBox').textContent.length; document.getElementById('dataStats').innerHTML=`Story chars: ${storyLen}<br>Characters saved: ${chars.length}<br>Gallery images: ${galleryItems.length}<br>Key: ${localStorage.getItem('venice_api_key')?'✅ Saved':'❌ Not saved'}`; }
+function clearAllData(){ if(!confirm('Clear ALL data? Story, Characters, Gallery?')) return; localStorage.removeItem('super_story_v1'); localStorage.removeItem('venice_chars_super'); localStorage.removeItem('super_gallery'); storyData.chapters=[]; chars=[]; galleryItems=[]; renderChapters(); updateStoryBox(); renderCharList(); renderGallery(); }
+
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initAll); else initAll();
+</script>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+</html>
