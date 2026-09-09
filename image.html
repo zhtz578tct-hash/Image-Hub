@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Venice Uncensored Image Gen v2 - Nude Mode</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,system-ui;background:#0f0f12;color:#eee;padding:18px;min-height:100vh}
+.container{max-width:800px;margin:0 auto}
+h1{text-align:center;color:#ff3b5c;font-size:1.9em;margin:10px 0}
+.sub{text-align:center;color:#777;font-size:12px;margin-bottom:14px}
+.card{background:#1a1a1f;border:1px solid #2a2a32;border-radius:14px;padding:18px;margin-bottom:14px}
+.label{color:#ff3b5c;font-weight:700;font-size:11px;text-transform:uppercase;margin:10px 0 5px;display:block}
+input,select,textarea{width:100%;background:#24242c;border:1px solid #333;color:#fff;padding:11px;border-radius:8px;font-size:14px;margin-bottom:7px}
+textarea{min-height:90px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.btn{padding:12px 16px;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px}
+.btn-primary{background:#ff3b5c;color:#fff;flex:1}
+.btn-ghost{background:#2a2a32;color:#fff}
+.btn-nude{background:linear-gradient(135deg,#ff3b5c,#8a2a5a);color:#fff;flex:1}
+.imgbox{background:#121214;border:1px solid #222;border-radius:12px;min-height:420px;display:flex;align-items:center;justify-content:center;padding:10px;position:relative;overflow:hidden}
+.imgbox img{max-width:100%;max-height:650px;border-radius:8px}
+.small{color:#777;font-size:11px}
+.api{background:rgba(255,193,7,.08);border:1px solid rgba(255,193,7,.2)}
+.flex{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.hidden{display:none !important}
+.error{background:rgba(255,59,92,.1);border:1px solid rgba(255,59,92,.3);color:#ff6b7a;padding:10px;border-radius:8px;margin-top:8px;font-size:13px}
+.success{background:rgba(40,200,120,.1);border:1px solid rgba(40,200,120,.3);color:#5cffb0;padding:10px;border-radius:8px;margin-top:8px;font-size:13px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chip{padding:6px 10px;border-radius:20px;background:#24242c;border:1px solid #333;cursor:pointer;font-size:11px}
+.chip:hover{border-color:#ff3b5c}
+.toggle{display:flex;background:#24242c;border:1px solid #333;border-radius:30px;padding:3px;width:fit-content;margin:8px 0}
+.toggle button{padding:8px 18px;border-radius:20px;border:none;background:transparent;color:#777;cursor:pointer;font-weight:700;font-size:12px}
+.toggle button.active{background:#ff3b5c;color:#fff}
+.prompt-idea{background:#1e1e2a;padding:8px 10px;border-radius:8px;font-size:11px;color:#aaa;margin:3px 0;cursor:pointer;border:1px solid #2a2a32}
+.prompt-idea:hover{border-color:#ff3b5c44;color:#fff}
+.nude-badge{background:rgba(255,59,92,.15);border:1px solid rgba(255,59,92,.3);color:#ff7a90;padding:6px 10px;border-radius:8px;font-size:11px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🎨 Venice Image v2</h1>
+<p class="sub">Nude Mode Added • Truly Prompt-Based • Same $10 Key</p>
+
+<div class="card api">
+<label class="label">🔑 Venice API Key</label>
+<input type="password" id="apiKey" placeholder="VENICE_INFERENCE_KEY_...">
+</div>
+
+<div class="card" style="border:1px solid #ff3b5c44">
+<label class="label">🔥 Mode Select</label>
+<div class="toggle" id="modeToggle">
+<button id="btnSexy" class="active" onclick="setMode('sexy')">💃 Sexy Mode</button>
+<button id="btnNude" onclick="setMode('nude')">🔥 Nude Mode (wearing nothing)</button>
+</div>
+<div id="modeInfo" class="nude-badge">
+💃 <b>Sexy Mode:</b> Saree, wet, cleavage, curvy - realistic sexy but clothed. Models: Fluently XL / Flux. Always works.
+</div>
+</div>
+
+<div class="card">
+<label class="label">✨ Prompt</label>
+<textarea id="prompt" placeholder="Sexy Mode example: Indian bhabhi in wet red saree, rainy night, realistic, highly detailed...
+
+Nude Mode example: Beautiful Indian woman 24, wearing nothing, standing in bedroom, soft light, realistic, artistic nude, natural skin, shy..."></textarea>
+
+<label class="label">🚫 Negative Prompt</label>
+<input id="negPrompt" value="blurry, deformed, bad anatomy, extra fingers, cartoon, anime, ugly, low quality">
+
+<div class="grid">
+<div>
+<label class="label">🤖 Model (auto-set by mode)</label>
+<select id="model">
+<option value="fluently-xl">Fluently XL - Realistic</option>
+<option value="flux-dev-uncensored">Flux Dev Uncensored - Best Quality</option>
+<option value="venice-sd35">Venice SD35 - Fast</option>
+<option value="lustify-sdxl">Lustify SDXL - Adult/Nude Specialist</option>
+<option value="hidream">HiDream - Artistic</option>
+</select>
+</div>
+<div>
+<label class="label">Size</label>
+<select id="size"><option value="768x1024" selected>Portrait 768x1024 (best for character)</option><option value="832x1216">Tall 832x1216 (nude best)</option><option value="1024x1024">Square 1024x1024</option><option value="1024x768">Landscape</option></select>
+</div>
+</div>
+
+<div class="chips" id="chipsSexy">
+<div class="chip" onclick="addPrompt('realistic photo, highly detailed, 8k, sharp focus, natural skin')">+ Realistic</div>
+<div class="chip" onclick="addPrompt('Indian bhabhi, beautiful face, long black hair, saree')">+ Bhabhi Saree</div>
+<div class="chip" onclick="addPrompt('wet clothes, rainy night, water droplets, dramatic light')">+ Wet/Rainy</div>
+<div class="chip" onclick="addPrompt('curvy, sexy, cleavage, soft light')">+ Sexy</div>
+<div class="chip" onclick="addPrompt('shy smile, nervous expression')">+ Shy</div>
+</div>
+
+<div class="chips hidden" id="chipsNude">
+<div class="chip" onclick="addPrompt('wearing nothing, artistic nude, natural body, soft light')">+ Wearing Nothing</div>
+<div class="chip" onclick="addPrompt('realistic, highly detailed skin, natural, 8k')">+ Realistic Skin</div>
+<div class="chip" onclick="addPrompt('standing in bedroom, shy pose, covering slightly')">+ Shy Pose</div>
+<div class="chip" onclick="addPrompt('side view, back view, sensual')">+ Side/Back</div>
+<div class="chip" onclick="addPrompt('lying on bed, intimate, warm light')">+ On Bed</div>
+</div>
+
+<div style="margin-top:10px">
+<label class="label">Quick Prompts - Click to Use</label>
+<div id="ideasSexy">
+<div class="prompt-idea" onclick="setPrompt(this)">Indian bhabhi in red wet saree, rainy night doorway, realistic photo, curvy, soft light, highly detailed face, long hair, sexy but elegant</div>
+<div class="prompt-idea" onclick="setPrompt(this)">Beautiful Indian girl Neha 24 in blue salwar, lift stuck with Ravi, nervous, realistic, detailed, college look</div>
+</div>
+<div id="ideasNude" class="hidden">
+<div class="prompt-idea" onclick="setPrompt(this)">Beautiful Indian woman 24, wearing nothing, artistic nude, standing in bedroom, soft warm light, realistic photo, highly detailed skin, natural body, shy expression, long black hair</div>
+<div class="prompt-idea" onclick="setPrompt(this)">Indian bhabhi, wearing nothing, sitting on bed, side view, realistic, artistic nude, curvy figure, soft light, intimate atmosphere, natural beauty, highly detailed</div>
+<div class="prompt-idea" onclick="setPrompt(this)">Sexy Indian woman, wearing nothing, lying on bed, back view, realistic photo, artistic nude, soft light, detailed skin, 8k</div>
+</div>
+</div>
+
+<div class="flex">
+<button class="btn btn-nude" id="genBtn" onclick="generateImage()">🎨 Generate</button>
+<button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+</div>
+<div id="status" class="small" style="margin-top:8px"></div>
+<div id="errorBox" class="error hidden"></div>
+<div id="successBox" class="success hidden"></div>
+</div>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<label class="label">🖼️ Result</label>
+<div class="flex"><button class="btn btn-ghost" style="padding:6px 12px;font-size:11px" onclick="downloadImage()">💾 Download</button><button class="btn btn-ghost" style="padding:6px 12px;font-size:11px" onclick="copyPrompt()">📋 Copy Prompt</button></div>
+</div>
+<div class="imgbox" id="imgBox"><span class="small">No image yet. Select Nude Mode if you want "wearing nothing".</span></div>
+<div id="imgInfo" class="small" style="margin-top:8px"></div>
+</div>
+
+</div>
+<script>
+let lastImageUrl=null; let currentMode='sexy';
+
+function initAll(){
+  const ak=document.getElementById('apiKey');
+  const sk=localStorage.getItem('venice_api_key');
+  if(ak && sk) ak.value=sk;
+  if(ak){ const s=()=>{ const v=ak.value.trim(); if(v.length>10) localStorage.setItem('venice_api_key',v); }; ak.addEventListener('input',s); ak.addEventListener('blur',s); }
+  setMode('sexy');
+}
+function setMode(mode){
+  currentMode=mode;
+  document.getElementById('btnSexy').classList.toggle('active', mode==='sexy');
+  document.getElementById('btnNude').classList.toggle('active', mode==='nude');
+  document.getElementById('chipsSexy').classList.toggle('hidden', mode!=='sexy');
+  document.getElementById('chipsNude').classList.toggle('hidden', mode!=='nude');
+  document.getElementById('ideasSexy').classList.toggle('hidden', mode!=='sexy');
+  document.getElementById('ideasNude').classList.toggle('hidden', mode!=='nude');
+  
+  const modelSel=document.getElementById('model');
+  const info=document.getElementById('modeInfo');
+  const promptBox=document.getElementById('prompt');
+  if(mode==='nude'){
+    modelSel.value='lustify-sdxl';
+    info.innerHTML='🔥 <b>Nude Mode ACTIVE:</b> Model auto-set to <b>Lustify SDXL</b> (adult specialist). Prompt can include "wearing nothing, artistic nude". This model allows nude, realistic. Venice still blocks explicit porn acts, but artistic nude works. If one model adds cloth, try Flux Dev Uncensored.';
+    if(!promptBox.value) promptBox.placeholder='Nude Mode: Example - Beautiful Indian woman 24, wearing nothing, artistic nude, standing in bedroom, soft light, realistic, highly detailed skin, natural body...';
+  } else {
+    modelSel.value='fluently-xl';
+    info.innerHTML='💃 <b>Sexy Mode:</b> Clothed sexy - saree, wet, cleavage, curvy. Best realistic faces. Model: Fluently XL. Always works, no block.';
+    if(!promptBox.value) promptBox.placeholder='Sexy Mode: Example - Indian bhabhi in wet red saree, rainy night, realistic, highly detailed...';
+  }
+}
+function addPrompt(txt){ const p=document.getElementById('prompt'); p.value = p.value ? p.value + ', ' + txt : txt; }
+function setPrompt(el){ document.getElementById('prompt').value=el.textContent; }
+function clearAll(){ document.getElementById('prompt').value=''; document.getElementById('imgBox').innerHTML='<span class="small">No image yet.</span>'; hideMsg(); }
+
+async function generateImage(){
+  const apiKey=document.getElementById('apiKey').value.trim();
+  const prompt=document.getElementById('prompt').value.trim();
+  const negPrompt=document.getElementById('negPrompt').value.trim();
+  const model=document.getElementById('model').value;
+  const size=document.getElementById('size').value;
+  if(!apiKey) return showError('Enter Venice API Key');
+  if(!prompt) return showError('Write prompt');
+  hideMsg(); document.getElementById('genBtn').disabled=true;
+  document.getElementById('status').textContent='Generating in '+currentMode+' mode with '+model+'... 20-40 sec...';
+  document.getElementById('imgBox').innerHTML='<span class="small">🎨 Generating in '+currentMode.toUpperCase()+' mode... 20-40 sec please wait...</span>';
+
+  try{
+    const [w,h]=size.split('x').map(n=>parseInt(n));
+    const res=await fetch('https://api.venice.ai/api/v1/image/generate',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model: model,
+        prompt: prompt,
+        negative_prompt: negPrompt,
+        width: w,
+        height: h,
+        steps: currentMode==='nude'?30:25,
+        cfg_scale: currentMode==='nude'?7.0:7.5,
+        safe_mode: false,
+        hide_watermark: false,
+        return_binary: false
+      })
+    });
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.error?.message || JSON.stringify(data).slice(0,500));
+
+    let imgSrc=null;
+    if(data.images && data.images.length>0){
+      const first=data.images[0];
+      if(first.startsWith('http')) imgSrc=first;
+      else if(first.startsWith('data:')) imgSrc=first;
+      else imgSrc='data:image/png;base64,'+first;
+    } else if(data.data && data.data.length>0){
+      imgSrc=data.data[0].url || 'data:image/png;base64,'+data.data[0].b64_json;
+    } else if(data.image_url){ imgSrc=data.image_url; }
+    else throw new Error('Unknown format: '+JSON.stringify(data).slice(0,400));
+
+    lastImageUrl=imgSrc;
+    document.getElementById('imgBox').innerHTML='<img src="'+imgSrc+'" id="genImg">';
+    document.getElementById('imgInfo').textContent='Mode: '+currentMode+' | Model: '+model+' | Size: '+w+'x'+h+' | Cost ~$0.03';
+    showSuccess(currentMode==='nude'?'Nude image generated! If it added cloth, try Flux Dev Uncensored model and generate again.':'Image generated! Download it.');
+  }catch(e){
+    showError('Failed: '+e.message+' | Tip: If model not found, try fluently-xl. Venice sometimes renames models. Also try shorter prompt.');
+    document.getElementById('imgBox').innerHTML='<span class="small">Failed: '+e.message.slice(0,200)+'</span>';
+  }finally{
+    document.getElementById('genBtn').disabled=false;
+    document.getElementById('status').textContent='';
+  }
+}
+
+function downloadImage(){
+  if(!lastImageUrl) return showError('No image');
+  const a=document.createElement('a'); a.href=lastImageUrl; a.download='venice-'+currentMode+'-'+Date.now()+'.png'; a.click();
+}
+function copyPrompt(){ const p=document.getElementById('prompt').value; if(!p) return showError('No prompt'); navigator.clipboard.writeText(p); showSuccess('Prompt copied'); }
+function showError(m){ document.getElementById('errorBox').textContent=m; document.getElementById('errorBox').classList.remove('hidden'); document.getElementById('successBox').classList.add('hidden'); }
+function showSuccess(m){ document.getElementById('successBox').textContent=m; document.getElementById('successBox').classList.remove('hidden'); document.getElementById('errorBox').classList.add('hidden'); }
+function hideMsg(){ document.getElementById('errorBox').classList.add('hidden'); document.getElementById('successBox').classList.add('hidden'); }
+
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initAll); else initAll();
+</script>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+</html>
