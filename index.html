@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><style>
+<html><head><style>
 @font-face {
   font-family: "Optimistic";
   font-style: normal;
@@ -21,98 +21,171 @@
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
 </style><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Venice Ultra V3</title>
+<title>Venice V5 Fixed</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:Inter,system-ui;background:#0a0a0e;color:#eee;min-height:100vh}
-.header{background:#12121a;border-bottom:1px solid #222;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.logo{font-weight:900;color:#ff3b5c;font-size:18px}
-.tabs{display:flex;gap:6px;background:#12121a;padding:8px;border-bottom:1px solid #222;position:sticky;top:48px;z-index:9;overflow-x:auto}
-.tab{padding:9px 16px;border-radius:20px;border:1px solid #333;background:#1a1a22;color:#888;cursor:pointer;font-size:11px;white-space:nowrap;font-weight:700}
-.tab.active{background:#ff3b5c;border-color:#ff3b5c;color:#fff}
-.container{max-width:1000px;margin:0 auto;padding:12px}
-.card{background:#15151d;border:1px solid #23232e;border-radius:12px;padding:12px;margin-bottom:12px}
-.label{color:#ff3b5c;font-weight:700;font-size:10px;text-transform:uppercase;margin:10px 0 5px;display:block}
-input,select,textarea{width:100%;background:#1e1e2a;border:1px solid #333;color:#fff;padding:11px;border-radius:8px;font-size:13px;margin-bottom:6px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:700px){.grid{grid-template-columns:1fr}}
-.btn{padding:11px 16px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px}
-.btn-primary{background:#ff3b5c;color:#fff;flex:1}.btn-ghost{background:#2a2a3a;color:#fff}.btn-green{background:#1a8a4a;color:#fff}
-.btn-ultra{background:linear-gradient(135deg,#ff3b5c,#ff8a00);color:#fff;flex:1}
-.btn-hf{background:linear-gradient(135deg,#ffcc00,#ff8a00);color:#000;flex:1;font-weight:900}
-.imgbox{background:#0e0e14;border:1px solid #222;border-radius:12px;min-height:380px;display:flex;align-items:center;justify-content:center;padding:12px;flex-direction:column}
-.imgbox img{max-width:100%;max-height:600px;border-radius:10px}
-.small{color:#777;font-size:10px;line-height:1.5}
-.flex{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;align-items:center}
-.hidden{display:none !important}
-.view{display:none}.view.active{display:block}
-.char-list{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
-.char-card{background:#1e1e2a;border:1px solid #333;border-radius:12px;padding:10px 12px;min-width:130px;cursor:pointer}
-.char-card.active{border-color:#ff3b5c;background:#2a1a22}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:10px}
-.gallery .gitem{position:relative;border-radius:8px;overflow:hidden;border:1px solid #333}
-.gallery img{width:100%;height:110px;object-fit:cover}
-.gallery .gdel{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.75);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer}
-.preset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;margin-top:6px}
-.preset{padding:8px 10px;background:#1e1e2a;border:1px solid #2a2a3a;border-radius:8px;font-size:11px;cursor:pointer;text-align:center}
-.face-box{border:2px dashed #333;border-radius:12px;padding:20px;text-align:center;cursor:pointer}
-.face-box img{max-width:100%;max-height:200px;border-radius:8px;margin-top:8px}
-</style></head>
-<body>
-<div class="header"><div class="logo">🔥 VENICE ULTRA V3 + HF</div><div class="small">Image Only</div></div>
+body{margin:0;background:#0a0a0e;color:#eee;font-family:system-ui}
+.header{background:#12121a;padding:12px;border-bottom:1px solid #333}
+.tabs{display:flex;gap:8px;padding:10px;background:#0a0a0e;border-bottom:1px solid #333;overflow-x:auto}
+.tab{padding:10px 16px;border-radius:20px;border:1px solid #444;background:#1e1e2a;color:#aaa;cursor:pointer;white-space:nowrap}
+.tab.active{background:#ff3b5c;color:#fff;border-color:#ff3b5c}
+.view{display:none;padding:12px}.view.active{display:block}
+.card{background:#15151d;border:1px solid #333;border-radius:12px;padding:12px;margin-bottom:12px}
+.btn{padding:10px 14px;border:none;border-radius:8px;font-weight:700;cursor:pointer}
+.btn-primary{background:#ff3b5c;color:#fff}
+.btn-ghost{background:#2a2a3a;color:#fff}
+input,select,textarea{width:100%;padding:10px;background:#1e1e2a;border:1px solid #333;color:#fff;border-radius:8px;margin:6px 0}
+.preset{padding:8px;background:#1e1e2a;border:1px solid #333;border-radius:8px;cursor:pointer;display:inline-block;margin:4px}
+.imgbox{background:#111;border:1px solid #333;border-radius:12px;min-height:200px;display:flex;align-items:center;justify-content:center;padding:10px}
+.face-box{border:2px dashed #555;border-radius:12px;padding:20px;text-align:center;cursor:pointer}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px}
+.gallery img{width:100%;height:100px;object-fit:cover;border-radius:8px}
+.small{color:#888;font-size:11px}
+</style>
+</head><body>
+<div class="header"><b style="color:#ff3b5c">🔥 VENICE V5 FIXED - TAP TABS BELOW</b><div class="small">If tabs not working, scroll up</div></div>
 <div class="tabs">
-<div class="tab active" onclick="switchTab('char')">🎭 Studio</div>
-<div class="tab" onclick="switchTab('prompt')">💋 Prompt Lab</div>
-<div class="tab" onclick="switchTab('faceswap')">🔄 Face Swap + HF</div>
-<div class="tab" onclick="switchTab('settings')">⚙️ Settings</div>
+<div class="tab active" onclick="showTab('studio')">🎭 Studio</div>
+<div class="tab" onclick="showTab('prompt')">💋 Prompt Lab</div>
+<div class="tab" onclick="showTab('faceswap')">🔄 Face Swap</div>
+<div class="tab" onclick="showTab('settings')">⚙️ Settings</div>
 </div>
-<div class="container">
-<div id="view-settings" class="view"><div class="card"><label class="label">🔑 Venice Key</label><input type="password" id="apiKey"><div class="flex"><button class="btn btn-ghost" onclick="testKey()">Test</button><button class="btn btn-ghost" style="background:#331a1a" onclick="clearAllData()">Clear</button></div><div id="keyTest" class="small"></div></div><div class="card"><div class="small" id="dataStats"></div><div class="small" style="margin-top:10px">HF = 2M+ models, free Spaces like alfredang/faceswap - lightweight face swap web app powered by TinyFace and Gradio. Venice has NO face swap.</div></div></div>
-<div id="view-char" class="view active">
-<div class="card"><div style="display:flex;justify-content:space-between"><label class="label" style="margin:0">🎭 Characters</label><div class="flex"><button class="btn btn-primary" style="padding:6px 12px;font-size:11px" onclick="createNewChar()">+ New</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="selectNoLock()">🔓 No Lock</button></div></div><div class="char-list" id="charList"></div><div id="charEditor" class="hidden" style="background:#1a1a2a;border:1px solid #333;border-radius:10px;padding:10px;margin-top:10px"><div class="grid"><div><label class="label">Name</label><input id="charName"></div><div><label class="label">Seed</label><div style="display:flex;gap:6px"><input id="charSeed"><button class="btn btn-ghost" onclick="randomSeed()">🎲</button></div></div></div><label class="label">Face</label><input id="charFace"><label class="label">Body</label><input id="charBody"><div class="flex"><button class="btn btn-primary" onclick="saveChar()">Save</button><button class="btn btn-ghost" onclick="cancelEdit()">Cancel</button></div></div><div class="small" id="selectedInfo">🔓 No Lock</div></div>
-<div class="card"><label class="label">🎨 Studio</label><div class="grid"><div><label class="label">Model</label><select id="imgModel"><option value="lustify-sdxl" selected>Lustify SDXL - BEST Nude</option><option value="flux-dev-uncensored">Flux Uncensored</option><option value="fluently-xl">Fluently XL</option></select></div><div><label class="label">Size</label><select id="imgSize"><option value="768x1024" selected>Portrait</option><option value="832x1216">Tall</option><option value="1024x768">Landscape</option></select></div></div><div class="grid"><div><label class="label">Mode</label><div style="display:flex;background:#1e1e2a;border:1px solid #333;border-radius:20px;padding:3px;width:fit-content"><button id="btnSexy" style="padding:7px 16px;border-radius:20px;border:none;background:#ff3b5c;color:#fff;font-weight:700;font-size:11px" onclick="setImgMode('sexy')">Sexy</button><button id="btnNude" style="padding:7px 16px;border-radius:20px;border:none;background:transparent;color:#777;font-weight:700;font-size:11px" onclick="setImgMode('nude')">Nude</button></div></div><div><label class="label">Batch</label><select id="batchCount"><option value="1" selected>1</option><option value="2">2</option><option value="4">4</option></select></div></div><label class="label">Pose</label><div class="preset-grid"><div class="preset" onclick="addPreset('standing in doorway, leaning')">🚪 Doorway</div><div class="preset" onclick="addPreset('sitting on bed')">🛏️ Bed</div><div class="preset" onclick="addPreset('lying on bed')">😴 Lying</div><div class="preset" onclick="addPreset('shower, wet hair')">🚿 Shower</div><div class="preset" onclick="addPreset('mirror selfie')">🪞 Mirror</div></div><label class="label">Outfit</label><div class="preset-grid"><div class="preset" onclick="addPreset('red saree pallu falling')">🥻 Saree</div><div class="preset" onclick="addPreset('black bikini')">👙 Bikini</div><div class="preset" onclick="addPreset('lace lingerie')">🖤 Lingerie</div><div class="preset" onclick="addPreset('completely nude')">🔥 Nude</div></div><label class="label">Prompt</label><textarea id="imgPrompt"></textarea><div class="small" id="finalPromptPreview"></div><div class="flex" style="margin-top:10px"><button class="btn btn-ultra" id="imgGenBtn" onclick="generateImage()">🔥 Generate</button><button class="btn btn-ghost" onclick="clearPrompt()">Clear</button><button class="btn btn-ghost" onclick="enhancePrompt()">✨ Enhance</button></div><div id="imgStatus" class="small"></div><div id="imgError" class="small" style="color:#ff6b7a"></div><div id="imgSuccess" class="small" style="color:#5cffb0"></div></div>
-<div class="card"><div style="display:flex;justify-content:space-between"><label class="label" style="margin:0">Result</label><div class="flex"><button class="btn btn-green" style="padding:6px 12px;font-size:11px" onclick="downloadImage()">Save</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px;background:#331a1a" onclick="clearGallery()">Clear</button><button class="btn btn-hf" style="padding:6px 12px;font-size:11px" onclick="sendToFaceSwap()">Send to Face Swap</button></div></div><div class="imgbox" id="imgBox"><span class="small">No image yet</span></div><div class="flex" style="justify-content:space-between;margin-top:10px"><span class="small" id="galleryCount">0</span></div><div class="gallery" id="gallery"></div></div>
+
+<div id="view-studio" class="view active">
+<div class="card"><b>Studio</b><br><span class="small">Characters - Seed Lock</span>
+<div style="margin-top:8px"><input id="charName" placeholder="Name like Neha"><input id="charSeed" placeholder="Seed e.g. 12345"><button class="btn btn-primary" onclick="saveCharSimple()">Save Char</button></div>
+<div id="charList" class="small"></div>
 </div>
-<div id="view-prompt" class="view"><div class="card"><label class="label">Prompt Lab</label><div class="grid"><div><label class="label">Character</label><input id="labChar"></div><div><label class="label">Style</label><select id="labStyle"><option value="sexy saree">Saree</option><option value="nude artistic">Nude</option><option value="bikini">Bikini</option><option value="custom">Custom</option></select></div></div><textarea id="labCustom"></textarea><button class="btn btn-ultra" onclick="generateUncensoredPrompts()">Generate 3 Prompts</button><div id="labStatus" class="small"></div><div id="labResults"></div></div></div>
-<div id="view-faceswap" class="view"><div class="card" style="border-color:#ffcc0044;background:rgba(255,204,0,.08)"><label class="label">Face Swap + HF Perfect</label><div class="small">Venice has NO face swap. HF has free Spaces like alfredang/faceswap. Use basic or open HF for perfect AI.</div><div class="grid" style="margin-top:12px"><div><div class="face-box" onclick="document.getElementById('sourceFace').click()"><div>Source Face</div><img id="sourcePreview" class="hidden"><input type="file" id="sourceFace" accept="image/*" class="hidden" onchange="previewFace(this,'sourcePreview')"></div></div><div><div class="face-box" onclick="document.getElementById('targetImage').click()"><div>Target Body</div><img id="targetPreview" class="hidden"><input type="file" id="targetImage" accept="image/*" class="hidden" onchange="previewFace(this,'targetPreview')"></div></div></div><div class="flex" style="margin-top:12px"><button class="btn btn-ultra" onclick="useLastGeneratedAsTarget()">Use Last Generated</button><button class="btn btn-primary" onclick="doFaceSwap()">Quick Swap</button></div><div class="card" style="margin-top:12px;border-color:#ffcc00"><label class="label" style="color:#ffcc00">HF Perfect Swap - FREE Real AI</label><div class="flex" style="margin-top:10px"><button class="btn btn-hf" onclick="openHF('https://huggingface.co/spaces/alfredang/faceswap')">Open alfredang/faceswap</button><button class="btn btn-hf" onclick="openHF('https://huggingface.co/spaces/felixrosberg/face-swap')">Open felixrosberg/face-swap</button></div></div><div id="faceSwapStatus" class="small"></div><div class="card" style="margin-top:10px"><label class="label">Result</label><div class="imgbox" id="faceSwapBox"><span class="small">Basic result here</span></div><div class="flex" style="margin-top:8px"><button class="btn btn-green" style="padding:6px 12px;font-size:11px" onclick="downloadFaceSwap()">Save Swapped</button></div></div></div></div>
+<div class="card"><b>Generate</b><br>
+<input id="apiKey" type="password" placeholder="Venice API Key - paste here">
+<select id="imgModel"><option value="lustify-sdxl">Lustify SDXL - BEST Nude</option><option value="flux-dev-uncensored">Flux Uncensored</option></select>
+<div><span class="preset" onclick="addP('red saree pallu falling')">Saree</span><span class="preset" onclick="addP('black bikini')">Bikini</span><span class="preset" onclick="addP('completely nude')">Nude</span><span class="preset" onclick="addP('standing in doorway')">Doorway</span><span class="preset" onclick="addP('sitting on bed')">Bed</span></div>
+<textarea id="imgPrompt" placeholder="Prompt..."></textarea>
+<button class="btn btn-primary" id="genBtn" onclick="genImg()">🔥 Generate</button><button class="btn btn-ghost" onclick="clearP()">Clear</button>
+<div id="imgStatus" class="small"></div>
+<div class="imgbox" id="imgBox"><span class="small">Result here</span></div>
+<button class="btn btn-ghost" onclick="downloadImg()">💾 Save</button><button class="btn btn-ghost" onclick="sendToSwap()">Send to Face Swap</button>
+<div class="gallery" id="gallery"></div>
 </div>
+</div>
+
+<div id="view-prompt" class="view">
+<div class="card"><b>Prompt Lab</b><br><span class="small">Venice Dolphin uncensored</span><br><br>
+<input id="labChar" placeholder="Neha 24"><input id="labStyle" placeholder="sexy saree">
+<button class="btn btn-primary" onclick="genPrompts()">Generate 3 Prompts</button>
+<div id="labStatus" class="small"></div><div id="labResults"></div>
+</div>
+</div>
+
+<div id="view-faceswap" class="view">
+<div class="card"><b>Face Swap + HF</b><br><span class="small">Venice has NO face swap. HF free Spaces do.</span>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+<div><div class="face-box" onclick="document.getElementById('sourceFace').click()">📸 Source Face<br><span class="small">Tap to upload</span><br><img id="sourcePreview" style="max-width:100%;max-height:150px;display:none"><input type="file" id="sourceFace" accept="image/*" style="display:none" onchange="preview(this,'sourcePreview')"></div></div>
+<div><div class="face-box" onclick="document.getElementById('targetImage').click()">🖼️ Target Body<br><span class="small">Tap or Use Last</span><br><img id="targetPreview" style="max-width:100%;max-height:150px;display:none"><input type="file" id="targetImage" accept="image/*" style="display:none" onchange="preview(this,'targetPreview')"></div></div>
+</div>
+<br><button class="btn btn-primary" onclick="useLast()">Use Last Generated</button><button class="btn btn-primary" onclick="doSwap()">Quick Swap</button>
+<br><br><b style="color:#ffcc00">HF Perfect - FREE Real AI</b><br>
+<button class="btn btn-ghost" style="background:#ffcc00;color:#000" onclick="window.open('https://huggingface.co/spaces/alfredang/faceswap','_blank')">Open alfredang/faceswap</button>
+<button class="btn btn-ghost" style="background:#ffcc00;color:#000" onclick="window.open('https://huggingface.co/spaces/felixrosberg/face-swap','_blank')">Open felixrosberg</button>
+<div id="faceSwapStatus" class="small"></div>
+<div class="imgbox" id="faceSwapBox"><span class="small">Basic swap result</span></div>
+<button class="btn btn-ghost" onclick="downloadSwap()">Save Swapped</button>
+</div>
+</div>
+
+<div id="view-settings" class="view">
+<div class="card"><b>Settings</b><br><input id="apiKey2" type="password" placeholder="Venice key (syncs)"><br><button class="btn btn-ghost" onclick="testKey()">Test</button><button class="btn btn-ghost" style="background:#331a1a" onclick="localStorage.clear();location.reload()">Clear All Data</button><div id="keyTest" class="small"></div><div class="small" id="dataStats"></div></div>
+</div>
+
 <script>
-let chars=[], selectedChar=null, imgMode='sexy', lastImageUrl=null, galleryItems=[], editingIndex=-1, lastFaceSwapUrl=null;
-function switchTab(t){ document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active')); const map={char:0,prompt:1,faceswap:2,settings:3}; document.querySelectorAll('.tab')[map[t]].classList.add('active'); document.querySelectorAll('.view').forEach(v=>v.classList.remove('active')); document.getElementById('view-'+t).classList.add('active'); if(t==='settings') updateStats(); }
-function initAll(){ const ak=document.getElementById('apiKey'); const sk=localStorage.getItem('venice_api_key'); if(ak&&sk) ak.value=sk; if(ak){ const s=()=>{ const v=ak.value.trim(); if(v.length>10) localStorage.setItem('venice_api_key',v); }; ak.addEventListener('input',s); } loadChars(); loadGallery(); setImgMode('sexy'); selectNoLock(); const ip=document.getElementById('imgPrompt'); if(ip) ip.addEventListener('input', updatePreview); }
-function testKey(){ const k=document.getElementById('apiKey').value.trim(); document.getElementById('keyTest').textContent=k?'Saved '+k.length:'Enter key'; }
-function loadChars(){ try{ const s=localStorage.getItem('venice_chars_ultra'); if(s) chars=JSON.parse(s); }catch(e){} renderCharList(); }
-function saveChars(){ localStorage.setItem('venice_chars_ultra', JSON.stringify(chars)); }
-function renderCharList(){ const list=document.getElementById('charList'); list.innerHTML=''; if(chars.length===0) list.innerHTML='<span class="small">No chars</span>'; chars.forEach((c,i)=>{ const d=document.createElement('div'); d.className='char-card'+(selectedChar&&selectedChar.seed===c.seed?' active':''); d.innerHTML=`<div class="name">${c.name} <span><span onclick="event.stopPropagation(); editChar(${i})">✏️</span><span onclick="event.stopPropagation(); deleteChar(${i})">🗑️</span></span></div><div style="font-size:9px;color:#888">Seed ${c.seed}</div>`; d.onclick=()=>selectChar(i); list.appendChild(d); }); }
-function createNewChar(){ editingIndex=-1; document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=''; document.getElementById('charFace').value='Beautiful Indian woman, 24'; document.getElementById('charBody').value='curvy'; randomSeed(); }
-function editChar(i){ editingIndex=i; const c=chars[i]; document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=c.name; document.getElementById('charSeed').value=c.seed; document.getElementById('charFace').value=c.face; document.getElementById('charBody').value=c.body||''; }
-function deleteChar(i){ if(!confirm('Delete?')) return; if(selectedChar&&selectedChar.seed===chars[i].seed) selectNoLock(); chars.splice(i,1); saveChars(); renderCharList(); }
-function randomSeed(){ document.getElementById('charSeed').value=Math.floor(Math.random()*900000)+10000; }
-function cancelEdit(){ document.getElementById('charEditor').classList.add('hidden'); editingIndex=-1; }
-function saveChar(){ const name=document.getElementById('charName').value.trim()||'Char '+(chars.length+1); const seed=parseInt(document.getElementById('charSeed').value)||Math.floor(Math.random()*900000); const face=document.getElementById('charFace').value.trim()||'Beautiful Indian'; const body=document.getElementById('charBody').value.trim(); const obj={name,seed,face,body}; if(editingIndex>=0) chars[editingIndex]=obj; else { const idx=chars.findIndex(c=>c.name.toLowerCase()===name.toLowerCase()); if(idx>=0) chars[idx]=obj; else chars.push(obj); } saveChars(); renderCharList(); cancelEdit(); selectChar(chars.findIndex(c=>c.seed===seed)); }
-function selectChar(i){ selectedChar=chars[i]; document.querySelectorAll('.char-card').forEach((el,j)=>el.classList.toggle('active', j===i)); document.getElementById('selectedInfo').innerHTML=`Locked: <b>${selectedChar.name}</b> Seed ${selectedChar.seed}`; updatePreview(); }
-function selectNoLock(){ selectedChar=null; document.querySelectorAll('.char-card').forEach(el=>el.classList.remove('active')); document.getElementById('selectedInfo').textContent='No Lock'; updatePreview(); }
-function setImgMode(m){ imgMode=m; document.getElementById('btnSexy').style.background=m==='sexy'?'#ff3b5c':'transparent'; document.getElementById('btnSexy').style.color=m==='sexy'?'#fff':'#777'; document.getElementById('btnNude').style.background=m==='nude'?'#ff3b5c':'transparent'; document.getElementById('btnNude').style.color=m==='nude'?'#fff':'#777'; document.getElementById('imgModel').value=m==='nude'?'lustify-sdxl':'fluently-xl'; updatePreview(); }
-function addPreset(t){ const p=document.getElementById('imgPrompt'); p.value=p.value.trim() ? p.value.trim()+', '+t : t; updatePreview(); }
-function clearPrompt(){ document.getElementById('imgPrompt').value=''; updatePreview(); }
-function updatePreview(){ let pr=document.getElementById('imgPrompt').value.trim(); let f=pr; if(selectedChar) f=`${selectedChar.face}, ${selectedChar.body}, ${pr}`; f+=', 8k, highly detailed'; document.getElementById('finalPromptPreview').textContent=f.slice(0,300); }
-async function generateImage(){ const key=document.getElementById('apiKey').value.trim(); let prompt=document.getElementById('imgPrompt').value.trim(); const model=document.getElementById('imgModel').value; const size=document.getElementById('imgSize').value; const batch=parseInt(document.getElementById('batchCount').value)||1; if(!key) return document.getElementById('imgError').textContent='Enter Venice key'; if(!prompt) return document.getElementById('imgError').textContent='Enter prompt'; let finalPrompt=prompt; let seedToUse=null; if(selectedChar){ finalPrompt=`${selectedChar.face}, ${selectedChar.body}, ${prompt}, realistic photo`; seedToUse=selectedChar.seed; } if(imgMode==='nude') finalPrompt+=', nude, naked'; document.getElementById('imgGenBtn').disabled=true; document.getElementById('imgStatus').textContent=`Generating ${batch}...`; document.getElementById('imgBox').innerHTML='<span class="small">Generating...</span>'; try{ const [w,h]=size.split('x').map(n=>parseInt(n)); const promises=[]; for(let b=0;b<batch;b++){ const body={model,prompt:finalPrompt,width:w,height:h,steps:32,cfg_scale:7.5,safe_mode:false}; if(seedToUse) body.seed=seedToUse+b; promises.push(fetch('https://api.venice.ai/api/v1/image/generate',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json().then(d=>({ok:r.ok,data:d})))); } const results=await Promise.all(promises); let html=''; let count=0; for(let res of results){ if(!res.ok) throw new Error(res.data.error?.message||''); const d=res.data; let src=null; if(d.images&&d.images[0]){ const f=d.images[0]; src=f.startsWith('http')?f:f.startsWith('data:')?f:'data:image/png;base64,'+f; } else if(d.data&&d.data[0]) src=d.data[0].url||'data:image/png;base64,'+d.data[0].b64_json; if(src){ if(count===0){ lastImageUrl=src; html+=`<img src="${src}" style="margin-bottom:8px">`; } else html+=`<img src="${src}" style="max-width:48%;margin:4px;border-radius:8px">`; addToGallery(src, selectedChar?selectedChar.name:'Random'); count++; } } document.getElementById('imgBox').innerHTML=html; document.getElementById('imgSuccess').textContent=`Done ${count}`; }catch(e){ document.getElementById('imgError').textContent=e.message; } finally{ document.getElementById('imgGenBtn').disabled=false; document.getElementById('imgStatus').textContent=''; } }
-function addToGallery(url,name){ galleryItems.unshift({url,name,time:Date.now()}); if(galleryItems.length>100) galleryItems.pop(); renderGallery(); try{ localStorage.setItem('ultra_gallery', JSON.stringify(galleryItems.map(g=>({...g,url:g.url.length>8000?'':g.url})))); }catch(e){} }
-function loadGallery(){ try{ const s=localStorage.getItem('ultra_gallery'); if(s) galleryItems=JSON.parse(s); }catch(e){} renderGallery(); }
-function renderGallery(){ const g=document.getElementById('gallery'); g.innerHTML=''; galleryItems.forEach((it,idx)=>{ if(!it.url) return; const wrap=document.createElement('div'); wrap.className='gitem'; const img=document.createElement('img'); img.src=it.url; img.onclick=()=>{ lastImageUrl=it.url; document.getElementById('imgBox').innerHTML=`<img src="${it.url}">`; }; const del=document.createElement('span'); del.className='gdel'; del.textContent='✕'; del.onclick=(e)=>{ e.stopPropagation(); galleryItems.splice(idx,1); saveGallery(); renderGallery(); }; wrap.appendChild(img); wrap.appendChild(del); g.appendChild(wrap); }); document.getElementById('galleryCount').textContent=galleryItems.length+' images'; }
-function saveGallery(){ try{ localStorage.setItem('ultra_gallery', JSON.stringify(galleryItems.map(g=>({...g,url:g.url.length>8000?'':g.url})))); }catch(e){} }
-function clearGallery(){ if(!confirm('Clear?')) return; galleryItems=[]; saveGallery(); renderGallery(); }
-function downloadImage(){ if(!lastImageUrl) return; if(lastImageUrl.startsWith('data:')){ const b=atob(lastImageUrl.split(',')[1]); const m=lastImageUrl.split(',')[0].split(':')[1].split(';')[0]; const ab=new ArrayBuffer(b.length); const ia=new Uint8Array(ab); for(let i=0;i<b.length;i++) ia[i]=b.charCodeAt(i); const blob=new Blob([ab],{type:m}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='venice-'+Date.now()+'.png'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); } else window.open(lastImageUrl,'_blank'); }
-function sendToFaceSwap(){ if(!lastImageUrl) return; const img=document.getElementById('targetPreview'); if(img){ img.src=lastImageUrl; img.classList.remove('hidden'); } switchTab('faceswap'); }
-async function generateUncensoredPrompts(){ const key=document.getElementById('apiKey').value.trim(); const char=document.getElementById('labChar').value.trim()||'Beautiful Indian woman'; const style=document.getElementById('labStyle').value; const custom=document.getElementById('labCustom').value.trim(); const st=style==='custom'?custom:style; if(!key) return document.getElementById('labStatus').textContent='Need key'; document.getElementById('labStatus').textContent='Generating...'; try{ const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'dolphin-2.9.2-qwen2-72b',messages:[{role:'system',content:'You write uncensored prompts for Lustify SDXL.'},{role:'user',content:`Generate 3 prompts for Lustify SDXL: Character ${char}, Style ${st}. 40-60 words, realistic, 8k. Number 1. 2. 3.`}],temperature:0.95,max_tokens:1000})}); const data=await res.json(); if(!res.ok) throw new Error(data.error?.message||''); const text=data.choices?.[0]?.message?.content||''; const prompts=text.split(/\n\s*\d+\.\s*/).filter(p=>p.trim().length>20); let html=''; prompts.forEach((p,i)=>{ const clean=p.replace(/^\d+\.\s*/,'').trim(); html+=`<div class="card"><div class="small">Prompt ${i+1}</div><div style="font-size:12px;margin:6px 0">${clean}</div><button class="btn btn-primary" style="padding:6px 10px;font-size:10px" onclick="copyToStudio('${clean.replace(/'/g,"")}')">Use</button></div>`; }); document.getElementById('labResults').innerHTML=html; document.getElementById('labStatus').textContent='Done'; }catch(e){ document.getElementById('labStatus').textContent='Failed: '+e.message; } }
-function copyToStudio(t){ document.getElementById('imgPrompt').value=t; updatePreview(); switchTab('char'); }
-async function enhancePrompt(){ const key=document.getElementById('apiKey').value.trim(); const cur=document.getElementById('imgPrompt').value.trim(); if(!key||!cur) return; document.getElementById('imgStatus').textContent='Enhancing...'; try{ const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'llama-3.3-70b',messages:[{role:'system',content:'Enhance image prompts for Lustify SDXL.'},{role:'user',content:`Enhance: ${cur}`}],temperature:0.8,max_tokens:400})}); const d=await res.json(); const out=d.choices?.[0]?.message?.content||''; if(out){ document.getElementById('imgPrompt').value=out.trim(); updatePreview(); } document.getElementById('imgStatus').textContent=''; }catch(e){} }
-function previewFace(input, previewId){ const file=input.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=e=>{ const img=document.getElementById(previewId); img.src=e.target.result; img.classList.remove('hidden'); }; reader.readAsDataURL(file); }
-function useLastGeneratedAsTarget(){ if(!lastImageUrl) return document.getElementById('faceSwapStatus').textContent='No generated image yet'; const img=document.getElementById('targetPreview'); img.src=lastImageUrl; img.classList.remove('hidden'); document.getElementById('faceSwapStatus').textContent='Using last generated'; }
-let lastFaceSwapUrl=null;
-async function doFaceSwap(){ const srcImg=document.getElementById('sourcePreview'); const tgtImg=document.getElementById('targetPreview'); if(!srcImg.src || srcImg.classList.contains('hidden')) return document.getElementById('faceSwapStatus').textContent='Upload source face'; if(!tgtImg.src || tgtImg.classList.contains('hidden')) return document.getElementById('faceSwapStatus').textContent='Upload target'; document.getElementById('faceSwapStatus').textContent='Swapping...'; try{ const canvas=document.createElement('canvas'); const ctx=canvas.getContext('2d'); const target=new Image(); const source=new Image(); await new Promise((res,rej)=>{ target.onload=res; target.onerror=rej; target.src=tgtImg.src; }); await new Promise((res,rej)=>{ source.onload=res; source.onerror=rej; source.src=srcImg.src; }); canvas.width=target.width; canvas.height=target.height; ctx.drawImage(target,0,0); const faceW=canvas.width*0.35, faceH=canvas.height*0.45, faceX=(canvas.width-faceW)/2, faceY=canvas.height*0.08; ctx.globalAlpha=0.95; ctx.save(); ctx.beginPath(); ctx.ellipse(faceX+faceW/2, faceY+faceH/2, faceW/2, faceH/2, 0,0,Math.PI*2); ctx.clip(); ctx.drawImage(source, faceX, faceY, faceW, faceH); ctx.restore(); const dataUrl=canvas.toDataURL('image/png'); lastFaceSwapUrl=dataUrl; document.getElementById('faceSwapBox').innerHTML=`<img src="${dataUrl}" style="max-width:100%;max-height:600px;border-radius:10px">`; document.getElementById('faceSwapStatus').textContent='Done!'; }catch(e){ document.getElementById('faceSwapStatus').textContent='Failed: '+e.message; } }
-function downloadFaceSwap(){ if(!lastFaceSwapUrl) return; const a=document.createElement('a'); a.href=lastFaceSwapUrl; a.download='face-swap-'+Date.now()+'.png'; a.click(); }
-function openHF(url){ if(lastImageUrl && lastImageUrl.startsWith('data:')){ downloadImage(); alert('Image downloaded! Now upload it in HF Space.'); } window.open(url, '_blank'); }
-function updateStats(){ document.getElementById('dataStats').innerHTML=`Characters: ${chars.length}<br>Gallery: ${galleryItems.length}<br>Key: ${localStorage.getItem('venice_api_key')?'Saved':'Not saved'}`; }
-function clearAllData(){ if(!confirm('Clear all?')) return; localStorage.clear(); location.reload(); }
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initAll); else initAll();
+function showTab(t){
+  console.log('showTab',t);
+  document.querySelectorAll('.tab').forEach(el=>{ el.classList.remove('active'); if(el.textContent.toLowerCase().includes(t) || (t==='studio'&&el.textContent.includes('Studio')) || (t==='prompt'&&el.textContent.includes('Prompt')) || (t==='faceswap'&&el.textContent.includes('Face')) || (t==='settings'&&el.textContent.includes('Settings'))) el.classList.add('active'); });
+  // more robust
+  document.querySelectorAll('.tab').forEach((el,i)=>{
+    const map=['studio','prompt','faceswap','settings'];
+    el.classList.toggle('active', map[i]===t);
+  });
+  document.querySelectorAll('.view').forEach(v=>{ v.classList.remove('active'); });
+  const target=document.getElementById('view-'+t);
+  if(target) target.classList.add('active');
+  window.scrollTo(0,0);
+}
+let chars=[], selectedSeed=null, lastImageUrl=null, lastSwapUrl=null, gallery=[];
+
+function init(){
+  const k=localStorage.getItem('venice_api_key');
+  if(k){ document.getElementById('apiKey').value=k; document.getElementById('apiKey2').value=k; }
+  document.getElementById('apiKey').addEventListener('input', e=>{ localStorage.setItem('venice_api_key', e.target.value.trim()); document.getElementById('apiKey2').value=e.target.value; });
+  document.getElementById('apiKey2').addEventListener('input', e=>{ localStorage.setItem('venice_api_key', e.target.value.trim()); document.getElementById('apiKey').value=e.target.value; });
+  loadChars();
+}
+function testKey(){ const k=document.getElementById('apiKey').value.trim()||document.getElementById('apiKey2').value.trim(); document.getElementById('keyTest').textContent=k?'Key length '+k.length+' saved':'Enter key'; document.getElementById('dataStats').textContent='Chars: '+chars.length+' Gallery: '+gallery.length; }
+function saveCharSimple(){ const name=document.getElementById('charName').value.trim()||'Char'; const seed=document.getElementById('charSeed').value.trim()||Math.floor(Math.random()*900000); chars.push({name,seed}); localStorage.setItem('venice_chars_ultra', JSON.stringify(chars)); loadChars(); }
+function loadChars(){ try{ const s=localStorage.getItem('venice_chars_ultra'); if(s) chars=JSON.parse(s); }catch(e){} const list=document.getElementById('charList'); list.innerHTML=chars.map((c,i)=>`<span style="background:#1e1e2a;border:1px solid #333;padding:4px 8px;border-radius:12px;margin:2px;display:inline-block" onclick="selectSeed('${c.seed}')">${c.name} ${c.seed}</span>`).join(''); }
+function selectSeed(s){ selectedSeed=s; document.getElementById('charList').innerHTML+='<br><b>Selected seed '+s+'</b>'; }
+function addP(t){ const el=document.getElementById('imgPrompt'); el.value=el.value?el.value+', '+t:t; }
+function clearP(){ document.getElementById('imgPrompt').value=''; }
+
+async function genImg(){
+  const key=(document.getElementById('apiKey').value.trim()||document.getElementById('apiKey2').value.trim());
+  const prompt=document.getElementById('imgPrompt').value.trim();
+  const model=document.getElementById('imgModel').value;
+  if(!key){ alert('Paste Venice key first - in Settings tab'); showTab('settings'); return; }
+  if(!prompt){ alert('Enter prompt or tap Saree/Bikini presets'); return; }
+  document.getElementById('genBtn').disabled=true;
+  document.getElementById('imgStatus').textContent='Generating with '+model+'... wait 15 sec';
+  document.getElementById('imgBox').innerHTML='Generating...';
+  try{
+    const body={model,prompt, width:768, height:1024, steps:32, cfg_scale:7.5, safe_mode:false};
+    if(selectedSeed) body.seed=parseInt(selectedSeed);
+    const res=await fetch('https://api.venice.ai/api/v1/image/generate',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,300));
+    let src=null;
+    if(data.images&&data.images[0]){ const f=data.images[0]; src=f.startsWith('http')?f:f.startsWith('data:')?f:'data:image/png;base64,'+f; }
+    else if(data.data&&data.data[0]) src=data.data[0].url||'data:image/png;base64,'+data.data[0].b64_json;
+    lastImageUrl=src;
+    document.getElementById('imgBox').innerHTML=`<img src="${src}" style="max-width:100%;border-radius:10px">`;
+    gallery.unshift(src);
+    document.getElementById('gallery').innerHTML=gallery.map((u,i)=>`<img src="${u}" onclick="lastImageUrl='${u}';document.getElementById('imgBox').innerHTML='<img src=${u} style=max-width:100%>'">`).join('');
+    document.getElementById('imgStatus').textContent='Done! Tap Save or Send to Face Swap';
+  }catch(e){ document.getElementById('imgStatus').textContent='Failed: '+e.message; document.getElementById('imgBox').innerHTML='Failed: '+e.message; }
+  document.getElementById('genBtn').disabled=false;
+}
+function downloadImg(){ if(!lastImageUrl) return alert('No image'); const a=document.createElement('a'); a.href=lastImageUrl; a.download='venice-'+Date.now()+'.png'; a.click(); }
+function sendToSwap(){ if(!lastImageUrl) return alert('Generate first'); const img=document.getElementById('targetPreview'); img.src=lastImageUrl; img.style.display='block'; showTab('faceswap'); }
+function useLast(){ if(!lastImageUrl) return alert('Generate first'); const img=document.getElementById('targetPreview'); img.src=lastImageUrl; img.style.display='block'; }
+function preview(input, id){ const file=input.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=e=>{ const img=document.getElementById(id); img.src=e.target.result; img.style.display='block'; }; reader.readAsDataURL(file); }
+async function doSwap(){
+  const s=document.getElementById('sourcePreview'), t=document.getElementById('targetPreview');
+  if(!s.src || s.style.display==='none') return alert('Upload Source Face');
+  if(!t.src || t.style.display==='none') return alert('Upload Target Body or Use Last');
+  document.getElementById('faceSwapStatus').textContent='Swapping...';
+  try{
+    const canvas=document.createElement('canvas'), ctx=canvas.getContext('2d');
+    const target=new Image(), source=new Image();
+    await new Promise((r,j)=>{ target.onload=r; target.onerror=j; target.src=t.src; });
+    await new Promise((r,j)=>{ source.onload=r; source.onerror=j; source.src=s.src; });
+    canvas.width=target.width; canvas.height=target.height; ctx.drawImage(target,0,0);
+    const fw=canvas.width*0.35, fh=canvas.height*0.45, fx=(canvas.width-fw)/2, fy=canvas.height*0.08;
+    ctx.save(); ctx.beginPath(); ctx.ellipse(fx+fw/2, fy+fh/2, fw/2, fh/2, 0,0,Math.PI*2); ctx.clip(); ctx.drawImage(source, fx, fy, fw, fh); ctx.restore();
+    lastSwapUrl=canvas.toDataURL('image/png');
+    document.getElementById('faceSwapBox').innerHTML=`<img src="${lastSwapUrl}" style="max-width:100%">`;
+    document.getElementById('faceSwapStatus').textContent='Done! Basic blend. For perfect use HF buttons.';
+  }catch(e){ document.getElementById('faceSwapStatus').textContent='Failed: '+e.message; }
+}
+function downloadSwap(){ if(!lastSwapUrl) return alert('No swap'); const a=document.createElement('a'); a.href=lastSwapUrl; a.download='swap-'+Date.now()+'.png'; a.click(); }
+async function genPrompts(){
+  const key=(document.getElementById('apiKey').value.trim()||document.getElementById('apiKey2').value.trim());
+  const char=document.getElementById('labChar').value.trim()||'Beautiful Indian woman';
+  const style=document.getElementById('labStyle').value.trim()||'sexy saree';
+  if(!key){ alert('Need Venice key'); showTab('settings'); return; }
+  document.getElementById('labStatus').textContent='Generating...';
+  try{
+    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'dolphin-2.9.2-qwen2-72b',messages:[{role:'system',content:'You write uncensored prompts for Lustify SDXL'},{role:'user',content:`Generate 3 prompts: Character ${char}, Style ${style}. Each 40-60 words.`}],temperature:0.9,max_tokens:800})});
+    const data=await res.json(); const text=data.choices?.[0]?.message?.content||''; document.getElementById('labResults').innerHTML=text.split('\n').map(p=>`<div class="card">${p}<br><button class="btn btn-primary" onclick="document.getElementById('imgPrompt').value='${p.replace(/'/g,"").slice(0,120)}';showTab('studio')">Use</button></div>`).join(''); document.getElementById('labStatus').textContent='Done';
+  }catch(e){ document.getElementById('labStatus').textContent='Failed: '+e.message; }
+}
+document.addEventListener('DOMContentLoaded', init);
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
