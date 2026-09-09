@@ -21,429 +21,98 @@
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
 </style><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Venice Image Ultra - Uncensored</title>
+<title>Venice Ultra V3</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:Inter,system-ui;background:#0a0a0e;color:#eee;min-height:100vh}
 .header{background:#12121a;border-bottom:1px solid #222;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.logo{font-weight:900;color:#ff3b5c;font-size:18px;letter-spacing:0.5px}
+.logo{font-weight:900;color:#ff3b5c;font-size:18px}
 .tabs{display:flex;gap:6px;background:#12121a;padding:8px;border-bottom:1px solid #222;position:sticky;top:48px;z-index:9;overflow-x:auto}
-.tab{padding:9px 16px;border-radius:20px;border:1px solid #333;background:#1a1a22;color:#888;cursor:pointer;font-size:12px;white-space:nowrap;font-weight:700}
+.tab{padding:9px 16px;border-radius:20px;border:1px solid #333;background:#1a1a22;color:#888;cursor:pointer;font-size:11px;white-space:nowrap;font-weight:700}
 .tab.active{background:#ff3b5c;border-color:#ff3b5c;color:#fff}
 .container{max-width:1000px;margin:0 auto;padding:12px}
 .card{background:#15151d;border:1px solid #23232e;border-radius:12px;padding:12px;margin-bottom:12px}
-.label{color:#ff3b5c;font-weight:700;font-size:10px;text-transform:uppercase;margin:10px 0 5px;display:block;letter-spacing:0.8px}
+.label{color:#ff3b5c;font-weight:700;font-size:10px;text-transform:uppercase;margin:10px 0 5px;display:block}
 input,select,textarea{width:100%;background:#1e1e2a;border:1px solid #333;color:#fff;padding:11px;border-radius:8px;font-size:13px;margin-bottom:6px}
-textarea{min-height:80px;resize:vertical}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:700px){.grid{grid-template-columns:1fr}}
-.btn{padding:11px 16px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px;transition:0.2s}
-.btn-primary{background:#ff3b5c;color:#fff;flex:1}.btn-primary:disabled{opacity:0.5}
-.btn-ghost{background:#2a2a3a;color:#fff}.btn-green{background:#1a8a4a;color:#fff}
-.btn-nude{background:linear-gradient(135deg,#ff3b5c,#8a2a5a);color:#fff;flex:1}
-.btn-ultra{background:linear-gradient(135deg,#ff3b5c,#ff8a00);color:#fff;flex:1;font-size:13px}
-.imgbox{background:#0e0e14;border:1px solid #222;border-radius:12px;min-height:380px;display:flex;align-items:center;justify-content:center;padding:12px;flex-direction:column;position:relative}
-.imgbox img{max-width:100%;max-height:600px;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
-.small{color:#777;font-size:10px;line-height:1.4}
+.btn{padding:11px 16px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px}
+.btn-primary{background:#ff3b5c;color:#fff;flex:1}.btn-ghost{background:#2a2a3a;color:#fff}.btn-green{background:#1a8a4a;color:#fff}
+.btn-ultra{background:linear-gradient(135deg,#ff3b5c,#ff8a00);color:#fff;flex:1}
+.btn-hf{background:linear-gradient(135deg,#ffcc00,#ff8a00);color:#000;flex:1;font-weight:900}
+.imgbox{background:#0e0e14;border:1px solid #222;border-radius:12px;min-height:380px;display:flex;align-items:center;justify-content:center;padding:12px;flex-direction:column}
+.imgbox img{max-width:100%;max-height:600px;border-radius:10px}
+.small{color:#777;font-size:10px;line-height:1.5}
 .flex{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;align-items:center}
 .hidden{display:none !important}
-.error{background:rgba(255,59,92,.12);border:1px solid rgba(255,59,92,.3);color:#ff8a9a;padding:10px;border-radius:8px;margin-top:8px;font-size:11px}
-.success{background:rgba(40,200,120,.12);border:1px solid rgba(40,200,120,.3);color:#6effb5;padding:10px;border-radius:8px;margin-top:8px;font-size:11px}
-.toggle{display:flex;background:#1e1e2a;border:1px solid #333;border-radius:20px;padding:3px;width:fit-content;margin:6px 0}
-.toggle button{padding:7px 16px;border-radius:20px;border:none;background:transparent;color:#777;cursor:pointer;font-weight:700;font-size:11px;transition:0.2s}
-.toggle button.active{background:#ff3b5c;color:#fff}
 .view{display:none}.view.active{display:block}
 .char-list{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
-.char-card{background:#1e1e2a;border:1px solid #333;border-radius:12px;padding:10px 12px;min-width:130px;cursor:pointer;position:relative;transition:0.2s}
-.char-card.active{border-color:#ff3b5c;background:#2a1a22;transform:translateY(-2px)}
-.char-card .name{font-weight:800;font-size:13px;color:#fff;display:flex;justify-content:space-between;align-items:center}
-.char-card .seed{font-size:9px;color:#888;margin-top:2px}
-.char-card .desc{font-size:8px;color:#666;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
-.chip{padding:6px 12px;border-radius:20px;background:#1e1e2a;border:1px solid #333;font-size:11px;cursor:pointer;transition:0.2s}
-.chip.active{background:#ff3b5c;border-color:#ff3b5c;color:#fff}
+.char-card{background:#1e1e2a;border:1px solid #333;border-radius:12px;padding:10px 12px;min-width:130px;cursor:pointer}
+.char-card.active{border-color:#ff3b5c;background:#2a1a22}
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:10px}
-.gallery .gitem{position:relative;cursor:pointer;border-radius:8px;overflow:hidden;border:1px solid #333;transition:0.2s}
-.gallery .gitem:hover{border-color:#ff3b5c;transform:scale(1.02)}
-.gallery img{width:100%;height:110px;object-fit:cover;display:block}
+.gallery .gitem{position:relative;border-radius:8px;overflow:hidden;border:1px solid #333}
+.gallery img{width:100%;height:110px;object-fit:cover}
 .gallery .gdel{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.75);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer}
 .preset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;margin-top:6px}
-.preset{padding:8px 10px;background:#1e1e2a;border:1px solid #2a2a3a;border-radius:8px;font-size:11px;cursor:pointer;text-align:center;transition:0.2s}
-.preset:hover{border-color:#ff3b5c;background:#231a22}
-.preset.active{border-color:#ff3b5c;background:#ff3b5c22;color:#ff8aa0}
-.prompt-box{background:#0e0e14;border:1px dashed #333;border-radius:8px;padding:8px;font-size:11px;color:#999;min-height:40px;white-space:pre-wrap}
+.preset{padding:8px 10px;background:#1e1e2a;border:1px solid #2a2a3a;border-radius:8px;font-size:11px;cursor:pointer;text-align:center}
+.face-box{border:2px dashed #333;border-radius:12px;padding:20px;text-align:center;cursor:pointer}
+.face-box img{max-width:100%;max-height:200px;border-radius:8px;margin-top:8px}
 </style></head>
 <body>
-<div class="header"><div class="logo">🔥 VENICE IMAGE ULTRA</div><div class="small" id="saveStatus">Pure Uncensored • Lustify • Flux</div></div>
+<div class="header"><div class="logo">🔥 VENICE ULTRA V3 + HF</div><div class="small">Image Only</div></div>
 <div class="tabs">
-<div class="tab active" onclick="switchTab('char')">🎭 Characters & Studio</div>
+<div class="tab active" onclick="switchTab('char')">🎭 Studio</div>
 <div class="tab" onclick="switchTab('prompt')">💋 Prompt Lab</div>
-<div class="tab" onclick="switchTab('faceswap')">🔄 Face Swap</div>
+<div class="tab" onclick="switchTab('faceswap')">🔄 Face Swap + HF</div>
 <div class="tab" onclick="switchTab('settings')">⚙️ Settings</div>
 </div>
-
 <div class="container">
-<!-- SETTINGS -->
-<div id="view-settings" class="view">
-<div class="card" style="border-color:#ff3b5c44;background:rgba(255,59,92,.06)">
-<label class="label">🔑 Venice API Key - For ALL Uncensored Features</label>
-<input type="password" id="apiKey" placeholder="Paste VENICE key here...">
-<div class="small">Used for Lustify nude, Flux uncensored, Prompt Lab, Batch gen. Never uploaded, saved locally in your phone.</div>
-<div class="flex"><button class="btn btn-ghost" style="font-size:11px" onclick="testKey()">Test Key</button><button class="btn btn-ghost" style="font-size:11px;background:#331a1a" onclick="clearAllData()">Clear All Data</button></div>
-<div id="keyTest" class="small" style="margin-top:8px"></div>
-</div>
-<div class="card">
-<label class="label">📊 Stats & Models</label>
-<div class="small" id="dataStats">Loading...</div>
-<div class="small" style="margin-top:8px;line-height:1.6">
-<b>Best Models for Uncensored:</b><br>
-• <b>lustify-sdxl</b> - BEST for nude, realistic skin, adult (Venice exclusive)<br>
-• <b>flux-dev-uncensored</b> - Best for creative uncensored, no filter<br>
-• <b>fluently-xl</b> - Realistic, good for same face lock<br>
-• <b>pony-realism</b> - Anime + realistic mix, very uncensored
-</div>
-</div>
-</div>
-
-<!-- CHARACTERS & STUDIO - MAIN TAB -->
+<div id="view-settings" class="view"><div class="card"><label class="label">🔑 Venice Key</label><input type="password" id="apiKey"><div class="flex"><button class="btn btn-ghost" onclick="testKey()">Test</button><button class="btn btn-ghost" style="background:#331a1a" onclick="clearAllData()">Clear</button></div><div id="keyTest" class="small"></div></div><div class="card"><div class="small" id="dataStats"></div><div class="small" style="margin-top:10px">HF = 2M+ models, free Spaces like alfredang/faceswap - lightweight face swap web app powered by TinyFace and Gradio. Venice has NO face swap.</div></div></div>
 <div id="view-char" class="view active">
-<div class="card">
-<div style="display:flex;justify-content:space-between;align-items:center"><label class="label" style="margin:0">🎭 Your Characters - Same Face Lock (Seed)</label><div class="flex"><button class="btn btn-primary" style="padding:6px 12px;font-size:11px" onclick="createNewChar()">+ New Character</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="selectNoLock()">🔓 No Lock</button></div></div>
-<div class="char-list" id="charList"><span class="small">No chars yet. Create Neha, Priya etc. Same seed = same face every time.</span></div>
-<div id="charEditor" class="hidden" style="background:#1a1a2a;border:1px solid #333;border-radius:10px;padding:10px;margin-top:10px">
-<div class="grid"><div><label class="label">Name</label><input id="charName" placeholder="e.g. Neha"></div><div><label class="label">Seed (Face Lock)</label><div style="display:flex;gap:6px"><input id="charSeed" placeholder="12345"><button class="btn btn-ghost" style="padding:8px" onclick="randomSeed()">🎲</button></div></div></div>
-<label class="label">Face Description - Detailed for same face</label><input id="charFace" placeholder="e.g. Beautiful Indian woman, 24, long black hair, fair skin, sharp nose, almond eyes">
-<label class="label">Body / Style (optional)</label><input id="charBody" placeholder="e.g. curvy, slim waist, 34C, hourglass">
-<div class="flex"><button class="btn btn-primary" onclick="saveChar()">💾 Save Character</button><button class="btn btn-ghost" onclick="cancelEdit()">Cancel</button></div>
+<div class="card"><div style="display:flex;justify-content:space-between"><label class="label" style="margin:0">🎭 Characters</label><div class="flex"><button class="btn btn-primary" style="padding:6px 12px;font-size:11px" onclick="createNewChar()">+ New</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="selectNoLock()">🔓 No Lock</button></div></div><div class="char-list" id="charList"></div><div id="charEditor" class="hidden" style="background:#1a1a2a;border:1px solid #333;border-radius:10px;padding:10px;margin-top:10px"><div class="grid"><div><label class="label">Name</label><input id="charName"></div><div><label class="label">Seed</label><div style="display:flex;gap:6px"><input id="charSeed"><button class="btn btn-ghost" onclick="randomSeed()">🎲</button></div></div></div><label class="label">Face</label><input id="charFace"><label class="label">Body</label><input id="charBody"><div class="flex"><button class="btn btn-primary" onclick="saveChar()">Save</button><button class="btn btn-ghost" onclick="cancelEdit()">Cancel</button></div></div><div class="small" id="selectedInfo">🔓 No Lock</div></div>
+<div class="card"><label class="label">🎨 Studio</label><div class="grid"><div><label class="label">Model</label><select id="imgModel"><option value="lustify-sdxl" selected>Lustify SDXL - BEST Nude</option><option value="flux-dev-uncensored">Flux Uncensored</option><option value="fluently-xl">Fluently XL</option></select></div><div><label class="label">Size</label><select id="imgSize"><option value="768x1024" selected>Portrait</option><option value="832x1216">Tall</option><option value="1024x768">Landscape</option></select></div></div><div class="grid"><div><label class="label">Mode</label><div style="display:flex;background:#1e1e2a;border:1px solid #333;border-radius:20px;padding:3px;width:fit-content"><button id="btnSexy" style="padding:7px 16px;border-radius:20px;border:none;background:#ff3b5c;color:#fff;font-weight:700;font-size:11px" onclick="setImgMode('sexy')">Sexy</button><button id="btnNude" style="padding:7px 16px;border-radius:20px;border:none;background:transparent;color:#777;font-weight:700;font-size:11px" onclick="setImgMode('nude')">Nude</button></div></div><div><label class="label">Batch</label><select id="batchCount"><option value="1" selected>1</option><option value="2">2</option><option value="4">4</option></select></div></div><label class="label">Pose</label><div class="preset-grid"><div class="preset" onclick="addPreset('standing in doorway, leaning')">🚪 Doorway</div><div class="preset" onclick="addPreset('sitting on bed')">🛏️ Bed</div><div class="preset" onclick="addPreset('lying on bed')">😴 Lying</div><div class="preset" onclick="addPreset('shower, wet hair')">🚿 Shower</div><div class="preset" onclick="addPreset('mirror selfie')">🪞 Mirror</div></div><label class="label">Outfit</label><div class="preset-grid"><div class="preset" onclick="addPreset('red saree pallu falling')">🥻 Saree</div><div class="preset" onclick="addPreset('black bikini')">👙 Bikini</div><div class="preset" onclick="addPreset('lace lingerie')">🖤 Lingerie</div><div class="preset" onclick="addPreset('completely nude')">🔥 Nude</div></div><label class="label">Prompt</label><textarea id="imgPrompt"></textarea><div class="small" id="finalPromptPreview"></div><div class="flex" style="margin-top:10px"><button class="btn btn-ultra" id="imgGenBtn" onclick="generateImage()">🔥 Generate</button><button class="btn btn-ghost" onclick="clearPrompt()">Clear</button><button class="btn btn-ghost" onclick="enhancePrompt()">✨ Enhance</button></div><div id="imgStatus" class="small"></div><div id="imgError" class="small" style="color:#ff6b7a"></div><div id="imgSuccess" class="small" style="color:#5cffb0"></div></div>
+<div class="card"><div style="display:flex;justify-content:space-between"><label class="label" style="margin:0">Result</label><div class="flex"><button class="btn btn-green" style="padding:6px 12px;font-size:11px" onclick="downloadImage()">Save</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px;background:#331a1a" onclick="clearGallery()">Clear</button><button class="btn btn-hf" style="padding:6px 12px;font-size:11px" onclick="sendToFaceSwap()">Send to Face Swap</button></div></div><div class="imgbox" id="imgBox"><span class="small">No image yet</span></div><div class="flex" style="justify-content:space-between;margin-top:10px"><span class="small" id="galleryCount">0</span></div><div class="gallery" id="gallery"></div></div>
 </div>
-<div class="small" id="selectedInfo" style="margin-top:8px">🔓 No Lock - Random face. Select a character to lock same face.</div>
+<div id="view-prompt" class="view"><div class="card"><label class="label">Prompt Lab</label><div class="grid"><div><label class="label">Character</label><input id="labChar"></div><div><label class="label">Style</label><select id="labStyle"><option value="sexy saree">Saree</option><option value="nude artistic">Nude</option><option value="bikini">Bikini</option><option value="custom">Custom</option></select></div></div><textarea id="labCustom"></textarea><button class="btn btn-ultra" onclick="generateUncensoredPrompts()">Generate 3 Prompts</button><div id="labStatus" class="small"></div><div id="labResults"></div></div></div>
+<div id="view-faceswap" class="view"><div class="card" style="border-color:#ffcc0044;background:rgba(255,204,0,.08)"><label class="label">Face Swap + HF Perfect</label><div class="small">Venice has NO face swap. HF has free Spaces like alfredang/faceswap. Use basic or open HF for perfect AI.</div><div class="grid" style="margin-top:12px"><div><div class="face-box" onclick="document.getElementById('sourceFace').click()"><div>Source Face</div><img id="sourcePreview" class="hidden"><input type="file" id="sourceFace" accept="image/*" class="hidden" onchange="previewFace(this,'sourcePreview')"></div></div><div><div class="face-box" onclick="document.getElementById('targetImage').click()"><div>Target Body</div><img id="targetPreview" class="hidden"><input type="file" id="targetImage" accept="image/*" class="hidden" onchange="previewFace(this,'targetPreview')"></div></div></div><div class="flex" style="margin-top:12px"><button class="btn btn-ultra" onclick="useLastGeneratedAsTarget()">Use Last Generated</button><button class="btn btn-primary" onclick="doFaceSwap()">Quick Swap</button></div><div class="card" style="margin-top:12px;border-color:#ffcc00"><label class="label" style="color:#ffcc00">HF Perfect Swap - FREE Real AI</label><div class="flex" style="margin-top:10px"><button class="btn btn-hf" onclick="openHF('https://huggingface.co/spaces/alfredang/faceswap')">Open alfredang/faceswap</button><button class="btn btn-hf" onclick="openHF('https://huggingface.co/spaces/felixrosberg/face-swap')">Open felixrosberg/face-swap</button></div></div><div id="faceSwapStatus" class="small"></div><div class="card" style="margin-top:10px"><label class="label">Result</label><div class="imgbox" id="faceSwapBox"><span class="small">Basic result here</span></div><div class="flex" style="margin-top:8px"><button class="btn btn-green" style="padding:6px 12px;font-size:11px" onclick="downloadFaceSwap()">Save Swapped</button></div></div></div></div>
 </div>
-
-<div class="card">
-<label class="label">🎨 Image Studio - Uncensored Controls</label>
-<div class="grid">
-<div><label class="label">Model - Choose Uncensored</label><select id="imgModel"><option value="lustify-sdxl" selected>Lustify SDXL - BEST Nude, Realistic Skin</option><option value="flux-dev-uncensored">Flux Dev Uncensored - No Filter, Creative</option><option value="fluently-xl">Fluently XL - Realistic + Face Lock Best</option><option value="pony-realism">Pony Realism - Anime+Real Mix, Very Uncensored</option><option value="lustify-v7">Lustify V7 - Older but good</option></select></div>
-<div><label class="label">Size / Ratio</label><select id="imgSize"><option value="768x1024" selected>Portrait 768x1024 - Best for full body</option><option value="832x1216">Tall 832x1216 - Best for nude</option><option value="1024x768">Landscape 1024x768</option><option value="768x768">Square 768x768</option><option value="1024x1024">Square HD 1024x1024</option></select></div>
-</div>
-<div class="grid">
-<div><label class="label">Mode</label><div class="toggle"><button id="btnSexy" class="active" onclick="setImgMode('sexy')">😍 Sexy</button><button id="btnNude" onclick="setImgMode('nude')">🔥 Nude</button></div></div>
-<div><label class="label">Batch - Generate Multiple</label><select id="batchCount"><option value="1" selected>1 Image</option><option value="2">2 Images (same prompt, diff seed)</option><option value="4">4 Images - Batch</option></select></div>
-</div>
-
-<label class="label">💃 Pose Presets - Click to Add to Prompt</label>
-<div class="preset-grid" id="posePresets">
-<div class="preset" onclick="addPreset('standing in doorway, leaning against frame, seductive look')">🚪 Doorway Lean</div>
-<div class="preset" onclick="addPreset('sitting on bed, legs crossed, bedroom, soft lighting')">🛏️ Bed Sit</div>
-<div class="preset" onclick="addPreset('lying on bed, on back, arched back, looking at camera')">😴 Lying Back</div>
-<div class="preset" onclick="addPreset('in kitchen, cooking, wearing only apron, back view')">🍳 Kitchen Apron</div>
-<div class="preset" onclick="addPreset('in shower, wet hair, water droplets, steamy glass')">🚿 Shower Wet</div>
-<div class="preset" onclick="addPreset('mirror selfie, holding phone, bathroom mirror')">🪞 Mirror Selfie</div>
-<div class="preset" onclick="addPreset('on balcony, night city lights, wind in hair')">🌃 Balcony Night</div>
-<div class="preset" onclick="addPreset('yoga pose, stretching, flexible, gym wear')">🧘 Yoga Stretch</div>
-</div>
-
-<label class="label">👗 Outfit Presets</label>
-<div class="preset-grid" id="outfitPresets">
-<div class="preset" onclick="addPreset('wearing red saree, pallu falling, cleavage visible')">🥻 Saree Seductive</div>
-<div class="preset" onclick="addPreset('black bikini, beach, wet')">👙 Bikini</div>
-<div class="preset" onclick="addPreset('white shirt, no bra, wet, see-through')">👔 Wet Shirt</div>
-<div class="preset" onclick="addPreset('lingerie, lace, black')">🖤 Lace Lingerie</div>
-<div class="preset" onclick="addPreset('completely nude, no clothes, natural')">🔥 Fully Nude</div>
-<div class="preset" onclick="addPreset('towel, just out of shower, holding towel')">🛁 Towel Only</div>
-<div class="preset" onclick="addPreset('traditional lehenga, bridal, heavy jewelry')">💃 Bridal Lehenga</div>
-<div class="preset" onclick="addPreset('office wear, skirt, blouse, boss look')">💼 Office Skirt</div>
-</div>
-
-<label class="label">🎬 Scene / Background</label>
-<div class="preset-grid" id="scenePresets">
-<div class="preset" onclick="addPreset('luxury bedroom, silk sheets, warm lighting')">🛏️ Luxury Bedroom</div>
-<div class="preset" onclick="addPreset('bathroom, bathtub, candles')">🕯️ Candle Bath</div>
-<div class="preset" onclick="addPreset('living room, couch, evening')">🛋️ Couch Evening</div>
-<div class="preset" onclick="addPreset('beach sunset, golden hour, ocean')">🏖️ Beach Sunset</div>
-<div class="preset" onclick="addPreset('car backseat, night, city lights')">🚗 Car Backseat</div>
-<div class="preset" onclick="addPreset('hotel room, window view, night')">🏨 Hotel Night</div>
-</div>
-
-<label class="label">✨ Main Prompt - Describe what you want (English works best for Lustify)</label>
-<textarea id="imgPrompt" style="min-height:90px" placeholder="e.g. Neha standing in doorway, red saree falling, seductive smile, long hair, realistic, highly detailed... or click presets above to build prompt"></textarea>
-<div class="prompt-box" id="finalPromptPreview">Final prompt preview will show here (with character face lock + your prompt + nude/sexy enhancers)</div>
-
-<div class="flex" style="margin-top:10px">
-<button class="btn btn-ultra" id="imgGenBtn" onclick="generateImage()">🔥 Generate Uncensored</button>
-<button class="btn btn-ghost" onclick="clearPrompt()">Clear</button>
-<button class="btn btn-ghost" onclick="enhancePrompt()">✨ AI Enhance Prompt</button>
-</div>
-<div id="imgStatus" class="small" style="margin-top:8px"></div>
-<div id="imgError" class="error hidden"></div>
-<div id="imgSuccess" class="success hidden"></div>
-</div>
-
-<div class="card">
-<div style="display:flex;justify-content:space-between;align-items:center"><label class="label" style="margin:0">🖼️ Result - Long Press to Save</label><div class="flex"><button class="btn btn-green" style="padding:6px 12px;font-size:11px" onclick="downloadImage()">💾 Save</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px;background:#331a1a" onclick="clearGallery()">🗑️ Clear All</button></div></div>
-<div class="imgbox" id="imgBox"><span class="small">No image yet. Select character for same face, add presets, then Generate.<br><br>Tip: Lustify SDXL + Nude mode + Tall size = best results</span></div>
-<div id="galleryClear" class="flex hidden" style="justify-content:space-between;margin-top:10px"><span class="small">Tap image to view large. Tap X to delete single.</span><span class="small" id="galleryCount">0 images</span></div>
-<div class="gallery" id="gallery"></div>
-</div>
-</div>
-
-<!-- PROMPT LAB - UNCENSORED -->
-<div id="view-prompt" class="view">
-<div class="card" style="border-color:#ff3b5c44;background:rgba(255,59,92,.08)">
-<label class="label">💋 Uncensored Prompt Lab - Generate Hot Prompts (Venice Uncensored Chat)</label>
-<div class="small">Venice chat is 100% uncensored. Use it to generate Lustify prompts that are too hot for OpenAI. This is Venice's real strength.</div>
-<div class="grid" style="margin-top:8px">
-<div><label class="label">Character for Prompt</label><input id="labChar" placeholder="e.g. Neha 24, Indian, curvy..."></div>
-<div><label class="label">Style / Fetish (Uncensored, Venice allows)</label><select id="labStyle"><option value="sexy saree seduction, pallu falling">Saree Seduction</option><option value="nude artistic, soft lighting, realistic skin">Artistic Nude</option><option value="bikini beach, wet, seductive">Bikini Beach</option><option value="lingerie, lace, bedroom, seductive pose">Lingerie Bedroom</option><option value="shower, wet, soapy, steamy">Shower Wet</option><option value="office affair, skirt, boss secretary">Office Affair</option><option value="traditional Indian bride, first night">First Night</option><option value="custom">Custom - type below</option></select></div>
-</div>
-<textarea id="labCustom" placeholder="Custom style: e.g. Neha in kitchen, wearing only apron, flour on hands, seductive... (Venice allows uncensored, write anything)"></textarea>
-<div class="flex"><button class="btn btn-nude" onclick="generateUncensoredPrompts()">💋 Generate 3 Uncensored Prompts</button><button class="btn btn-ghost" onclick="document.getElementById('labCustom').value=''">Clear</button></div>
-<div id="labStatus" class="small" style="margin-top:8px"></div>
-<div id="labResults" style="margin-top:10px"></div>
-</div>
-
-<div class="card">
-<label class="label">🔥 Quick Uncensored Ideas - Click to Copy to Studio</label>
-<div class="preset-grid">
-<div class="preset" onclick="copyToStudio('Beautiful Indian woman, 24, long black hair, red saree pallu slipping, cleavage, standing in doorway of old haveli, seductive smile, realistic, highly detailed skin, natural lighting')">🥻 Saree Haveli</div>
-<div class="preset" onclick="copyToStudio('Indian bhabhi, 30, curvy, wearing black lace lingerie, sitting on bed, bedroom, soft warm light, looking at camera, realistic photo')">🖤 Bhabhi Lace</div>
-<div class="preset" onclick="copyToStudio('Young Indian girl, 22, wet hair, white wet t-shirt, no bra, see-through, in rain, street, night, realistic')">🌧️ Wet T-Shirt</div>
-<div class="preset" onclick="copyToStudio('Indian bride, 26, bridal lehenga, heavy jewelry, first night, bedroom, shy smile, soft lighting, realistic')">👰 Bridal Night</div>
-<div class="preset" onclick="copyToStudio('Indian woman, 28, completely nude, artistic, lying on silk sheets, soft natural light, realistic skin texture, highly detailed')">🔥 Artistic Nude</div>
-<div class="preset" onclick="copyToStudio('Two Indian women, friends, both in bikini, beach, sunset, playful, realistic')">👯‍♀️ 2 Girls Beach</div>
-</div>
-<div class="small" style="margin-top:8px">Tip: Lustify works best with English prompts + detailed body/face. Venice chat can generate even hotter prompts - use Prompt Lab above.</div>
-</div>
-
-</div>
-
-<div id="view-faceswap" class="view">
-<div class="card" style="border-color:#00ff8844;background:rgba(0,255,136,.06)">
-<label class="label">🔄 Face Swap - Venice Has NO Native Face Swap</label>
-<div class="small" style="color:#8f8">Venice AI: No face swapping, No face consistency tools - only seed lock. This tab adds client-side face swap, 100% private.</div>
-<div class="grid" style="margin-top:12px">
-<div><div style="border:2px dashed #333;border-radius:12px;padding:20px;text-align:center;cursor:pointer" onclick="document.getElementById('sourceFace').click()"><div>📸 Source Face</div><div class="small">Upload face</div><img id="sourcePreview" class="hidden" style="max-width:100%;max-height:200px;border-radius:8px;margin-top:8px"><input type="file" id="sourceFace" accept="image/*" class="hidden" onchange="previewFace(this,'sourcePreview')"></div></div>
-<div><div style="border:2px dashed #333;border-radius:12px;padding:20px;text-align:center;cursor:pointer" onclick="document.getElementById('targetImage').click()"><div>🖼️ Target Image</div><div class="small">Upload or use last generated</div><img id="targetPreview" class="hidden" style="max-width:100%;max-height:200px;border-radius:8px;margin-top:8px"><input type="file" id="targetImage" accept="image/*" class="hidden" onchange="previewFace(this,'targetPreview')"></div></div>
-</div>
-<div style="display:flex;gap:6px;margin-top:12px"><button class="btn btn-ultra" onclick="useLastGeneratedAsTarget()">Use Last Generated</button><button class="btn btn-primary" onclick="doFaceSwap()">🔄 Swap Face</button></div>
-<div id="faceSwapStatus" class="small" style="margin-top:8px"></div>
-<div class="card" style="margin-top:10px"><label class="label">Result</label><div class="imgbox" id="faceSwapBox"><span class="small">Upload source + target, then Swap. For perfect AI use faceswapper.ai, reface.ai, HuggingFace felixrosberg/face-swap</span></div><div style="display:flex;gap:6px;margin-top:8px"><button class="btn btn-green" style="padding:6px 12px;font-size:11px" onclick="downloadFaceSwap()">💾 Save Swapped</button></div></div>
-</div>
-</div>
-
-</div>
-
 <script>
-let chars=[], selectedChar=null, imgMode='sexy', lastImageUrl=null, galleryItems=[], editingIndex=-1;
-
-function switchTab(t){
-  document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
-  const map={char:0,prompt:1,faceswap:2,settings:3};
-  document.querySelectorAll('.tab')[map[t]].classList.add('active');
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.getElementById('view-'+t).classList.add('active');
-  if(t==='settings') updateStats();
-}
-function initAll(){
-  const ak=document.getElementById('apiKey'); const sk=localStorage.getItem('venice_api_key'); if(ak&&sk) ak.value=sk;
-  if(ak){ const s=()=>{ const v=ak.value.trim(); if(v.length>10) localStorage.setItem('venice_api_key',v); }; ak.addEventListener('input',s); ak.addEventListener('blur',s); }
-  loadChars(); loadGallery(); setImgMode('sexy'); selectNoLock();
-  const ip=document.getElementById('imgPrompt'); if(ip){ ip.addEventListener('input', updatePreview); }
-}
-function testKey(){ const k=document.getElementById('apiKey').value.trim(); const out=document.getElementById('keyTest'); if(!k) return out.textContent='Enter key'; out.textContent='Key length '+k.length+' saved. Models: lustify-sdxl, flux-dev-uncensored ready.'; }
-
+let chars=[], selectedChar=null, imgMode='sexy', lastImageUrl=null, galleryItems=[], editingIndex=-1, lastFaceSwapUrl=null;
+function switchTab(t){ document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active')); const map={char:0,prompt:1,faceswap:2,settings:3}; document.querySelectorAll('.tab')[map[t]].classList.add('active'); document.querySelectorAll('.view').forEach(v=>v.classList.remove('active')); document.getElementById('view-'+t).classList.add('active'); if(t==='settings') updateStats(); }
+function initAll(){ const ak=document.getElementById('apiKey'); const sk=localStorage.getItem('venice_api_key'); if(ak&&sk) ak.value=sk; if(ak){ const s=()=>{ const v=ak.value.trim(); if(v.length>10) localStorage.setItem('venice_api_key',v); }; ak.addEventListener('input',s); } loadChars(); loadGallery(); setImgMode('sexy'); selectNoLock(); const ip=document.getElementById('imgPrompt'); if(ip) ip.addEventListener('input', updatePreview); }
+function testKey(){ const k=document.getElementById('apiKey').value.trim(); document.getElementById('keyTest').textContent=k?'Saved '+k.length:'Enter key'; }
 function loadChars(){ try{ const s=localStorage.getItem('venice_chars_ultra'); if(s) chars=JSON.parse(s); }catch(e){} renderCharList(); }
 function saveChars(){ localStorage.setItem('venice_chars_ultra', JSON.stringify(chars)); }
-function renderCharList(){ 
-  const list=document.getElementById('charList'); list.innerHTML=''; 
-  if(chars.length===0) list.innerHTML='<span class="small">No chars yet. + New to create Neha, Priya etc. Same seed = same face every time.</span>'; 
-  chars.forEach((c,i)=>{ 
-    const d=document.createElement('div'); d.className='char-card'+(selectedChar&&selectedChar.seed===c.seed?' active':''); 
-    d.innerHTML=`<div class="name">${c.name} <span><span onclick="event.stopPropagation(); editChar(${i})" style="cursor:pointer;margin-left:6px">✏️</span><span onclick="event.stopPropagation(); deleteChar(${i})" style="cursor:pointer;margin-left:6px">🗑️</span></span></div><div class="seed">Seed ${c.seed}</div><div class="desc">${c.face.slice(0,40)}</div>`; 
-    d.onclick=()=>selectChar(i); list.appendChild(d); 
-  }); 
-}
-function createNewChar(){ editingIndex=-1; document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=''; document.getElementById('charFace').value='Beautiful Indian woman, 24, long black hair, fair skin, almond eyes'; document.getElementById('charBody').value='curvy, hourglass, 34C'; randomSeed(); document.getElementById('charName').focus(); }
-function editChar(idx){ editingIndex=idx; const c=chars[idx]; document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=c.name; document.getElementById('charSeed').value=c.seed; document.getElementById('charFace').value=c.face; document.getElementById('charBody').value=c.body||''; }
-function deleteChar(idx){ if(!confirm(`Delete "${chars[idx].name}"?`)) return; if(selectedChar && selectedChar.seed===chars[idx].seed) selectNoLock(); chars.splice(idx,1); saveChars(); renderCharList(); }
+function renderCharList(){ const list=document.getElementById('charList'); list.innerHTML=''; if(chars.length===0) list.innerHTML='<span class="small">No chars</span>'; chars.forEach((c,i)=>{ const d=document.createElement('div'); d.className='char-card'+(selectedChar&&selectedChar.seed===c.seed?' active':''); d.innerHTML=`<div class="name">${c.name} <span><span onclick="event.stopPropagation(); editChar(${i})">✏️</span><span onclick="event.stopPropagation(); deleteChar(${i})">🗑️</span></span></div><div style="font-size:9px;color:#888">Seed ${c.seed}</div>`; d.onclick=()=>selectChar(i); list.appendChild(d); }); }
+function createNewChar(){ editingIndex=-1; document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=''; document.getElementById('charFace').value='Beautiful Indian woman, 24'; document.getElementById('charBody').value='curvy'; randomSeed(); }
+function editChar(i){ editingIndex=i; const c=chars[i]; document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=c.name; document.getElementById('charSeed').value=c.seed; document.getElementById('charFace').value=c.face; document.getElementById('charBody').value=c.body||''; }
+function deleteChar(i){ if(!confirm('Delete?')) return; if(selectedChar&&selectedChar.seed===chars[i].seed) selectNoLock(); chars.splice(i,1); saveChars(); renderCharList(); }
 function randomSeed(){ document.getElementById('charSeed').value=Math.floor(Math.random()*900000)+10000; }
 function cancelEdit(){ document.getElementById('charEditor').classList.add('hidden'); editingIndex=-1; }
-function saveChar(){ 
-  const name=document.getElementById('charName').value.trim()||'Char '+(chars.length+1); 
-  const seed=parseInt(document.getElementById('charSeed').value)||Math.floor(Math.random()*900000); 
-  const face=document.getElementById('charFace').value.trim()||'Beautiful Indian'; 
-  const body=document.getElementById('charBody').value.trim(); 
-  const obj={name,seed,face,body}; 
-  if(editingIndex>=0){ chars[editingIndex]=obj; } else { const idx=chars.findIndex(c=>c.name.toLowerCase()===name.toLowerCase()); if(idx>=0) chars[idx]=obj; else chars.push(obj); }
-  saveChars(); renderCharList(); cancelEdit(); selectChar(chars.findIndex(c=>c.seed===seed)); 
-}
-function selectChar(idx){ selectedChar=chars[idx]; document.querySelectorAll('.char-card').forEach((el,i)=>el.classList.toggle('active', i===idx)); document.getElementById('selectedInfo').innerHTML=`🔒 Locked: <b>${selectedChar.name}</b> Seed ${selectedChar.seed} - Same face every time <button class="btn btn-ghost" style="padding:2px 6px;font-size:9px;margin-left:6px" onclick="editChar(${idx})">✏️ Edit</button><button class="btn btn-ghost" style="padding:2px 6px;font-size:9px" onclick="deleteChar(${idx})">🗑️ Delete</button>`; updatePreview(); }
-function selectNoLock(){ selectedChar=null; document.querySelectorAll('.char-card').forEach(el=>el.classList.remove('active')); document.getElementById('selectedInfo').textContent='🔓 No Lock - Random face'; updatePreview(); }
-
-function setImgMode(m){ imgMode=m; document.getElementById('btnSexy').classList.toggle('active', m==='sexy'); document.getElementById('btnNude').classList.toggle('active', m==='nude'); document.getElementById('imgModel').value=m==='nude'?'lustify-sdxl':'fluently-xl'; updatePreview(); }
-function addPreset(txt){ const p=document.getElementById('imgPrompt'); const cur=p.value.trim(); p.value=cur ? cur+', '+txt : txt; updatePreview(); p.focus(); }
+function saveChar(){ const name=document.getElementById('charName').value.trim()||'Char '+(chars.length+1); const seed=parseInt(document.getElementById('charSeed').value)||Math.floor(Math.random()*900000); const face=document.getElementById('charFace').value.trim()||'Beautiful Indian'; const body=document.getElementById('charBody').value.trim(); const obj={name,seed,face,body}; if(editingIndex>=0) chars[editingIndex]=obj; else { const idx=chars.findIndex(c=>c.name.toLowerCase()===name.toLowerCase()); if(idx>=0) chars[idx]=obj; else chars.push(obj); } saveChars(); renderCharList(); cancelEdit(); selectChar(chars.findIndex(c=>c.seed===seed)); }
+function selectChar(i){ selectedChar=chars[i]; document.querySelectorAll('.char-card').forEach((el,j)=>el.classList.toggle('active', j===i)); document.getElementById('selectedInfo').innerHTML=`Locked: <b>${selectedChar.name}</b> Seed ${selectedChar.seed}`; updatePreview(); }
+function selectNoLock(){ selectedChar=null; document.querySelectorAll('.char-card').forEach(el=>el.classList.remove('active')); document.getElementById('selectedInfo').textContent='No Lock'; updatePreview(); }
+function setImgMode(m){ imgMode=m; document.getElementById('btnSexy').style.background=m==='sexy'?'#ff3b5c':'transparent'; document.getElementById('btnSexy').style.color=m==='sexy'?'#fff':'#777'; document.getElementById('btnNude').style.background=m==='nude'?'#ff3b5c':'transparent'; document.getElementById('btnNude').style.color=m==='nude'?'#fff':'#777'; document.getElementById('imgModel').value=m==='nude'?'lustify-sdxl':'fluently-xl'; updatePreview(); }
+function addPreset(t){ const p=document.getElementById('imgPrompt'); p.value=p.value.trim() ? p.value.trim()+', '+t : t; updatePreview(); }
 function clearPrompt(){ document.getElementById('imgPrompt').value=''; updatePreview(); }
-function updatePreview(){
-  let prompt=document.getElementById('imgPrompt').value.trim();
-  let final=prompt;
-  if(selectedChar) final=`${selectedChar.face}, ${selectedChar.body}, ${prompt}`;
-  if(imgMode==='nude') final+=', nude, completely naked, realistic skin texture, highly detailed, natural body, soft lighting';
-  else final+=', sexy, seductive, realistic photo, highly detailed, natural skin, soft lighting';
-  final+=', 8k, ultra detailed, photorealistic';
-  document.getElementById('finalPromptPreview').textContent=final.slice(0,400)+(final.length>400?'...':'')||'Add pose/outfit/scene presets + your description above';
-}
-
-async function generateImage(){
-  const key=document.getElementById('apiKey').value.trim();
-  let prompt=document.getElementById('imgPrompt').value.trim();
-  const model=document.getElementById('imgModel').value;
-  const size=document.getElementById('imgSize').value;
-  const batch=parseInt(document.getElementById('batchCount').value)||1;
-  if(!key) return showImgError('Enter Venice key in Settings');
-  if(!prompt) return showImgError('Enter prompt or click presets');
-
-  let finalPrompt=prompt;
-  let seedToUse=null;
-  if(selectedChar){ finalPrompt=`${selectedChar.face}, ${selectedChar.body}, ${prompt}, realistic photo, highly detailed, natural skin, 8k`; seedToUse=selectedChar.seed; }
-  if(imgMode==='nude') finalPrompt+=', nude, naked, realistic skin texture, detailed body, soft lighting, photorealistic';
-  
-  document.getElementById('imgGenBtn').disabled=true;
-  document.getElementById('imgStatus').textContent=`Generating ${batch} image(s) with ${model}... ${selectedChar?'(Face Lock Seed '+seedToUse+')':'(Random face)'}`;
-  document.getElementById('imgBox').innerHTML=`<span class="small">Generating ${batch} images with ${model}...<br>Mode: ${imgMode}<br>${selectedChar?'Lock: '+selectedChar.name+' Seed '+seedToUse:''}<br>Please wait 10-20 sec...</span>`;
-  hideImgMsg();
-
-  try{
-    const [w,h]=size.split('x').map(n=>parseInt(n));
-    const promises=[];
-    for(let b=0;b<batch;b++){
-      const body={model,prompt:finalPrompt,negative_prompt:'blurry, deformed, bad anatomy, cartoon, low quality, extra limbs, lowres',width:w,height:h,steps:imgMode==='nude'?32:28,cfg_scale:7.5,safe_mode:false,return_binary:false};
-      if(seedToUse && b===0) body.seed=seedToUse; // first image locked, rest random for variety
-      else if(seedToUse) body.seed=seedToUse + b; // slight variation but same face
-      promises.push(fetch('https://api.venice.ai/api/v1/image/generate',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json().then(d=>({ok:r.ok,data:d}))));
-    }
-    const results=await Promise.all(promises);
-    let html='';
-    let count=0;
-    for(let res of results){
-      if(!res.ok) throw new Error(res.data.error?.message||JSON.stringify(res.data).slice(0,300));
-      const d=res.data;
-      let imgSrc=null;
-      if(d.images&&d.images[0]){ const f=d.images[0]; imgSrc=f.startsWith('http')?f:f.startsWith('data:')?f:'data:image/png;base64,'+f; }
-      else if(d.data&&d.data[0]) imgSrc=d.data[0].url||'data:image/png;base64,'+d.data[0].b64_json;
-      else if(d.image_url) imgSrc=d.image_url;
-      if(imgSrc){
-        if(count===0){ lastImageUrl=imgSrc; html+=`<img src="${imgSrc}" style="margin-bottom:8px"><div class="small">Main - Long press to save. Seed ${seedToUse||'random'}</div>`; }
-        else html+=`<img src="${imgSrc}" style="max-width:48%;margin:4px;border-radius:8px;border:1px solid #333">`;
-        addToGallery(imgSrc, selectedChar?selectedChar.name:'Random');
-        count++;
-      }
-    }
-    document.getElementById('imgBox').innerHTML=html||'<span class="small">No images returned</span>';
-    showImgSuccess(`Done! ${count} image(s) with ${model} ${selectedChar?selectedChar.name:''}`);
-  }catch(e){ showImgError(e.message); document.getElementById('imgBox').innerHTML='<span class="small">Failed: '+e.message.slice(0,300)+'</span>'; }
-  finally{ document.getElementById('imgGenBtn').disabled=false; document.getElementById('imgStatus').textContent=''; }
-}
-function showImgError(m){ document.getElementById('imgError').textContent=m; document.getElementById('imgError').classList.remove('hidden'); document.getElementById('imgSuccess').classList.add('hidden'); }
-function showImgSuccess(m){ document.getElementById('imgSuccess').textContent=m; document.getElementById('imgSuccess').classList.remove('hidden'); document.getElementById('imgError').classList.add('hidden'); }
-function hideImgMsg(){ document.getElementById('imgError').classList.add('hidden'); document.getElementById('imgSuccess').classList.add('hidden'); }
-
+function updatePreview(){ let pr=document.getElementById('imgPrompt').value.trim(); let f=pr; if(selectedChar) f=`${selectedChar.face}, ${selectedChar.body}, ${pr}`; f+=', 8k, highly detailed'; document.getElementById('finalPromptPreview').textContent=f.slice(0,300); }
+async function generateImage(){ const key=document.getElementById('apiKey').value.trim(); let prompt=document.getElementById('imgPrompt').value.trim(); const model=document.getElementById('imgModel').value; const size=document.getElementById('imgSize').value; const batch=parseInt(document.getElementById('batchCount').value)||1; if(!key) return document.getElementById('imgError').textContent='Enter Venice key'; if(!prompt) return document.getElementById('imgError').textContent='Enter prompt'; let finalPrompt=prompt; let seedToUse=null; if(selectedChar){ finalPrompt=`${selectedChar.face}, ${selectedChar.body}, ${prompt}, realistic photo`; seedToUse=selectedChar.seed; } if(imgMode==='nude') finalPrompt+=', nude, naked'; document.getElementById('imgGenBtn').disabled=true; document.getElementById('imgStatus').textContent=`Generating ${batch}...`; document.getElementById('imgBox').innerHTML='<span class="small">Generating...</span>'; try{ const [w,h]=size.split('x').map(n=>parseInt(n)); const promises=[]; for(let b=0;b<batch;b++){ const body={model,prompt:finalPrompt,width:w,height:h,steps:32,cfg_scale:7.5,safe_mode:false}; if(seedToUse) body.seed=seedToUse+b; promises.push(fetch('https://api.venice.ai/api/v1/image/generate',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json().then(d=>({ok:r.ok,data:d})))); } const results=await Promise.all(promises); let html=''; let count=0; for(let res of results){ if(!res.ok) throw new Error(res.data.error?.message||''); const d=res.data; let src=null; if(d.images&&d.images[0]){ const f=d.images[0]; src=f.startsWith('http')?f:f.startsWith('data:')?f:'data:image/png;base64,'+f; } else if(d.data&&d.data[0]) src=d.data[0].url||'data:image/png;base64,'+d.data[0].b64_json; if(src){ if(count===0){ lastImageUrl=src; html+=`<img src="${src}" style="margin-bottom:8px">`; } else html+=`<img src="${src}" style="max-width:48%;margin:4px;border-radius:8px">`; addToGallery(src, selectedChar?selectedChar.name:'Random'); count++; } } document.getElementById('imgBox').innerHTML=html; document.getElementById('imgSuccess').textContent=`Done ${count}`; }catch(e){ document.getElementById('imgError').textContent=e.message; } finally{ document.getElementById('imgGenBtn').disabled=false; document.getElementById('imgStatus').textContent=''; } }
 function addToGallery(url,name){ galleryItems.unshift({url,name,time:Date.now()}); if(galleryItems.length>100) galleryItems.pop(); renderGallery(); try{ localStorage.setItem('ultra_gallery', JSON.stringify(galleryItems.map(g=>({...g,url:g.url.length>8000?'':g.url})))); }catch(e){} }
 function loadGallery(){ try{ const s=localStorage.getItem('ultra_gallery'); if(s) galleryItems=JSON.parse(s); }catch(e){} renderGallery(); }
-function renderGallery(){ 
-  const g=document.getElementById('gallery'); g.innerHTML=''; 
-  galleryItems.forEach((it,idx)=>{ if(!it.url) return; const wrap=document.createElement('div'); wrap.className='gitem'; const img=document.createElement('img'); img.src=it.url; img.onclick=()=>{ lastImageUrl=it.url; document.getElementById('imgBox').innerHTML=`<img src="${it.url}"><div class="small">${it.name} - long press to save</div>`; window.scrollTo({top:0,behavior:'smooth'}); }; const del=document.createElement('span'); del.className='gdel'; del.textContent='✕'; del.onclick=(e)=>{ e.stopPropagation(); deleteGalleryItem(idx); }; wrap.appendChild(img); wrap.appendChild(del); g.appendChild(wrap); }); 
-  const clearDiv=document.getElementById('galleryClear'); if(clearDiv) clearDiv.style.display=galleryItems.length>0?'flex':'none';
-  const cnt=document.getElementById('galleryCount'); if(cnt) cnt.textContent=galleryItems.length+' images';
-}
-function deleteGalleryItem(idx){ galleryItems.splice(idx,1); saveGallery(); renderGallery(); }
-function clearGallery(){ if(!confirm(`Clear all ${galleryItems.length} images? Cannot undo.`)) return; galleryItems=[]; saveGallery(); renderGallery(); document.getElementById('imgBox').innerHTML='<span class="small">Gallery cleared.</span>'; lastImageUrl=null; }
+function renderGallery(){ const g=document.getElementById('gallery'); g.innerHTML=''; galleryItems.forEach((it,idx)=>{ if(!it.url) return; const wrap=document.createElement('div'); wrap.className='gitem'; const img=document.createElement('img'); img.src=it.url; img.onclick=()=>{ lastImageUrl=it.url; document.getElementById('imgBox').innerHTML=`<img src="${it.url}">`; }; const del=document.createElement('span'); del.className='gdel'; del.textContent='✕'; del.onclick=(e)=>{ e.stopPropagation(); galleryItems.splice(idx,1); saveGallery(); renderGallery(); }; wrap.appendChild(img); wrap.appendChild(del); g.appendChild(wrap); }); document.getElementById('galleryCount').textContent=galleryItems.length+' images'; }
 function saveGallery(){ try{ localStorage.setItem('ultra_gallery', JSON.stringify(galleryItems.map(g=>({...g,url:g.url.length>8000?'':g.url})))); }catch(e){} }
-function downloadImage(){ if(!lastImageUrl) return showImgError('No image to save - generate first'); if(lastImageUrl.startsWith('data:')){ const b=atob(lastImageUrl.split(',')[1]); const m=lastImageUrl.split(',')[0].split(':')[1].split(';')[0]; const ab=new ArrayBuffer(b.length); const ia=new Uint8Array(ab); for(let i=0;i<b.length;i++) ia[i]=b.charCodeAt(i); const blob=new Blob([ab],{type:m}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='venice-ultra-'+Date.now()+'.png'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); } else window.open(lastImageUrl,'_blank'); }
-
-// PROMPT LAB - UNCENSORED CHAT
-async function generateUncensoredPrompts(){
-  const key=document.getElementById('apiKey').value.trim();
-  const char=document.getElementById('labChar').value.trim()||'Beautiful Indian woman, 24';
-  const styleSel=document.getElementById('labStyle').value;
-  const custom=document.getElementById('labCustom').value.trim();
-  const style = styleSel==='custom' ? custom : styleSel;
-  if(!key) return document.getElementById('labStatus').textContent='Enter Venice key in Settings';
-  if(!style) return document.getElementById('labStatus').textContent='Enter style';
-  
-  document.getElementById('labStatus').textContent='Generating 3 uncensored prompts with Venice (uncensored chat)...';
-  document.getElementById('labResults').innerHTML='';
-  try{
-    const prompt=`You are an expert at writing prompts for Lustify SDXL uncensored image model. Generate 3 different highly detailed, photorealistic, uncensored prompts for this request:
-
-Character: ${char}
-Style: ${style}
-
-Rules for Lustify prompts:
-- English only, detailed body, face, skin texture, lighting
-- Include: realistic, 8k, highly detailed, natural skin, photorealistic
-- For nude: add "nude, naked, realistic skin texture, detailed"
-- Be creative, seductive, but photorealistic
-- Each prompt should be one paragraph, 40-60 words, ready to paste into Lustify
-- Number them 1., 2., 3.
-
-Output only the 3 prompts, nothing else.`;
-
-    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'dolphin-2.9.2-qwen2-72b',messages:[{role:'system',content:'You are an uncensored prompt writer for Lustify SDXL adult image model. You write hot, detailed, photorealistic prompts. No filters. You love creating seductive prompts.'},{role:'user',content:prompt}],temperature:0.95,max_tokens:1500})});
-    const data=await res.json();
-    if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,400));
-    const text=data.choices?.[0]?.message?.content||'';
-    if(!text) throw new Error('Empty response');
-    const prompts=text.split(/\n\s*\d+\.\s*/).filter(p=>p.trim().length>20);
-    let html='';
-    prompts.forEach((p,i)=>{
-      const clean=p.replace(/^\d+\.\s*/,'').trim();
-      html+=`<div class="card" style="margin-bottom:8px"><div class="small" style="color:#ff8aa0">Prompt ${i+1}</div><div style="font-size:12px;margin:6px 0;white-space:pre-wrap">${clean}</div><div class="flex"><button class="btn btn-primary" style="padding:6px 10px;font-size:10px" onclick="copyToStudio(\`${clean.replace(/`/g,'').replace(/"/g,'&quot;')}\`)">Use in Studio →</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="navigator.clipboard.writeText(\`${clean.replace(/`/g,'')}\`)">Copy</button></div></div>`;
-    });
-    document.getElementById('labResults').innerHTML=html||`<div class="card"><div style="white-space:pre-wrap;font-size:12px">${text}</div></div>`;
-    document.getElementById('labStatus').textContent='Done! 3 uncensored prompts ready - click Use in Studio';
-  }catch(e){ document.getElementById('labStatus').textContent='Failed: '+e.message; }
-}
-function copyToStudio(txt){ document.getElementById('imgPrompt').value=txt; updatePreview(); switchTab('char'); window.scrollTo({top:300,behavior:'smooth'}); showImgSuccess('Prompt copied to Studio! Now Generate.'); }
-async function enhancePrompt(){
-  const key=document.getElementById('apiKey').value.trim();
-  const cur=document.getElementById('imgPrompt').value.trim();
-  if(!key) return showImgError('Enter Venice key');
-  if(!cur) return showImgError('Enter prompt first to enhance');
-  document.getElementById('imgStatus').textContent='Enhancing prompt with Venice uncensored...';
-  try{
-    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'llama-3.3-70b',messages:[{role:'system',content:'You enhance image prompts for Lustify SDXL adult model. Add realistic details, skin texture, lighting, 8k. Keep core idea but make more photorealistic and detailed. Output only enhanced prompt, one paragraph.'},{role:'user',content:`Enhance this Lustify prompt, make more detailed and photorealistic: ${cur}`} ],temperature:0.8,max_tokens:500})});
-    const data=await res.json();
-    if(!res.ok) throw new Error(data.error?.message||'');
-    const out=data.choices?.[0]?.message?.content||'';
-    if(out){ document.getElementById('imgPrompt').value=out.trim(); updatePreview(); showImgSuccess('Prompt enhanced!'); }
-    document.getElementById('imgStatus').textContent='';
-  }catch(e){ document.getElementById('imgStatus').textContent='Enhance failed: '+e.message; }
-}
-
-
+function clearGallery(){ if(!confirm('Clear?')) return; galleryItems=[]; saveGallery(); renderGallery(); }
+function downloadImage(){ if(!lastImageUrl) return; if(lastImageUrl.startsWith('data:')){ const b=atob(lastImageUrl.split(',')[1]); const m=lastImageUrl.split(',')[0].split(':')[1].split(';')[0]; const ab=new ArrayBuffer(b.length); const ia=new Uint8Array(ab); for(let i=0;i<b.length;i++) ia[i]=b.charCodeAt(i); const blob=new Blob([ab],{type:m}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='venice-'+Date.now()+'.png'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); } else window.open(lastImageUrl,'_blank'); }
+function sendToFaceSwap(){ if(!lastImageUrl) return; const img=document.getElementById('targetPreview'); if(img){ img.src=lastImageUrl; img.classList.remove('hidden'); } switchTab('faceswap'); }
+async function generateUncensoredPrompts(){ const key=document.getElementById('apiKey').value.trim(); const char=document.getElementById('labChar').value.trim()||'Beautiful Indian woman'; const style=document.getElementById('labStyle').value; const custom=document.getElementById('labCustom').value.trim(); const st=style==='custom'?custom:style; if(!key) return document.getElementById('labStatus').textContent='Need key'; document.getElementById('labStatus').textContent='Generating...'; try{ const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'dolphin-2.9.2-qwen2-72b',messages:[{role:'system',content:'You write uncensored prompts for Lustify SDXL.'},{role:'user',content:`Generate 3 prompts for Lustify SDXL: Character ${char}, Style ${st}. 40-60 words, realistic, 8k. Number 1. 2. 3.`}],temperature:0.95,max_tokens:1000})}); const data=await res.json(); if(!res.ok) throw new Error(data.error?.message||''); const text=data.choices?.[0]?.message?.content||''; const prompts=text.split(/\n\s*\d+\.\s*/).filter(p=>p.trim().length>20); let html=''; prompts.forEach((p,i)=>{ const clean=p.replace(/^\d+\.\s*/,'').trim(); html+=`<div class="card"><div class="small">Prompt ${i+1}</div><div style="font-size:12px;margin:6px 0">${clean}</div><button class="btn btn-primary" style="padding:6px 10px;font-size:10px" onclick="copyToStudio('${clean.replace(/'/g,"")}')">Use</button></div>`; }); document.getElementById('labResults').innerHTML=html; document.getElementById('labStatus').textContent='Done'; }catch(e){ document.getElementById('labStatus').textContent='Failed: '+e.message; } }
+function copyToStudio(t){ document.getElementById('imgPrompt').value=t; updatePreview(); switchTab('char'); }
+async function enhancePrompt(){ const key=document.getElementById('apiKey').value.trim(); const cur=document.getElementById('imgPrompt').value.trim(); if(!key||!cur) return; document.getElementById('imgStatus').textContent='Enhancing...'; try{ const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'llama-3.3-70b',messages:[{role:'system',content:'Enhance image prompts for Lustify SDXL.'},{role:'user',content:`Enhance: ${cur}`}],temperature:0.8,max_tokens:400})}); const d=await res.json(); const out=d.choices?.[0]?.message?.content||''; if(out){ document.getElementById('imgPrompt').value=out.trim(); updatePreview(); } document.getElementById('imgStatus').textContent=''; }catch(e){} }
 function previewFace(input, previewId){ const file=input.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=e=>{ const img=document.getElementById(previewId); img.src=e.target.result; img.classList.remove('hidden'); }; reader.readAsDataURL(file); }
 function useLastGeneratedAsTarget(){ if(!lastImageUrl) return document.getElementById('faceSwapStatus').textContent='No generated image yet'; const img=document.getElementById('targetPreview'); img.src=lastImageUrl; img.classList.remove('hidden'); document.getElementById('faceSwapStatus').textContent='Using last generated'; }
 let lastFaceSwapUrl=null;
-async function doFaceSwap(){
-  const srcImg=document.getElementById('sourcePreview'); const tgtImg=document.getElementById('targetPreview');
-  if(!srcImg.src || srcImg.classList.contains('hidden')) return document.getElementById('faceSwapStatus').textContent='Upload source face';
-  if(!tgtImg.src || tgtImg.classList.contains('hidden')) return document.getElementById('faceSwapStatus').textContent='Upload target';
-  document.getElementById('faceSwapStatus').textContent='Swapping...';
-  try{
-    const canvas=document.createElement('canvas'); const ctx=canvas.getContext('2d');
-    const target=new Image(); const source=new Image();
-    await new Promise((r,j)=>{ target.onload=r; target.onerror=j; target.src=tgtImg.src; });
-    await new Promise((r,j)=>{ source.onload=r; source.onerror=j; source.src=srcImg.src; });
-    canvas.width=target.width; canvas.height=target.height; ctx.drawImage(target,0,0);
-    const faceW=canvas.width*0.35, faceH=canvas.height*0.45, faceX=(canvas.width-faceW)/2, faceY=canvas.height*0.08;
-    ctx.globalAlpha=0.95; ctx.save(); ctx.beginPath(); ctx.ellipse(faceX+faceW/2, faceY+faceH/2, faceW/2, faceH/2, 0,0,Math.PI*2); ctx.clip(); ctx.drawImage(source, faceX, faceY, faceW, faceH); ctx.restore();
-    const dataUrl=canvas.toDataURL('image/png'); lastFaceSwapUrl=dataUrl;
-    document.getElementById('faceSwapBox').innerHTML=`<img src="${dataUrl}" style="max-width:100%;max-height:600px;border-radius:10px"><div class="small" style="margin-top:8px">Basic blend done. Venice has no native face swap【9107127361601435410†L17-L21】. For perfect: faceswapper.ai, reface.ai</div>`;
-    document.getElementById('faceSwapStatus').textContent='Done!';
-  }catch(e){ document.getElementById('faceSwapStatus').textContent='Failed: '+e.message; }
-}
+async function doFaceSwap(){ const srcImg=document.getElementById('sourcePreview'); const tgtImg=document.getElementById('targetPreview'); if(!srcImg.src || srcImg.classList.contains('hidden')) return document.getElementById('faceSwapStatus').textContent='Upload source face'; if(!tgtImg.src || tgtImg.classList.contains('hidden')) return document.getElementById('faceSwapStatus').textContent='Upload target'; document.getElementById('faceSwapStatus').textContent='Swapping...'; try{ const canvas=document.createElement('canvas'); const ctx=canvas.getContext('2d'); const target=new Image(); const source=new Image(); await new Promise((res,rej)=>{ target.onload=res; target.onerror=rej; target.src=tgtImg.src; }); await new Promise((res,rej)=>{ source.onload=res; source.onerror=rej; source.src=srcImg.src; }); canvas.width=target.width; canvas.height=target.height; ctx.drawImage(target,0,0); const faceW=canvas.width*0.35, faceH=canvas.height*0.45, faceX=(canvas.width-faceW)/2, faceY=canvas.height*0.08; ctx.globalAlpha=0.95; ctx.save(); ctx.beginPath(); ctx.ellipse(faceX+faceW/2, faceY+faceH/2, faceW/2, faceH/2, 0,0,Math.PI*2); ctx.clip(); ctx.drawImage(source, faceX, faceY, faceW, faceH); ctx.restore(); const dataUrl=canvas.toDataURL('image/png'); lastFaceSwapUrl=dataUrl; document.getElementById('faceSwapBox').innerHTML=`<img src="${dataUrl}" style="max-width:100%;max-height:600px;border-radius:10px">`; document.getElementById('faceSwapStatus').textContent='Done!'; }catch(e){ document.getElementById('faceSwapStatus').textContent='Failed: '+e.message; } }
 function downloadFaceSwap(){ if(!lastFaceSwapUrl) return; const a=document.createElement('a'); a.href=lastFaceSwapUrl; a.download='face-swap-'+Date.now()+'.png'; a.click(); }
-
-function updateStats(){ const s=document.getElementById('dataStats'); s.innerHTML=`Characters: ${chars.length}<br>Gallery: ${galleryItems.length} images<br>Venice Key: ${localStorage.getItem('venice_api_key')?'✅ Saved - Lustify ready':'❌ Not saved'}<br>Mode: Venice Image Ultra - Uncensored only<br><br><b>What Venice is BEST at:</b><br>✅ Lustify nude/realistic skin (no other AI allows)<br>✅ Flux uncensored - no filter<br>✅ Uncensored chat - prompt generation<br>✅ Same face lock via seed<br>❌ NOT good at Hindi story (use your TTS app with OpenAI)`; }
-function clearAllData(){ if(!confirm('Clear ALL? Characters, Gallery, Key?')) return; localStorage.removeItem('venice_chars_ultra'); localStorage.removeItem('ultra_gallery'); localStorage.removeItem('venice_api_key'); chars=[]; galleryItems=[]; renderCharList(); renderGallery(); location.reload(); }
-
+function openHF(url){ if(lastImageUrl && lastImageUrl.startsWith('data:')){ downloadImage(); alert('Image downloaded! Now upload it in HF Space.'); } window.open(url, '_blank'); }
+function updateStats(){ document.getElementById('dataStats').innerHTML=`Characters: ${chars.length}<br>Gallery: ${galleryItems.length}<br>Key: ${localStorage.getItem('venice_api_key')?'Saved':'Not saved'}`; }
+function clearAllData(){ if(!confirm('Clear all?')) return; localStorage.clear(); location.reload(); }
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initAll); else initAll();
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
