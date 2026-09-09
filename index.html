@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head><style>
+<html lang="en"><head><style>
 @font-face {
   font-family: "Optimistic";
   font-style: normal;
@@ -21,311 +20,249 @@
 :where(code, pre, kbd, samp) {
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
-</style>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Venice Super Agent - ONE App</title>
+</style><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Venice Image Ultra - Uncensored</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Inter,system-ui;background:#0a0a0e;color:#eee;min-height:100vh}
-.header{background:#12121a;border-bottom:1px solid #222;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.logo{font-weight:900;color:#ff3b5c;font-size:16px}
-.tabs{display:flex;gap:6px;background:#12121a;padding:8px;border-bottom:1px solid #222;position:sticky;top:44px;z-index:9;overflow-x:auto}
-.tab{padding:8px 14px;border-radius:20px;border:1px solid #333;background:#1a1a22;color:#888;cursor:pointer;font-size:11px;white-space:nowrap;font-weight:700}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:Inter,system-ui;background:#0a0a0e;color:#eee;min-height:100vh}
+.header{background:#12121a;border-bottom:1px solid #222;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.logo{font-weight:900;color:#ff3b5c;font-size:18px;letter-spacing:0.5px}
+.tabs{display:flex;gap:6px;background:#12121a;padding:8px;border-bottom:1px solid #222;position:sticky;top:48px;z-index:9;overflow-x:auto}
+.tab{padding:9px 16px;border-radius:20px;border:1px solid #333;background:#1a1a22;color:#888;cursor:pointer;font-size:12px;white-space:nowrap;font-weight:700}
 .tab.active{background:#ff3b5c;border-color:#ff3b5c;color:#fff}
-.container{max-width:900px;margin:0 auto;padding:12px}
+.container{max-width:1000px;margin:0 auto;padding:12px}
 .card{background:#15151d;border:1px solid #23232e;border-radius:12px;padding:12px;margin-bottom:12px}
-.label{color:#ff3b5c;font-weight:700;font-size:10px;text-transform:uppercase;margin:8px 0 4px;display:block}
-input,select,textarea{width:100%;background:#1e1e2a;border:1px solid #333;color:#fff;padding:10px;border-radius:8px;font-size:13px;margin-bottom:6px}
+.label{color:#ff3b5c;font-weight:700;font-size:10px;text-transform:uppercase;margin:10px 0 5px;display:block;letter-spacing:0.8px}
+input,select,textarea{width:100%;background:#1e1e2a;border:1px solid #333;color:#fff;padding:11px;border-radius:8px;font-size:13px;margin-bottom:6px}
 textarea{min-height:80px;resize:vertical}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media(max-width:700px){.grid{grid-template-columns:1fr}}
-.btn{padding:10px 14px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px}
-.btn-primary{background:#ff3b5c;color:#fff;flex:1}
-.btn-ghost{background:#2a2a3a;color:#fff}
-.btn-green{background:#1a8a4a;color:#fff}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.btn{padding:11px 16px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px;transition:0.2s}
+.btn-primary{background:#ff3b5c;color:#fff;flex:1}.btn-primary:disabled{opacity:0.5}
+.btn-ghost{background:#2a2a3a;color:#fff}.btn-green{background:#1a8a4a;color:#fff}
 .btn-nude{background:linear-gradient(135deg,#ff3b5c,#8a2a5a);color:#fff;flex:1}
-.imgbox{background:#0e0e14;border:1px solid #222;border-radius:10px;min-height:300px;display:flex;align-items:center;justify-content:center;padding:10px;flex-direction:column}
-.imgbox img{max-width:100%;max-height:500px;border-radius:8px}
-.small{color:#666;font-size:10px}
-.flex{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.btn-ultra{background:linear-gradient(135deg,#ff3b5c,#ff8a00);color:#fff;flex:1;font-size:13px}
+.imgbox{background:#0e0e14;border:1px solid #222;border-radius:12px;min-height:380px;display:flex;align-items:center;justify-content:center;padding:12px;flex-direction:column;position:relative}
+.imgbox img{max-width:100%;max-height:600px;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
+.small{color:#777;font-size:10px;line-height:1.4}
+.flex{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;align-items:center}
 .hidden{display:none !important}
-.error{background:rgba(255,59,92,.1);border:1px solid rgba(255,59,92,.3);color:#ff6b7a;padding:8px;border-radius:8px;margin-top:6px;font-size:11px}
-.success{background:rgba(40,200,120,.1);border:1px solid rgba(40,200,120,.3);color:#5cffb0;padding:8px;border-radius:8px;margin-top:6px;font-size:11px}
-.toggle{display:flex;background:#1e1e2a;border:1px solid #333;border-radius:20px;padding:2px;width:fit-content;margin:6px 0}
-.toggle button{padding:6px 14px;border-radius:20px;border:none;background:transparent;color:#777;cursor:pointer;font-weight:700;font-size:11px}
+.error{background:rgba(255,59,92,.12);border:1px solid rgba(255,59,92,.3);color:#ff8a9a;padding:10px;border-radius:8px;margin-top:8px;font-size:11px}
+.success{background:rgba(40,200,120,.12);border:1px solid rgba(40,200,120,.3);color:#6effb5;padding:10px;border-radius:8px;margin-top:8px;font-size:11px}
+.toggle{display:flex;background:#1e1e2a;border:1px solid #333;border-radius:20px;padding:3px;width:fit-content;margin:6px 0}
+.toggle button{padding:7px 16px;border-radius:20px;border:none;background:transparent;color:#777;cursor:pointer;font-weight:700;font-size:11px;transition:0.2s}
 .toggle button.active{background:#ff3b5c;color:#fff}
 .view{display:none}.view.active{display:block}
-.char-list{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
-.char-card{background:#1e1e2a;border:1px solid #333;border-radius:10px;padding:8px 10px;min-width:120px;cursor:pointer;position:relative}
-.char-card.active{border-color:#ff3b5c;background:#2a1a22}
-.char-card .name{font-weight:700;font-size:12px;color:#fff}
-.char-card .seed{font-size:9px;color:#777}
+.char-list{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.char-card{background:#1e1e2a;border:1px solid #333;border-radius:12px;padding:10px 12px;min-width:130px;cursor:pointer;position:relative;transition:0.2s}
+.char-card.active{border-color:#ff3b5c;background:#2a1a22;transform:translateY(-2px)}
+.char-card .name{font-weight:800;font-size:13px;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.char-card .seed{font-size:9px;color:#888;margin-top:2px}
+.char-card .desc{font-size:8px;color:#666;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
-.chip{padding:5px 10px;border-radius:20px;background:#1e1e2a;border:1px solid #333;font-size:10px;cursor:pointer}
+.chip{padding:6px 12px;border-radius:20px;background:#1e1e2a;border:1px solid #333;font-size:11px;cursor:pointer;transition:0.2s}
 .chip.active{background:#ff3b5c;border-color:#ff3b5c;color:#fff}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px;margin-top:8px}
-.gallery img{width:100%;height:100px;object-fit:cover;border-radius:6px;border:1px solid #333;cursor:pointer}
-.story-box{background:#0e0e14;border:1px solid #222;border-radius:10px;padding:12px;max-height:400px;overflow-y:auto;white-space:pre-wrap;font-size:13px;line-height:1.6;margin-top:6px}
-</style>
-</head>
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:10px}
+.gallery .gitem{position:relative;cursor:pointer;border-radius:8px;overflow:hidden;border:1px solid #333;transition:0.2s}
+.gallery .gitem:hover{border-color:#ff3b5c;transform:scale(1.02)}
+.gallery img{width:100%;height:110px;object-fit:cover;display:block}
+.gallery .gdel{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.75);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer}
+.preset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;margin-top:6px}
+.preset{padding:8px 10px;background:#1e1e2a;border:1px solid #2a2a3a;border-radius:8px;font-size:11px;cursor:pointer;text-align:center;transition:0.2s}
+.preset:hover{border-color:#ff3b5c;background:#231a22}
+.preset.active{border-color:#ff3b5c;background:#ff3b5c22;color:#ff8aa0}
+.prompt-box{background:#0e0e14;border:1px dashed #333;border-radius:8px;padding:8px;font-size:11px;color:#999;min-height:40px;white-space:pre-wrap}
+</style></head>
 <body>
-<div class="header"><div class="logo">🔥 SUPER AGENT</div><div class="small" id="saveStatus">Auto-save ON</div></div>
+<div class="header"><div class="logo">🔥 VENICE IMAGE ULTRA</div><div class="small" id="saveStatus">Pure Uncensored • Lustify • Flux</div></div>
 <div class="tabs">
-<div class="tab active" onclick="switchTab('story')">📚 Story</div>
-<div class="tab" onclick="switchTab('char')">🎭 Characters</div>
-<div class="tab" onclick="switchTab('convert')">🔤 Convert</div>
+<div class="tab active" onclick="switchTab('char')">🎭 Characters & Studio</div>
+<div class="tab" onclick="switchTab('prompt')">💋 Prompt Lab</div>
+<div class="tab" onclick="switchTab('faceswap')">🔄 Face Swap</div>
 <div class="tab" onclick="switchTab('settings')">⚙️ Settings</div>
 </div>
 
 <div class="container">
 <!-- SETTINGS -->
 <div id="view-settings" class="view">
-<div class="card" style="border-color:#ffc10744;background:rgba(255,193,7,.06)">
-<label class="label">🔑 Venice Key - Shared Across ALL Tabs</label>
-<input type="password" id="apiKey" placeholder="VENICE_INFERENCE_KEY_...">
-<div class="small">Enter once, used everywhere. Saved locally, never uploaded.</div>
-<div class="flex"><button class="btn btn-ghost" style="font-size:10px" onclick="testKey()">Test Key</button><button class="btn btn-ghost" style="font-size:10px" onclick="clearAllData()">Clear All Data</button></div>
-<div id="keyTest" class="small" style="margin-top:6px"></div>
+<div class="card" style="border-color:#ff3b5c44;background:rgba(255,59,92,.06)">
+<label class="label">🔑 Venice API Key - For ALL Uncensored Features</label>
+<input type="password" id="apiKey" placeholder="Paste VENICE key here...">
+<div class="small">Used for Lustify nude, Flux uncensored, Prompt Lab, Batch gen. Never uploaded, saved locally in your phone.</div>
+<div class="flex"><button class="btn btn-ghost" style="font-size:11px" onclick="testKey()">Test Key</button><button class="btn btn-ghost" style="font-size:11px;background:#331a1a" onclick="clearAllData()">Clear All Data</button></div>
+<div id="keyTest" class="small" style="margin-top:8px"></div>
 </div>
 <div class="card">
-<label class="label">🤖 Story Model - Change if Empty Response</label>
-<select id="storyModel"><option value="mistral-31-24b" selected>Mistral 31 24B - Most Reliable (Fixes Empty Response)</option><option value="llama-3.3-70b">Llama 3.3 70B - Best Story Quality</option><option value="qwen3-4b">Qwen3 4B - Fast but sometimes empty</option><option value="dolphin-2.9.2-qwen2-72b">Dolphin Qwen2 72B - Uncensored Best</option><option value="llama-3.2-3b">Llama 3.2 3B - Fastest</option></select>
-<div class="small">If you got Empty response, switch to Mistral or Llama 3.3. Your screenshot error = Qwen3 bug, this fixes it.</div>
-</div>
-<div class="card">
-<label class="label">📊 Your Data</label>
+<label class="label">📊 Stats & Models</label>
 <div class="small" id="dataStats">Loading...</div>
+<div class="small" style="margin-top:8px;line-height:1.6">
+<b>Best Models for Uncensored:</b><br>
+• <b>lustify-sdxl</b> - BEST for nude, realistic skin, adult (Venice exclusive)<br>
+• <b>flux-dev-uncensored</b> - Best for creative uncensored, no filter<br>
+• <b>fluently-xl</b> - Realistic, good for same face lock<br>
+• <b>pony-realism</b> - Anime + realistic mix, very uncensored
 </div>
-</div>
-
-<!-- STORY -->
-<div id="view-story" class="view active">
-<div class="card">
-<div class="chips" id="chapterChips"></div>
-<div class="grid">
-<div><label class="label">Main Idea</label><input id="storyIdea" placeholder="e.g. Neha bhabhi and tenant..."></div>
-<div><label class="label">Language</label><select id="storyLang"><option value="hinglish" selected>Hinglish</option><option value="hindi">Hindi Devanagari</option><option value="english">English</option></select></div>
-</div>
-<div class="grid">
-<div><label class="label">Characters (optional)</label><input id="storyChars" placeholder="e.g. Nikki 32, Ravi 35..."></div>
-<div><label class="label">Chapter Focus</label><input id="chapterFocus" placeholder="e.g. Both met after long, talking about college days..."></div>
-</div>
-<label class="label">📜 What Happened So Far - Paste previous story / context (Optional - helps AI continue)</label>
-<textarea id="whatSoFar" style="min-height:90px" placeholder="Paste previous chapters here if you want AI to remember... or leave empty for new story. Example: Chapter 1: Nikki and Ravi were college friends..."></textarea>
-<div class="flex" style="margin-top:6px">
-<button class="btn btn-primary" id="storyGenBtn" onclick="generateStory()">✨ Generate Chapter</button>
-<button class="btn btn-ghost" onclick="retryChapter()">🔄 Retry</button>
-<button class="btn btn-ghost" onclick="addChapter()">+ Ch</button>
-<button class="btn btn-ghost" onclick="loadSoFarFromStory()" style="font-size:10px">Load from Full Story ↓</button>
-<button class="btn btn-ghost" onclick="clearStory()" style="font-size:10px">Clear All</button>
-</div>
-<div id="storyStatus" class="small" style="margin-top:6px"></div>
-<div id="storyError" class="error hidden"></div>
-<div id="storySuccess" class="success hidden"></div>
-<div class="small" style="margin-top:4px;color:#888">💡 Tip: If you get Empty response, try changing Model in Settings → Story Model. Current: <span id="currentModelLabel">mistral-31-24b</span></div>
-</div>
-<div class="card">
-<div style="display:flex;justify-content:space-between"><label class="label">📖 Full Story (Auto-Saved, Spam Protected)</label><div class="flex"><button class="btn btn-ghost" style="padding:4px 8px;font-size:10px" onclick="copyStory()">Copy</button><button class="btn btn-ghost" style="padding:4px 8px;font-size:10px" onclick="downloadStory()">Download</button><button class="btn btn-green" style="padding:4px 8px;font-size:10px" onclick="switchTab('convert')">Convert →</button></div></div>
-<div class="story-box" id="storyBox">No story yet. Enter idea and Generate Ch1.</div>
 </div>
 </div>
 
-<!-- CHARACTERS -->
-<div id="view-char" class="view">
-<div class="card" style="border-color:#ff3b5c44">
-<label class="label">👥 Your Characters - Same Face Lock</label>
-<div class="char-list" id="charList"></div>
-<div class="flex"><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="createNewChar()">+ New</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="selectNoLock()" id="btnNoLock">🔓 No Lock (Random)</button></div>
-<div id="charEditor" class="hidden" style="margin-top:10px;background:#0e0e14;padding:10px;border-radius:8px;border:1px solid #222">
-<div class="grid"><div><label class="label">Name</label><input id="charName" placeholder="Neha"></div><div><label class="label">Seed (Face Lock)</label><input id="charSeed" type="number"></div></div>
-<label class="label">Face Description</label><input id="charFace" placeholder="Beautiful Indian woman, 24, long black hair...">
-<label class="label">Body</label><input id="charBody" placeholder="curvy, 5'4">
-<div class="flex"><button class="btn btn-primary" style="padding:6px 10px" onclick="saveChar()">Save</button><button class="btn btn-ghost" style="padding:6px 10px" onclick="cancelEdit()">Cancel</button><button class="btn btn-ghost" style="padding:6px 10px" onclick="randomSeed()">🎲 Random</button></div>
-</div>
-<div class="small" style="margin-top:6px" id="selectedInfo">🔓 No Lock - Random face</div>
-</div>
+<!-- CHARACTERS & STUDIO - MAIN TAB -->
+<div id="view-char" class="view active">
 <div class="card">
-<div style="display:flex;justify-content:space-between;align-items:center"><label class="label">🎨 Generate with Locked Face + Lustify</label><div class="toggle"><button id="btnSexy" class="active" onclick="setImgMode('sexy')">💃 Sexy</button><button id="btnNude" onclick="setImgMode('nude')">🔥 Nude</button></div></div>
-<textarea id="imgPrompt" placeholder="e.g. Neha standing in bedroom doorway... face will be locked if character selected"></textarea>
-<div class="grid"><div><label class="label">Model</label><select id="imgModel"><option value="lustify-sdxl" selected>Lustify SDXL - Adult Best</option><option value="fluently-xl">Fluently XL - Realistic</option><option value="flux-dev-uncensored">Flux Dev Uncensored</option></select></div><div><label class="label">Size</label><select id="imgSize"><option value="768x1024" selected>Portrait</option><option value="832x1216">Tall (nude best)</option></select></div></div>
-<div class="flex"><button class="btn btn-nude" id="imgGenBtn" onclick="generateImage()">🎨 Generate</button></div>
-<div id="imgStatus" class="small"></div><div id="imgError" class="error hidden"></div><div id="imgSuccess" class="success hidden"></div>
+<div style="display:flex;justify-content:space-between;align-items:center"><label class="label" style="margin:0">🎭 Your Characters - Same Face Lock (Seed)</label><div class="flex"><button class="btn btn-primary" style="padding:6px 12px;font-size:11px" onclick="createNewChar()">+ New Character</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="selectNoLock()">🔓 No Lock</button></div></div>
+<div class="char-list" id="charList"><span class="small">No chars yet. Create Neha, Priya etc. Same seed = same face every time.</span></div>
+<div id="charEditor" class="hidden" style="background:#1a1a2a;border:1px solid #333;border-radius:10px;padding:10px;margin-top:10px">
+<div class="grid"><div><label class="label">Name</label><input id="charName" placeholder="e.g. Neha"></div><div><label class="label">Seed (Face Lock)</label><div style="display:flex;gap:6px"><input id="charSeed" placeholder="12345"><button class="btn btn-ghost" style="padding:8px" onclick="randomSeed()">🎲</button></div></div></div>
+<label class="label">Face Description - Detailed for same face</label><input id="charFace" placeholder="e.g. Beautiful Indian woman, 24, long black hair, fair skin, sharp nose, almond eyes">
+<label class="label">Body / Style (optional)</label><input id="charBody" placeholder="e.g. curvy, slim waist, 34C, hourglass">
+<div class="flex"><button class="btn btn-primary" onclick="saveChar()">💾 Save Character</button><button class="btn btn-ghost" onclick="cancelEdit()">Cancel</button></div>
 </div>
+<div class="small" id="selectedInfo" style="margin-top:8px">🔓 No Lock - Random face. Select a character to lock same face.</div>
+</div>
+
 <div class="card">
-<div style="display:flex;justify-content:space-between;align-items:center"><label class="label">🖼️ Result - Long press to Save</label><div class="flex"><button class="btn btn-green" style="padding:6px 10px;font-size:10px" onclick="downloadImage()">💾 Download</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px;background:#331a1a" onclick="clearGallery()">🗑️ Clear All</button></div></div>
-<div class="imgbox" id="imgBox"><span class="small">No image yet. Select character then generate.</span></div>
-<div id="galleryClear" class="flex hidden" style="justify-content:space-between;margin-top:8px"><span class="small">Tap X on image to delete single. Or clear all.</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:9px;background:#331a1a" onclick="clearGallery()">Clear Gallery (${galleryItems.length})</button></div>
+<label class="label">🎨 Image Studio - Uncensored Controls</label>
+<div class="grid">
+<div><label class="label">Model - Choose Uncensored</label><select id="imgModel"><option value="lustify-sdxl" selected>Lustify SDXL - BEST Nude, Realistic Skin</option><option value="flux-dev-uncensored">Flux Dev Uncensored - No Filter, Creative</option><option value="fluently-xl">Fluently XL - Realistic + Face Lock Best</option><option value="pony-realism">Pony Realism - Anime+Real Mix, Very Uncensored</option><option value="lustify-v7">Lustify V7 - Older but good</option></select></div>
+<div><label class="label">Size / Ratio</label><select id="imgSize"><option value="768x1024" selected>Portrait 768x1024 - Best for full body</option><option value="832x1216">Tall 832x1216 - Best for nude</option><option value="1024x768">Landscape 1024x768</option><option value="768x768">Square 768x768</option><option value="1024x1024">Square HD 1024x1024</option></select></div>
+</div>
+<div class="grid">
+<div><label class="label">Mode</label><div class="toggle"><button id="btnSexy" class="active" onclick="setImgMode('sexy')">😍 Sexy</button><button id="btnNude" onclick="setImgMode('nude')">🔥 Nude</button></div></div>
+<div><label class="label">Batch - Generate Multiple</label><select id="batchCount"><option value="1" selected>1 Image</option><option value="2">2 Images (same prompt, diff seed)</option><option value="4">4 Images - Batch</option></select></div>
+</div>
+
+<label class="label">💃 Pose Presets - Click to Add to Prompt</label>
+<div class="preset-grid" id="posePresets">
+<div class="preset" onclick="addPreset('standing in doorway, leaning against frame, seductive look')">🚪 Doorway Lean</div>
+<div class="preset" onclick="addPreset('sitting on bed, legs crossed, bedroom, soft lighting')">🛏️ Bed Sit</div>
+<div class="preset" onclick="addPreset('lying on bed, on back, arched back, looking at camera')">😴 Lying Back</div>
+<div class="preset" onclick="addPreset('in kitchen, cooking, wearing only apron, back view')">🍳 Kitchen Apron</div>
+<div class="preset" onclick="addPreset('in shower, wet hair, water droplets, steamy glass')">🚿 Shower Wet</div>
+<div class="preset" onclick="addPreset('mirror selfie, holding phone, bathroom mirror')">🪞 Mirror Selfie</div>
+<div class="preset" onclick="addPreset('on balcony, night city lights, wind in hair')">🌃 Balcony Night</div>
+<div class="preset" onclick="addPreset('yoga pose, stretching, flexible, gym wear')">🧘 Yoga Stretch</div>
+</div>
+
+<label class="label">👗 Outfit Presets</label>
+<div class="preset-grid" id="outfitPresets">
+<div class="preset" onclick="addPreset('wearing red saree, pallu falling, cleavage visible')">🥻 Saree Seductive</div>
+<div class="preset" onclick="addPreset('black bikini, beach, wet')">👙 Bikini</div>
+<div class="preset" onclick="addPreset('white shirt, no bra, wet, see-through')">👔 Wet Shirt</div>
+<div class="preset" onclick="addPreset('lingerie, lace, black')">🖤 Lace Lingerie</div>
+<div class="preset" onclick="addPreset('completely nude, no clothes, natural')">🔥 Fully Nude</div>
+<div class="preset" onclick="addPreset('towel, just out of shower, holding towel')">🛁 Towel Only</div>
+<div class="preset" onclick="addPreset('traditional lehenga, bridal, heavy jewelry')">💃 Bridal Lehenga</div>
+<div class="preset" onclick="addPreset('office wear, skirt, blouse, boss look')">💼 Office Skirt</div>
+</div>
+
+<label class="label">🎬 Scene / Background</label>
+<div class="preset-grid" id="scenePresets">
+<div class="preset" onclick="addPreset('luxury bedroom, silk sheets, warm lighting')">🛏️ Luxury Bedroom</div>
+<div class="preset" onclick="addPreset('bathroom, bathtub, candles')">🕯️ Candle Bath</div>
+<div class="preset" onclick="addPreset('living room, couch, evening')">🛋️ Couch Evening</div>
+<div class="preset" onclick="addPreset('beach sunset, golden hour, ocean')">🏖️ Beach Sunset</div>
+<div class="preset" onclick="addPreset('car backseat, night, city lights')">🚗 Car Backseat</div>
+<div class="preset" onclick="addPreset('hotel room, window view, night')">🏨 Hotel Night</div>
+</div>
+
+<label class="label">✨ Main Prompt - Describe what you want (English works best for Lustify)</label>
+<textarea id="imgPrompt" style="min-height:90px" placeholder="e.g. Neha standing in doorway, red saree falling, seductive smile, long hair, realistic, highly detailed... or click presets above to build prompt"></textarea>
+<div class="prompt-box" id="finalPromptPreview">Final prompt preview will show here (with character face lock + your prompt + nude/sexy enhancers)</div>
+
+<div class="flex" style="margin-top:10px">
+<button class="btn btn-ultra" id="imgGenBtn" onclick="generateImage()">🔥 Generate Uncensored</button>
+<button class="btn btn-ghost" onclick="clearPrompt()">Clear</button>
+<button class="btn btn-ghost" onclick="enhancePrompt()">✨ AI Enhance Prompt</button>
+</div>
+<div id="imgStatus" class="small" style="margin-top:8px"></div>
+<div id="imgError" class="error hidden"></div>
+<div id="imgSuccess" class="success hidden"></div>
+</div>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center"><label class="label" style="margin:0">🖼️ Result - Long Press to Save</label><div class="flex"><button class="btn btn-green" style="padding:6px 12px;font-size:11px" onclick="downloadImage()">💾 Save</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px;background:#331a1a" onclick="clearGallery()">🗑️ Clear All</button></div></div>
+<div class="imgbox" id="imgBox"><span class="small">No image yet. Select character for same face, add presets, then Generate.<br><br>Tip: Lustify SDXL + Nude mode + Tall size = best results</span></div>
+<div id="galleryClear" class="flex hidden" style="justify-content:space-between;margin-top:10px"><span class="small">Tap image to view large. Tap X to delete single.</span><span class="small" id="galleryCount">0 images</span></div>
 <div class="gallery" id="gallery"></div>
 </div>
 </div>
 
-<!-- IMAGE SIMPLE -->
-<!-- CONVERT -->
-<div id="view-convert" class="view">
+<!-- PROMPT LAB - UNCENSORED -->
+<div id="view-prompt" class="view">
+<div class="card" style="border-color:#ff3b5c44;background:rgba(255,59,92,.08)">
+<label class="label">💋 Uncensored Prompt Lab - Generate Hot Prompts (Venice Uncensored Chat)</label>
+<div class="small">Venice chat is 100% uncensored. Use it to generate Lustify prompts that are too hot for OpenAI. This is Venice's real strength.</div>
+<div class="grid" style="margin-top:8px">
+<div><label class="label">Character for Prompt</label><input id="labChar" placeholder="e.g. Neha 24, Indian, curvy..."></div>
+<div><label class="label">Style / Fetish (Uncensored, Venice allows)</label><select id="labStyle"><option value="sexy saree seduction, pallu falling">Saree Seduction</option><option value="nude artistic, soft lighting, realistic skin">Artistic Nude</option><option value="bikini beach, wet, seductive">Bikini Beach</option><option value="lingerie, lace, bedroom, seductive pose">Lingerie Bedroom</option><option value="shower, wet, soapy, steamy">Shower Wet</option><option value="office affair, skirt, boss secretary">Office Affair</option><option value="traditional Indian bride, first night">First Night</option><option value="custom">Custom - type below</option></select></div>
+</div>
+<textarea id="labCustom" placeholder="Custom style: e.g. Neha in kitchen, wearing only apron, flour on hands, seductive... (Venice allows uncensored, write anything)"></textarea>
+<div class="flex"><button class="btn btn-nude" onclick="generateUncensoredPrompts()">💋 Generate 3 Uncensored Prompts</button><button class="btn btn-ghost" onclick="document.getElementById('labCustom').value=''">Clear</button></div>
+<div id="labStatus" class="small" style="margin-top:8px"></div>
+<div id="labResults" style="margin-top:10px"></div>
+</div>
+
 <div class="card">
-<label class="label">🔤 Hinglish ↔ Hindi Converter</label>
-<div class="toggle"><button id="convH2D" class="active" onclick="setConv('h2d')">Hinglish → Hindi</button><button id="convD2H" onclick="setConv('d2h')">Hindi → Hinglish</button></div>
-<textarea id="convInput" style="min-height:150px" placeholder="Story auto-loads here... or paste Hinglish"></textarea>
-<div class="flex"><button class="btn btn-primary" onclick="convertText()">Convert</button><button class="btn btn-ghost" onclick="loadStoryToConv()">Load Story</button><button class="btn btn-ghost" onclick="document.getElementById('convInput').value=''">Clear</button></div>
-<textarea id="convOutput" style="min-height:150px" placeholder="Converted output..." readonly></textarea>
-<div class="flex"><button class="btn btn-green" onclick="copyConv()">Copy Output</button></div>
-<div id="convStatus" class="small"></div>
+<label class="label">🔥 Quick Uncensored Ideas - Click to Copy to Studio</label>
+<div class="preset-grid">
+<div class="preset" onclick="copyToStudio('Beautiful Indian woman, 24, long black hair, red saree pallu slipping, cleavage, standing in doorway of old haveli, seductive smile, realistic, highly detailed skin, natural lighting')">🥻 Saree Haveli</div>
+<div class="preset" onclick="copyToStudio('Indian bhabhi, 30, curvy, wearing black lace lingerie, sitting on bed, bedroom, soft warm light, looking at camera, realistic photo')">🖤 Bhabhi Lace</div>
+<div class="preset" onclick="copyToStudio('Young Indian girl, 22, wet hair, white wet t-shirt, no bra, see-through, in rain, street, night, realistic')">🌧️ Wet T-Shirt</div>
+<div class="preset" onclick="copyToStudio('Indian bride, 26, bridal lehenga, heavy jewelry, first night, bedroom, shy smile, soft lighting, realistic')">👰 Bridal Night</div>
+<div class="preset" onclick="copyToStudio('Indian woman, 28, completely nude, artistic, lying on silk sheets, soft natural light, realistic skin texture, highly detailed')">🔥 Artistic Nude</div>
+<div class="preset" onclick="copyToStudio('Two Indian women, friends, both in bikini, beach, sunset, playful, realistic')">👯‍♀️ 2 Girls Beach</div>
+</div>
+<div class="small" style="margin-top:8px">Tip: Lustify works best with English prompts + detailed body/face. Venice chat can generate even hotter prompts - use Prompt Lab above.</div>
+</div>
+
+</div>
+
+<div id="view-faceswap" class="view">
+<div class="card" style="border-color:#00ff8844;background:rgba(0,255,136,.06)">
+<label class="label">🔄 Face Swap - Venice Has NO Native Face Swap</label>
+<div class="small" style="color:#8f8">Venice AI: No face swapping, No face consistency tools - only seed lock. This tab adds client-side face swap, 100% private.</div>
+<div class="grid" style="margin-top:12px">
+<div><div style="border:2px dashed #333;border-radius:12px;padding:20px;text-align:center;cursor:pointer" onclick="document.getElementById('sourceFace').click()"><div>📸 Source Face</div><div class="small">Upload face</div><img id="sourcePreview" class="hidden" style="max-width:100%;max-height:200px;border-radius:8px;margin-top:8px"><input type="file" id="sourceFace" accept="image/*" class="hidden" onchange="previewFace(this,'sourcePreview')"></div></div>
+<div><div style="border:2px dashed #333;border-radius:12px;padding:20px;text-align:center;cursor:pointer" onclick="document.getElementById('targetImage').click()"><div>🖼️ Target Image</div><div class="small">Upload or use last generated</div><img id="targetPreview" class="hidden" style="max-width:100%;max-height:200px;border-radius:8px;margin-top:8px"><input type="file" id="targetImage" accept="image/*" class="hidden" onchange="previewFace(this,'targetPreview')"></div></div>
+</div>
+<div style="display:flex;gap:6px;margin-top:12px"><button class="btn btn-ultra" onclick="useLastGeneratedAsTarget()">Use Last Generated</button><button class="btn btn-primary" onclick="doFaceSwap()">🔄 Swap Face</button></div>
+<div id="faceSwapStatus" class="small" style="margin-top:8px"></div>
+<div class="card" style="margin-top:10px"><label class="label">Result</label><div class="imgbox" id="faceSwapBox"><span class="small">Upload source + target, then Swap. For perfect AI use faceswapper.ai, reface.ai, HuggingFace felixrosberg/face-swap</span></div><div style="display:flex;gap:6px;margin-top:8px"><button class="btn btn-green" style="padding:6px 12px;font-size:11px" onclick="downloadFaceSwap()">💾 Save Swapped</button></div></div>
 </div>
 </div>
 
 </div>
 
 <script>
-let currentTab='story', chars=[], selectedChar=null, imgMode='sexy', convMode='h2d';
-let storyData={chapters:[], current:0, idea:'', lang:'hinglish'}, lastImageUrl=null, galleryItems=[];
+let chars=[], selectedChar=null, imgMode='sexy', lastImageUrl=null, galleryItems=[], editingIndex=-1;
 
 function switchTab(t){
-  currentTab=t;
   document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
-  const tabMap={story:0,char:1,convert:2,settings:3};
-  document.querySelectorAll('.tab')[tabMap[t]].classList.add('active');
+  const map={char:0,prompt:1,faceswap:2,settings:3};
+  document.querySelectorAll('.tab')[map[t]].classList.add('active');
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+t).classList.add('active');
-  if(t==='convert') loadStoryToConv();
   if(t==='settings') updateStats();
 }
-
 function initAll(){
   const ak=document.getElementById('apiKey'); const sk=localStorage.getItem('venice_api_key'); if(ak&&sk) ak.value=sk;
   if(ak){ const s=()=>{ const v=ak.value.trim(); if(v.length>10) localStorage.setItem('venice_api_key',v); }; ak.addEventListener('input',s); ak.addEventListener('blur',s); }
-  loadChars(); loadGallery(); loadStory(); renderChapters(); updateStoryBox();
-  setImgMode('sexy'); setConv('h2d'); selectNoLock();
-  // model listener
-  const sm=document.getElementById('storyModel'); if(sm){ sm.addEventListener('change', ()=>{ saveStory(); document.getElementById('currentModelLabel').textContent=sm.value; }); const ml=document.getElementById('currentModelLabel'); if(ml) ml.textContent=sm.value; }
-  // what so far auto-save
-  const wsf=document.getElementById('whatSoFar'); if(wsf){ wsf.addEventListener('input', saveStory); }
-  // auto-save every 3 sec
-  setInterval(saveStory, 3000);
+  loadChars(); loadGallery(); setImgMode('sexy'); selectNoLock();
+  const ip=document.getElementById('imgPrompt'); if(ip){ ip.addEventListener('input', updatePreview); }
 }
-function testKey(){ const k=document.getElementById('apiKey').value.trim(); const out=document.getElementById('keyTest'); if(!k) return out.textContent='Enter key'; out.textContent='Key length '+k.length+' - saved. Try generating Story Ch1 to test.'; }
+function testKey(){ const k=document.getElementById('apiKey').value.trim(); const out=document.getElementById('keyTest'); if(!k) return out.textContent='Enter key'; out.textContent='Key length '+k.length+' saved. Models: lustify-sdxl, flux-dev-uncensored ready.'; }
 
-// STORY LOGIC - FIXED ANTI-SPAM
-function loadStory(){ 
-  try{ 
-    const s=localStorage.getItem('super_story_v1'); 
-    if(s){ const d=JSON.parse(s); storyData={...storyData,...d}; 
-      document.getElementById('storyIdea').value=d.idea||''; 
-      document.getElementById('storyLang').value=d.lang||'hinglish'; 
-      if(d.whatSoFar) document.getElementById('whatSoFar').value=d.whatSoFar;
-      if(d.model) document.getElementById('storyModel').value=d.model;
-    }
-  }catch(e){} 
-}
-function saveStory(){
-  storyData.idea=document.getElementById('storyIdea').value||storyData.idea;
-  storyData.lang=document.getElementById('storyLang').value||storyData.lang;
-  storyData.whatSoFar=document.getElementById('whatSoFar').value||'';
-  storyData.model=document.getElementById('storyModel').value||'mistral-31-24b';
-  localStorage.setItem('super_story_v1', JSON.stringify(storyData));
-  document.getElementById('saveStatus').textContent='Auto-saved '+new Date().toLocaleTimeString();
-  const ml=document.getElementById('currentModelLabel'); if(ml) ml.textContent=storyData.model;
-}
-function loadSoFarFromStory(){
-  const full=document.getElementById('storyBox').textContent;
-  if(full && full.length>20){ document.getElementById('whatSoFar').value=full.slice(-3000); saveStory(); document.getElementById('storyStatus').textContent='Loaded last 3000 chars from Full Story into What Happened So Far'; }
-  else document.getElementById('whatSoFar').value='';
-}
-function renderChapters(){
-  const c=document.getElementById('chapterChips'); c.innerHTML='';
-  const total=Math.max(storyData.chapters.length,1);
-  for(let i=0;i<total;i++){
-    const chip=document.createElement('div'); chip.className='chip'+(storyData.current===i?' active':''); chip.textContent='Ch'+(i+1)+(storyData.chapters[i]?` (${Math.round(storyData.chapters[i].length/100)/10}k)`:''); chip.onclick=()=>{storyData.current=i; renderChapters(); updateStoryBox();};
-    c.appendChild(chip);
-  }
-}
-function updateStoryBox(){
-  const box=document.getElementById('storyBox');
-  if(storyData.chapters.length===0) box.textContent='No story yet.';
-  else {
-    let full=''; storyData.chapters.forEach((ch,i)=>{ if(ch) full+=`\n\n--- CHAPTER ${i+1} ---\n${ch}`; });
-    box.textContent=full.trim();
-  }
-}
-function addChapter(){ storyData.chapters.push(''); storyData.current=storyData.chapters.length-1; renderChapters(); saveStory(); }
-function clearStory(){ if(!confirm('Delete entire story?')) return; storyData.chapters=[]; storyData.current=0; renderChapters(); updateStoryBox(); saveStory(); }
-function isSpam(text){
-  const spamWords=['premium quality','gold standard','benchmark reference','monopoly exclusive','counterfeit fake','replica imitation','password biometric','fingerprint retina','multi factor verification'];
-  const lower=text.toLowerCase(); let count=0; spamWords.forEach(w=>{ if(lower.includes(w)) count++; });
-  const uniqueWords=new Set(lower.split(/\s+/)).size; const totalWords=lower.split(/\s+/).length;
-  return count>=2 || totalWords>0 && (uniqueWords/totalWords<0.2) || text.length>8000 || (text.includes('tier elite class') && text.length>500);
-}
-async function generateStory(){
-  const idea=document.getElementById('storyIdea').value.trim(); 
-  const lang=document.getElementById('storyLang').value;
-  const chars=document.getElementById('storyChars').value.trim(); 
-  const focus=document.getElementById('chapterFocus').value.trim();
-  const whatSoFar=document.getElementById('whatSoFar').value.trim();
-  const model=document.getElementById('storyModel').value||'mistral-31-24b';
-  const apiKey=document.getElementById('apiKey').value.trim();
-  if(!apiKey) return showStoryError('Enter Venice Key in Settings tab');
-  if(!idea) return showStoryError('Enter Main Idea');
-  const chapterIdx=storyData.current;
-  let prevContext=''; 
-  if(whatSoFar) prevContext=whatSoFar.slice(-2000);
-  else if(chapterIdx>0 && storyData.chapters[chapterIdx-1]) prevContext=storyData.chapters[chapterIdx-1].slice(-1500);
-  
-  const langPrompt=lang==='hindi'?'in Hindi Devanagari script':lang==='hinglish'?'in Hinglish (Hindi in Roman English, like "wo boli")':'in English';
-  const prompt=`Write Chapter ${chapterIdx+1} only, ${langPrompt}, 700-900 words, adult romantic story. Main idea: ${idea}. Characters: ${chars||'not specified'}. This chapter focus: ${focus||'continue story'}. What happened so far: "${prevContext.slice(0,1500)}". Write ONLY Chapter ${chapterIdx+1} story text, narrative with dialogues and scenes, no word lists, no SEO spam.`;
-  
-  document.getElementById('storyGenBtn').disabled=true;
-  document.getElementById('storyStatus').textContent=`Generating Ch${chapterIdx+1} with ${model}... (using What Happened So Far: ${prevContext.length} chars)`;
-  hideStoryMsg();
-  try{
-    const payload={model:model,messages:[{role:'system',content:'You are an adult romantic story writer. Write only story narrative, no lists, no SEO spam, no keyword stuffing. Each chapter 700-900 words max. Never output word lists.'},{role:'user',content:prompt}],temperature:0.85,top_p:0.9,max_tokens:2000,frequency_penalty:0.5,presence_penalty:0.3};
-    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    const data=await res.json(); 
-    console.log('Venice response', data);
-    if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,400));
-    let text=data.choices?.[0]?.message?.content || data.choices?.[0]?.message?.reasoning_content || data.choices?.[0]?.text || '';
-    if(!text || text.trim().length<10){
-      // try alternative fields
-      if(data.choices?.[0]?.delta?.content) text=data.choices[0].delta.content;
-      else throw new Error(`Empty response from ${model}. Venice returned: ${JSON.stringify(data).slice(0,500)} - Try switching model to Mistral or Llama in Settings.`);
-    }
-    if(isSpam(text)){
-      throw new Error('Model generated spam word-list (like "premium quality gold standard"). Try switching to Mistral 31 24B in Settings - it never does this.');
-    }
-    if(text.length>6000) text=text.slice(0,6000)+'\n...[trimmed]';
-    storyData.chapters[chapterIdx]=text;
-    storyData.idea=idea; storyData.lang=lang; storyData.whatSoFar=whatSoFar; storyData.model=model;
-    renderChapters(); updateStoryBox(); saveStory();
-    showStorySuccess(`Ch${chapterIdx+1} done! ${text.length} chars with ${model} - Auto-saved.`);
-    if(chapterIdx===storyData.chapters.length-1 && storyData.chapters.length<15) addChapter();
-  }catch(e){
-    showStoryError(e.message);
-    document.getElementById('storyStatus').textContent='Failed - '+e.message.slice(0,200);
-  }finally{
-    document.getElementById('storyGenBtn').disabled=false;
-  }
-}
-function retryChapter(){ generateStory(); }
-function showStoryError(m){ document.getElementById('storyError').textContent=m; document.getElementById('storyError').classList.remove('hidden'); document.getElementById('storySuccess').classList.add('hidden'); }
-function showStorySuccess(m){ document.getElementById('storySuccess').textContent=m; document.getElementById('storySuccess').classList.remove('hidden'); document.getElementById('storyError').classList.add('hidden'); }
-function hideStoryMsg(){ document.getElementById('storyError').classList.add('hidden'); document.getElementById('storySuccess').classList.add('hidden'); }
-function copyStory(){ navigator.clipboard.writeText(document.getElementById('storyBox').textContent).then(()=>showStorySuccess('Copied!')); }
-function downloadStory(){ const blob=new Blob([document.getElementById('storyBox').textContent],{type:'text/plain'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='story-'+Date.now()+'.txt'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); }
-
-// CHARACTERS LOGIC
-function loadChars(){ try{ const s=localStorage.getItem('venice_chars_super'); if(s) chars=JSON.parse(s); }catch(e){} renderCharList(); }
-function saveChars(){ localStorage.setItem('venice_chars_super', JSON.stringify(chars)); }
-let editingIndex=-1;
+function loadChars(){ try{ const s=localStorage.getItem('venice_chars_ultra'); if(s) chars=JSON.parse(s); }catch(e){} renderCharList(); }
+function saveChars(){ localStorage.setItem('venice_chars_ultra', JSON.stringify(chars)); }
 function renderCharList(){ 
   const list=document.getElementById('charList'); list.innerHTML=''; 
-  if(chars.length===0) list.innerHTML='<span class="small">No chars yet. + New to create Neha, Priya etc. Same seed = same face.</span>'; 
+  if(chars.length===0) list.innerHTML='<span class="small">No chars yet. + New to create Neha, Priya etc. Same seed = same face every time.</span>'; 
   chars.forEach((c,i)=>{ 
     const d=document.createElement('div'); d.className='char-card'+(selectedChar&&selectedChar.seed===c.seed?' active':''); 
-    d.innerHTML=`<div class="name">${c.name} <span style="float:right"><span onclick="event.stopPropagation(); editChar(${i})" style="cursor:pointer;margin-left:4px">✏️</span><span onclick="event.stopPropagation(); deleteChar(${i})" style="cursor:pointer;margin-left:4px">🗑️</span></span></div><div class="seed">Seed ${c.seed}</div><div class="small" style="font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.face.slice(0,30)}</div>`; 
+    d.innerHTML=`<div class="name">${c.name} <span><span onclick="event.stopPropagation(); editChar(${i})" style="cursor:pointer;margin-left:6px">✏️</span><span onclick="event.stopPropagation(); deleteChar(${i})" style="cursor:pointer;margin-left:6px">🗑️</span></span></div><div class="seed">Seed ${c.seed}</div><div class="desc">${c.face.slice(0,40)}</div>`; 
     d.onclick=()=>selectChar(i); list.appendChild(d); 
   }); 
 }
-function createNewChar(){ editingIndex=-1; document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=''; document.getElementById('charFace').value='Beautiful Indian woman, 24, long black hair, fair'; document.getElementById('charBody').value='curvy'; randomSeed(); document.getElementById('charName').focus(); }
+function createNewChar(){ editingIndex=-1; document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=''; document.getElementById('charFace').value='Beautiful Indian woman, 24, long black hair, fair skin, almond eyes'; document.getElementById('charBody').value='curvy, hourglass, 34C'; randomSeed(); document.getElementById('charName').focus(); }
 function editChar(idx){ editingIndex=idx; const c=chars[idx]; document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=c.name; document.getElementById('charSeed').value=c.seed; document.getElementById('charFace').value=c.face; document.getElementById('charBody').value=c.body||''; }
-function deleteChar(idx){ if(!confirm(`Delete character "${chars[idx].name}"?`)) return; if(selectedChar && selectedChar.seed===chars[idx].seed) selectNoLock(); chars.splice(idx,1); saveChars(); renderCharList(); }
+function deleteChar(idx){ if(!confirm(`Delete "${chars[idx].name}"?`)) return; if(selectedChar && selectedChar.seed===chars[idx].seed) selectNoLock(); chars.splice(idx,1); saveChars(); renderCharList(); }
 function randomSeed(){ document.getElementById('charSeed').value=Math.floor(Math.random()*900000)+10000; }
 function cancelEdit(){ document.getElementById('charEditor').classList.add('hidden'); editingIndex=-1; }
 function saveChar(){ 
@@ -337,65 +274,176 @@ function saveChar(){
   if(editingIndex>=0){ chars[editingIndex]=obj; } else { const idx=chars.findIndex(c=>c.name.toLowerCase()===name.toLowerCase()); if(idx>=0) chars[idx]=obj; else chars.push(obj); }
   saveChars(); renderCharList(); cancelEdit(); selectChar(chars.findIndex(c=>c.seed===seed)); 
 }
-function selectChar(idx){ selectedChar=chars[idx]; document.querySelectorAll('.char-card').forEach((el,i)=>el.classList.toggle('active', i===idx)); document.getElementById('selectedInfo').innerHTML=`🔒 Locked: <b>${selectedChar.name}</b> Seed ${selectedChar.seed} - Same face every time <button class="btn btn-ghost" style="padding:2px 6px;font-size:9px;margin-left:6px" onclick="editChar(${idx})">✏️ Edit</button><button class="btn btn-ghost" style="padding:2px 6px;font-size:9px" onclick="deleteChar(${idx})">🗑️ Delete</button>`; }
-function selectNoLock(){ selectedChar=null; document.querySelectorAll('.char-card').forEach(el=>el.classList.remove('active')); document.getElementById('selectedInfo').textContent='🔓 No Lock - Random face'; }
-function setImgMode(m){ imgMode=m; document.getElementById('btnSexy').classList.toggle('active', m==='sexy'); document.getElementById('btnNude').classList.toggle('active', m==='nude'); document.getElementById('imgModel').value=m==='nude'?'lustify-sdxl':'fluently-xl'; }
+function selectChar(idx){ selectedChar=chars[idx]; document.querySelectorAll('.char-card').forEach((el,i)=>el.classList.toggle('active', i===idx)); document.getElementById('selectedInfo').innerHTML=`🔒 Locked: <b>${selectedChar.name}</b> Seed ${selectedChar.seed} - Same face every time <button class="btn btn-ghost" style="padding:2px 6px;font-size:9px;margin-left:6px" onclick="editChar(${idx})">✏️ Edit</button><button class="btn btn-ghost" style="padding:2px 6px;font-size:9px" onclick="deleteChar(${idx})">🗑️ Delete</button>`; updatePreview(); }
+function selectNoLock(){ selectedChar=null; document.querySelectorAll('.char-card').forEach(el=>el.classList.remove('active')); document.getElementById('selectedInfo').textContent='🔓 No Lock - Random face'; updatePreview(); }
+
+function setImgMode(m){ imgMode=m; document.getElementById('btnSexy').classList.toggle('active', m==='sexy'); document.getElementById('btnNude').classList.toggle('active', m==='nude'); document.getElementById('imgModel').value=m==='nude'?'lustify-sdxl':'fluently-xl'; updatePreview(); }
+function addPreset(txt){ const p=document.getElementById('imgPrompt'); const cur=p.value.trim(); p.value=cur ? cur+', '+txt : txt; updatePreview(); p.focus(); }
+function clearPrompt(){ document.getElementById('imgPrompt').value=''; updatePreview(); }
+function updatePreview(){
+  let prompt=document.getElementById('imgPrompt').value.trim();
+  let final=prompt;
+  if(selectedChar) final=`${selectedChar.face}, ${selectedChar.body}, ${prompt}`;
+  if(imgMode==='nude') final+=', nude, completely naked, realistic skin texture, highly detailed, natural body, soft lighting';
+  else final+=', sexy, seductive, realistic photo, highly detailed, natural skin, soft lighting';
+  final+=', 8k, ultra detailed, photorealistic';
+  document.getElementById('finalPromptPreview').textContent=final.slice(0,400)+(final.length>400?'...':'')||'Add pose/outfit/scene presets + your description above';
+}
+
 async function generateImage(){
-  const key=document.getElementById('apiKey').value.trim(); let prompt=document.getElementById('imgPrompt').value.trim(); const model=document.getElementById('imgModel').value; const size=document.getElementById('imgSize').value;
-  if(!key) return showImgError('Enter key in Settings'); if(!prompt) return showImgError('Enter prompt');
-  let finalPrompt=prompt; let seedToUse=null; if(selectedChar){ finalPrompt=`${selectedChar.face}, ${selectedChar.body}, ${prompt}, realistic photo, highly detailed, natural skin`; seedToUse=selectedChar.seed; }
-  document.getElementById('imgGenBtn').disabled=true; document.getElementById('imgStatus').textContent='Generating...'; document.getElementById('imgBox').innerHTML='<span class="small">Generating...</span>'; hideImgMsg();
+  const key=document.getElementById('apiKey').value.trim();
+  let prompt=document.getElementById('imgPrompt').value.trim();
+  const model=document.getElementById('imgModel').value;
+  const size=document.getElementById('imgSize').value;
+  const batch=parseInt(document.getElementById('batchCount').value)||1;
+  if(!key) return showImgError('Enter Venice key in Settings');
+  if(!prompt) return showImgError('Enter prompt or click presets');
+
+  let finalPrompt=prompt;
+  let seedToUse=null;
+  if(selectedChar){ finalPrompt=`${selectedChar.face}, ${selectedChar.body}, ${prompt}, realistic photo, highly detailed, natural skin, 8k`; seedToUse=selectedChar.seed; }
+  if(imgMode==='nude') finalPrompt+=', nude, naked, realistic skin texture, detailed body, soft lighting, photorealistic';
+  
+  document.getElementById('imgGenBtn').disabled=true;
+  document.getElementById('imgStatus').textContent=`Generating ${batch} image(s) with ${model}... ${selectedChar?'(Face Lock Seed '+seedToUse+')':'(Random face)'}`;
+  document.getElementById('imgBox').innerHTML=`<span class="small">Generating ${batch} images with ${model}...<br>Mode: ${imgMode}<br>${selectedChar?'Lock: '+selectedChar.name+' Seed '+seedToUse:''}<br>Please wait 10-20 sec...</span>`;
+  hideImgMsg();
+
   try{
-    const [w,h]=size.split('x').map(n=>parseInt(n)); const body={model,prompt:finalPrompt,negative_prompt:'blurry, deformed, bad anatomy, cartoon, low quality',width:w,height:h,steps:imgMode==='nude'?32:28,cfg_scale:7,safe_mode:false,return_binary:false}; if(seedToUse) body.seed=seedToUse;
-    const res=await fetch('https://api.venice.ai/api/v1/image/generate',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify(body)});
-    const data=await res.json(); if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,300));
-    let imgSrc=null; if(data.images&&data.images[0]){ const f=data.images[0]; imgSrc=f.startsWith('http')?f:f.startsWith('data:')?f:'data:image/png;base64,'+f; } else if(data.data&&data.data[0]) imgSrc=data.data[0].url||'data:image/png;base64,'+data.data[0].b64_json; else if(data.image_url) imgSrc=data.image_url;
-    lastImageUrl=imgSrc; document.getElementById('imgBox').innerHTML=`<img src="${imgSrc}"><div class="small">Long press to save</div>`; addToGallery(imgSrc, selectedChar?selectedChar.name:'Random'); showImgSuccess(`Done! ${selectedChar?selectedChar.name:'Random'} Seed ${seedToUse||'random'}`);
-  }catch(e){ showImgError(e.message); document.getElementById('imgBox').innerHTML='<span class="small">Failed: '+e.message.slice(0,200)+'</span>'; } finally{ document.getElementById('imgGenBtn').disabled=false; document.getElementById('imgStatus').textContent=''; }
+    const [w,h]=size.split('x').map(n=>parseInt(n));
+    const promises=[];
+    for(let b=0;b<batch;b++){
+      const body={model,prompt:finalPrompt,negative_prompt:'blurry, deformed, bad anatomy, cartoon, low quality, extra limbs, lowres',width:w,height:h,steps:imgMode==='nude'?32:28,cfg_scale:7.5,safe_mode:false,return_binary:false};
+      if(seedToUse && b===0) body.seed=seedToUse; // first image locked, rest random for variety
+      else if(seedToUse) body.seed=seedToUse + b; // slight variation but same face
+      promises.push(fetch('https://api.venice.ai/api/v1/image/generate',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json().then(d=>({ok:r.ok,data:d}))));
+    }
+    const results=await Promise.all(promises);
+    let html='';
+    let count=0;
+    for(let res of results){
+      if(!res.ok) throw new Error(res.data.error?.message||JSON.stringify(res.data).slice(0,300));
+      const d=res.data;
+      let imgSrc=null;
+      if(d.images&&d.images[0]){ const f=d.images[0]; imgSrc=f.startsWith('http')?f:f.startsWith('data:')?f:'data:image/png;base64,'+f; }
+      else if(d.data&&d.data[0]) imgSrc=d.data[0].url||'data:image/png;base64,'+d.data[0].b64_json;
+      else if(d.image_url) imgSrc=d.image_url;
+      if(imgSrc){
+        if(count===0){ lastImageUrl=imgSrc; html+=`<img src="${imgSrc}" style="margin-bottom:8px"><div class="small">Main - Long press to save. Seed ${seedToUse||'random'}</div>`; }
+        else html+=`<img src="${imgSrc}" style="max-width:48%;margin:4px;border-radius:8px;border:1px solid #333">`;
+        addToGallery(imgSrc, selectedChar?selectedChar.name:'Random');
+        count++;
+      }
+    }
+    document.getElementById('imgBox').innerHTML=html||'<span class="small">No images returned</span>';
+    showImgSuccess(`Done! ${count} image(s) with ${model} ${selectedChar?selectedChar.name:''}`);
+  }catch(e){ showImgError(e.message); document.getElementById('imgBox').innerHTML='<span class="small">Failed: '+e.message.slice(0,300)+'</span>'; }
+  finally{ document.getElementById('imgGenBtn').disabled=false; document.getElementById('imgStatus').textContent=''; }
 }
 function showImgError(m){ document.getElementById('imgError').textContent=m; document.getElementById('imgError').classList.remove('hidden'); document.getElementById('imgSuccess').classList.add('hidden'); }
 function showImgSuccess(m){ document.getElementById('imgSuccess').textContent=m; document.getElementById('imgSuccess').classList.remove('hidden'); document.getElementById('imgError').classList.add('hidden'); }
 function hideImgMsg(){ document.getElementById('imgError').classList.add('hidden'); document.getElementById('imgSuccess').classList.add('hidden'); }
-function addToGallery(url, name){ galleryItems.unshift({url,name,time:Date.now()}); if(galleryItems.length>50) galleryItems.pop(); renderGallery(); try{ localStorage.setItem('super_gallery', JSON.stringify(galleryItems.map(g=>({...g,url:g.url.length>5000?'':g.url})))); }catch(e){} }
-function loadGallery(){ try{ const s=localStorage.getItem('super_gallery'); if(s) galleryItems=JSON.parse(s); }catch(e){} renderGallery(); }
+
+function addToGallery(url,name){ galleryItems.unshift({url,name,time:Date.now()}); if(galleryItems.length>100) galleryItems.pop(); renderGallery(); try{ localStorage.setItem('ultra_gallery', JSON.stringify(galleryItems.map(g=>({...g,url:g.url.length>8000?'':g.url})))); }catch(e){} }
+function loadGallery(){ try{ const s=localStorage.getItem('ultra_gallery'); if(s) galleryItems=JSON.parse(s); }catch(e){} renderGallery(); }
 function renderGallery(){ 
   const g=document.getElementById('gallery'); g.innerHTML=''; 
-  galleryItems.forEach((it,idx)=>{ if(!it.url) return; const wrap=document.createElement('div'); wrap.style.position='relative'; const img=document.createElement('img'); img.src=it.url; img.style.width='100%'; img.style.height='100px'; img.style.objectFit='cover'; img.style.borderRadius='6px'; img.style.border='1px solid #333'; img.style.cursor='pointer'; img.onclick=()=>{ lastImageUrl=it.url; document.getElementById('imgBox').innerHTML=`<img src="${it.url}"><div class="small">${it.name} - long press to save</div>`; }; const del=document.createElement('span'); del.textContent='✕'; del.style.position='absolute'; del.style.top='2px'; del.style.right='2px'; del.style.background='rgba(0,0,0,.7)'; del.style.color='#fff'; del.style.borderRadius='50%'; del.style.width='18px'; del.style.height='18px'; del.style.display='flex'; del.style.alignItems='center'; del.style.justifyContent='center'; del.style.fontSize='10px'; del.style.cursor='pointer'; del.onclick=(e)=>{ e.stopPropagation(); deleteGalleryItem(idx); }; wrap.appendChild(img); wrap.appendChild(del); g.appendChild(wrap); 
-  }); 
+  galleryItems.forEach((it,idx)=>{ if(!it.url) return; const wrap=document.createElement('div'); wrap.className='gitem'; const img=document.createElement('img'); img.src=it.url; img.onclick=()=>{ lastImageUrl=it.url; document.getElementById('imgBox').innerHTML=`<img src="${it.url}"><div class="small">${it.name} - long press to save</div>`; window.scrollTo({top:0,behavior:'smooth'}); }; const del=document.createElement('span'); del.className='gdel'; del.textContent='✕'; del.onclick=(e)=>{ e.stopPropagation(); deleteGalleryItem(idx); }; wrap.appendChild(img); wrap.appendChild(del); g.appendChild(wrap); }); 
   const clearDiv=document.getElementById('galleryClear'); if(clearDiv) clearDiv.style.display=galleryItems.length>0?'flex':'none';
+  const cnt=document.getElementById('galleryCount'); if(cnt) cnt.textContent=galleryItems.length+' images';
 }
 function deleteGalleryItem(idx){ galleryItems.splice(idx,1); saveGallery(); renderGallery(); }
-function clearGallery(){ if(!confirm(`Clear all ${galleryItems.length} generated pictures? This cannot be undone.`)) return; galleryItems=[]; saveGallery(); renderGallery(); document.getElementById('imgBox').innerHTML='<span class="small">Gallery cleared.</span>'; lastImageUrl=null; }
-function saveGallery(){ try{ localStorage.setItem('super_gallery', JSON.stringify(galleryItems.map(g=>({...g,url:g.url.length>5000?'':g.url})))); }catch(e){} }
-function downloadImage(){ if(!lastImageUrl) return showImgError('No image'); if(lastImageUrl.startsWith('data:')){ const b=atob(lastImageUrl.split(',')[1]); const m=lastImageUrl.split(',')[0].split(':')[1].split(';')[0]; const ab=new ArrayBuffer(b.length); const ia=new Uint8Array(ab); for(let i=0;i<b.length;i++) ia[i]=b.charCodeAt(i); const blob=new Blob([ab],{type:m}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='venice-'+Date.now()+'.png'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); } else window.open(lastImageUrl,'_blank'); }
+function clearGallery(){ if(!confirm(`Clear all ${galleryItems.length} images? Cannot undo.`)) return; galleryItems=[]; saveGallery(); renderGallery(); document.getElementById('imgBox').innerHTML='<span class="small">Gallery cleared.</span>'; lastImageUrl=null; }
+function saveGallery(){ try{ localStorage.setItem('ultra_gallery', JSON.stringify(galleryItems.map(g=>({...g,url:g.url.length>8000?'':g.url})))); }catch(e){} }
+function downloadImage(){ if(!lastImageUrl) return showImgError('No image to save - generate first'); if(lastImageUrl.startsWith('data:')){ const b=atob(lastImageUrl.split(',')[1]); const m=lastImageUrl.split(',')[0].split(':')[1].split(';')[0]; const ab=new ArrayBuffer(b.length); const ia=new Uint8Array(ab); for(let i=0;i<b.length;i++) ia[i]=b.charCodeAt(i); const blob=new Blob([ab],{type:m}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='venice-ultra-'+Date.now()+'.png'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); } else window.open(lastImageUrl,'_blank'); }
 
-// CONVERT
-function setConv(m){ convMode=m; document.getElementById('convH2D').classList.toggle('active', m==='h2d'); document.getElementById('convD2H').classList.toggle('active', m==='d2h'); }
-function loadStoryToConv(){ const box=document.getElementById('storyBox').textContent; const inp=document.getElementById('convInput'); if(box && box.length>20) inp.value=box.slice(0,5000); else inp.value=document.getElementById('storyBox').textContent||''; document.getElementById('convStatus').textContent='Loaded story ('+inp.value.length+' chars) - now tap Convert'; }
-async function convertText(){
-  const inp=document.getElementById('convInput').value.trim(); const key=document.getElementById('apiKey').value.trim();
-  const model=document.getElementById('storyModel')?.value||'mistral-31-24b';
-  if(!inp){ document.getElementById('convStatus').textContent='Paste text first'; return; }
-  if(!key){ document.getElementById('convStatus').textContent='Need Venice key in Settings'; return; }
-  document.getElementById('convStatus').textContent=`Converting with ${model}... (${inp.length} chars)`;
-  document.getElementById('convOutput').value='Converting... please wait...';
+// PROMPT LAB - UNCENSORED CHAT
+async function generateUncensoredPrompts(){
+  const key=document.getElementById('apiKey').value.trim();
+  const char=document.getElementById('labChar').value.trim()||'Beautiful Indian woman, 24';
+  const styleSel=document.getElementById('labStyle').value;
+  const custom=document.getElementById('labCustom').value.trim();
+  const style = styleSel==='custom' ? custom : styleSel;
+  if(!key) return document.getElementById('labStatus').textContent='Enter Venice key in Settings';
+  if(!style) return document.getElementById('labStatus').textContent='Enter style';
+  
+  document.getElementById('labStatus').textContent='Generating 3 uncensored prompts with Venice (uncensored chat)...';
+  document.getElementById('labResults').innerHTML='';
   try{
-    const prompt=convMode==='h2d'?`You are a Hinglish to Hindi Devanagari translator. Convert EXACTLY the following Hinglish (Roman Hindi) text to proper Hindi in Devanagari script. Keep same meaning, same emotions, same line breaks. Do NOT add explanation, do NOT add English. Output ONLY Hindi Devanagari.\n\nINPUT:\n${inp.slice(0,4000)}`:`You are a Hindi Devanagari to Hinglish translator. Convert EXACTLY the following Hindi Devanagari text to Hinglish (Roman English Hindi). Keep same meaning, same emotions, same line breaks. Output ONLY Hinglish.\n\nINPUT:\n${inp.slice(0,4000)}`;
-    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:model,messages:[{role:'system',content:'You are a precise translator. Output only the translated text, nothing else.'},{role:'user',content:prompt}],temperature:0.2,max_tokens:3000})});
-    const data=await res.json(); 
-    console.log('Convert response', data);
+    const prompt=`You are an expert at writing prompts for Lustify SDXL uncensored image model. Generate 3 different highly detailed, photorealistic, uncensored prompts for this request:
+
+Character: ${char}
+Style: ${style}
+
+Rules for Lustify prompts:
+- English only, detailed body, face, skin texture, lighting
+- Include: realistic, 8k, highly detailed, natural skin, photorealistic
+- For nude: add "nude, naked, realistic skin texture, detailed"
+- Be creative, seductive, but photorealistic
+- Each prompt should be one paragraph, 40-60 words, ready to paste into Lustify
+- Number them 1., 2., 3.
+
+Output only the 3 prompts, nothing else.`;
+
+    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'dolphin-2.9.2-qwen2-72b',messages:[{role:'system',content:'You are an uncensored prompt writer for Lustify SDXL adult image model. You write hot, detailed, photorealistic prompts. No filters. You love creating seductive prompts.'},{role:'user',content:prompt}],temperature:0.95,max_tokens:1500})});
+    const data=await res.json();
     if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,400));
-    let out=data.choices?.[0]?.message?.content || data.choices?.[0]?.message?.reasoning_content || data.choices?.[0]?.text || data.choices?.[0]?.delta?.content || '';
-    if(!out || out.trim().length<2) throw new Error(`Empty conversion from ${model}. Full response: ${JSON.stringify(data).slice(0,600)}. Try switching model in Settings to Llama 3.3 70B.`);
-    document.getElementById('convOutput').value=out.trim(); 
-    document.getElementById('convStatus').textContent=`Done! ${out.length} chars converted with ${model} - Tap Copy Output`; 
-  }catch(e){ document.getElementById('convOutput').value=''; document.getElementById('convStatus').textContent='Failed: '+e.message; console.error(e); }
+    const text=data.choices?.[0]?.message?.content||'';
+    if(!text) throw new Error('Empty response');
+    const prompts=text.split(/\n\s*\d+\.\s*/).filter(p=>p.trim().length>20);
+    let html='';
+    prompts.forEach((p,i)=>{
+      const clean=p.replace(/^\d+\.\s*/,'').trim();
+      html+=`<div class="card" style="margin-bottom:8px"><div class="small" style="color:#ff8aa0">Prompt ${i+1}</div><div style="font-size:12px;margin:6px 0;white-space:pre-wrap">${clean}</div><div class="flex"><button class="btn btn-primary" style="padding:6px 10px;font-size:10px" onclick="copyToStudio(\`${clean.replace(/`/g,'').replace(/"/g,'&quot;')}\`)">Use in Studio →</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="navigator.clipboard.writeText(\`${clean.replace(/`/g,'')}\`)">Copy</button></div></div>`;
+    });
+    document.getElementById('labResults').innerHTML=html||`<div class="card"><div style="white-space:pre-wrap;font-size:12px">${text}</div></div>`;
+    document.getElementById('labStatus').textContent='Done! 3 uncensored prompts ready - click Use in Studio';
+  }catch(e){ document.getElementById('labStatus').textContent='Failed: '+e.message; }
 }
-function copyConv(){ navigator.clipboard.writeText(document.getElementById('convOutput').value).then(()=>document.getElementById('convStatus').textContent='Copied!'); }
-function updateStats(){ const storyLen=document.getElementById('storyBox').textContent.length; document.getElementById('dataStats').innerHTML=`Story chars: ${storyLen}<br>Characters saved: ${chars.length}<br>Gallery images: ${galleryItems.length}<br>Key: ${localStorage.getItem('venice_api_key')?'✅ Saved':'❌ Not saved'}`; }
-function clearAllData(){ if(!confirm('Clear ALL data? Story, Characters, Gallery?')) return; localStorage.removeItem('super_story_v1'); localStorage.removeItem('venice_chars_super'); localStorage.removeItem('super_gallery'); storyData.chapters=[]; chars=[]; galleryItems=[]; renderChapters(); updateStoryBox(); renderCharList(); renderGallery(); }
+function copyToStudio(txt){ document.getElementById('imgPrompt').value=txt; updatePreview(); switchTab('char'); window.scrollTo({top:300,behavior:'smooth'}); showImgSuccess('Prompt copied to Studio! Now Generate.'); }
+async function enhancePrompt(){
+  const key=document.getElementById('apiKey').value.trim();
+  const cur=document.getElementById('imgPrompt').value.trim();
+  if(!key) return showImgError('Enter Venice key');
+  if(!cur) return showImgError('Enter prompt first to enhance');
+  document.getElementById('imgStatus').textContent='Enhancing prompt with Venice uncensored...';
+  try{
+    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'llama-3.3-70b',messages:[{role:'system',content:'You enhance image prompts for Lustify SDXL adult model. Add realistic details, skin texture, lighting, 8k. Keep core idea but make more photorealistic and detailed. Output only enhanced prompt, one paragraph.'},{role:'user',content:`Enhance this Lustify prompt, make more detailed and photorealistic: ${cur}`} ],temperature:0.8,max_tokens:500})});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.error?.message||'');
+    const out=data.choices?.[0]?.message?.content||'';
+    if(out){ document.getElementById('imgPrompt').value=out.trim(); updatePreview(); showImgSuccess('Prompt enhanced!'); }
+    document.getElementById('imgStatus').textContent='';
+  }catch(e){ document.getElementById('imgStatus').textContent='Enhance failed: '+e.message; }
+}
+
+
+function previewFace(input, previewId){ const file=input.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=e=>{ const img=document.getElementById(previewId); img.src=e.target.result; img.classList.remove('hidden'); }; reader.readAsDataURL(file); }
+function useLastGeneratedAsTarget(){ if(!lastImageUrl) return document.getElementById('faceSwapStatus').textContent='No generated image yet'; const img=document.getElementById('targetPreview'); img.src=lastImageUrl; img.classList.remove('hidden'); document.getElementById('faceSwapStatus').textContent='Using last generated'; }
+let lastFaceSwapUrl=null;
+async function doFaceSwap(){
+  const srcImg=document.getElementById('sourcePreview'); const tgtImg=document.getElementById('targetPreview');
+  if(!srcImg.src || srcImg.classList.contains('hidden')) return document.getElementById('faceSwapStatus').textContent='Upload source face';
+  if(!tgtImg.src || tgtImg.classList.contains('hidden')) return document.getElementById('faceSwapStatus').textContent='Upload target';
+  document.getElementById('faceSwapStatus').textContent='Swapping...';
+  try{
+    const canvas=document.createElement('canvas'); const ctx=canvas.getContext('2d');
+    const target=new Image(); const source=new Image();
+    await new Promise((r,j)=>{ target.onload=r; target.onerror=j; target.src=tgtImg.src; });
+    await new Promise((r,j)=>{ source.onload=r; source.onerror=j; source.src=srcImg.src; });
+    canvas.width=target.width; canvas.height=target.height; ctx.drawImage(target,0,0);
+    const faceW=canvas.width*0.35, faceH=canvas.height*0.45, faceX=(canvas.width-faceW)/2, faceY=canvas.height*0.08;
+    ctx.globalAlpha=0.95; ctx.save(); ctx.beginPath(); ctx.ellipse(faceX+faceW/2, faceY+faceH/2, faceW/2, faceH/2, 0,0,Math.PI*2); ctx.clip(); ctx.drawImage(source, faceX, faceY, faceW, faceH); ctx.restore();
+    const dataUrl=canvas.toDataURL('image/png'); lastFaceSwapUrl=dataUrl;
+    document.getElementById('faceSwapBox').innerHTML=`<img src="${dataUrl}" style="max-width:100%;max-height:600px;border-radius:10px"><div class="small" style="margin-top:8px">Basic blend done. Venice has no native face swap【9107127361601435410†L17-L21】. For perfect: faceswapper.ai, reface.ai</div>`;
+    document.getElementById('faceSwapStatus').textContent='Done!';
+  }catch(e){ document.getElementById('faceSwapStatus').textContent='Failed: '+e.message; }
+}
+function downloadFaceSwap(){ if(!lastFaceSwapUrl) return; const a=document.createElement('a'); a.href=lastFaceSwapUrl; a.download='face-swap-'+Date.now()+'.png'; a.click(); }
+
+function updateStats(){ const s=document.getElementById('dataStats'); s.innerHTML=`Characters: ${chars.length}<br>Gallery: ${galleryItems.length} images<br>Venice Key: ${localStorage.getItem('venice_api_key')?'✅ Saved - Lustify ready':'❌ Not saved'}<br>Mode: Venice Image Ultra - Uncensored only<br><br><b>What Venice is BEST at:</b><br>✅ Lustify nude/realistic skin (no other AI allows)<br>✅ Flux uncensored - no filter<br>✅ Uncensored chat - prompt generation<br>✅ Same face lock via seed<br>❌ NOT good at Hindi story (use your TTS app with OpenAI)`; }
+function clearAllData(){ if(!confirm('Clear ALL? Characters, Gallery, Key?')) return; localStorage.removeItem('venice_chars_ultra'); localStorage.removeItem('ultra_gallery'); localStorage.removeItem('venice_api_key'); chars=[]; galleryItems=[]; renderCharList(); renderGallery(); location.reload(); }
 
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initAll); else initAll();
 </script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
-</html>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
