@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Venice v3 - Multi Character Lock</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,system-ui;background:#0f0f12;color:#eee;padding:16px;min-height:100vh}
+.container{max-width:900px;margin:0 auto}
+h1{text-align:center;color:#ff3b5c;font-size:1.8em;margin:8px 0}
+.sub{text-align:center;color:#777;font-size:11px;margin-bottom:10px}
+.nav{display:flex;gap:8px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+.nav a{color:#ff3b5c;text-decoration:none;font-size:11px;border:1px solid #ff3b5c44;padding:5px 12px;border-radius:20px;background:#1a1a1f}
+.card{background:#1a1a1f;border:1px solid #2a2a32;border-radius:12px;padding:14px;margin-bottom:12px}
+.label{color:#ff3b5c;font-weight:700;font-size:10px;text-transform:uppercase;margin:8px 0 4px;display:block}
+input,select,textarea{width:100%;background:#24242c;border:1px solid #333;color:#fff;padding:10px;border-radius:8px;font-size:13px;margin-bottom:6px}
+textarea{min-height:60px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.btn{padding:10px 14px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px}
+.btn-primary{background:#ff3b5c;color:#fff;flex:1}
+.btn-ghost{background:#2a2a32;color:#fff}
+.btn-green{background:#1a8a4a;color:#fff}
+.btn-nude{background:linear-gradient(135deg,#ff3b5c,#8a2a5a);color:#fff;flex:1}
+.imgbox{background:#121214;border:1px solid #222;border-radius:10px;min-height:380px;display:flex;align-items:center;justify-content:center;padding:10px;flex-direction:column;position:relative}
+.imgbox img{max-width:100%;max-height:600px;border-radius:8px}
+.small{color:#777;font-size:10px}
+.api{background:rgba(255,193,7,.08);border:1px solid rgba(255,193,7,.2)}
+.flex{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.hidden{display:none !important}
+.error{background:rgba(255,59,92,.1);border:1px solid rgba(255,59,92,.3);color:#ff6b7a;padding:8px;border-radius:8px;margin-top:6px;font-size:11px}
+.success{background:rgba(40,200,120,.1);border:1px solid rgba(40,200,120,.3);color:#5cffb0;padding:8px;border-radius:8px;margin-top:6px;font-size:11px}
+.toggle{display:flex;background:#24242c;border:1px solid #333;border-radius:20px;padding:2px;width:fit-content;margin:6px 0}
+.toggle button{padding:6px 14px;border-radius:20px;border:none;background:transparent;color:#777;cursor:pointer;font-weight:700;font-size:11px}
+.toggle button.active{background:#ff3b5c;color:#fff}
+.char-list{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.char-card{background:#24242c;border:1px solid #333;border-radius:10px;padding:8px 10px;min-width:140px;cursor:pointer;position:relative}
+.char-card.active{border-color:#ff3b5c;background:#2a1a1f}
+.char-card .name{font-weight:700;font-size:12px;color:#fff}
+.char-card .seed{font-size:9px;color:#777}
+.char-card .del{position:absolute;top:2px;right:4px;color:#ff3b5c;cursor:pointer;font-size:12px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px;margin-top:8px}
+.gallery img{width:100%;height:110px;object-fit:cover;border-radius:6px;border:1px solid #333;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🎭 Venice v3 Multi-Char Lock</h1>
+<p class="sub">Save Unlimited Characters • Same Face Every Time • Lustify Quality</p>
+<div class="nav">
+<a href="index.html">📚 Story</a>
+<a href="convert.html">🔤 Converter</a>
+<a href="image.html">🎨 Simple Image</a>
+</div>
+
+<div class="card api">
+<label class="label">🔑 Venice Key (shared)</label>
+<input type="password" id="apiKey" placeholder="VENICE_INFERENCE_KEY_...">
+<div class="small" style="margin-top:4px">💡 Character Lock = Same face/look every time. Create many characters, switch anytime. Not locked to one!</div>
+</div>
+
+<div class="card" style="border-color:#ff3b5c44">
+<label class="label">👥 Your Characters (Multi-Lock) - Click to Select</label>
+<div class="char-list" id="charList"></div>
+<div class="flex">
+<button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="createNewChar()">+ New Character</button>
+<button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="selectNoLock()" id="btnNoLock">🔓 No Lock (Random)</button>
+<button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="clearAllChars()">Clear All</button>
+</div>
+<div id="charEditor" class="hidden" style="margin-top:10px;background:#121214;padding:10px;border-radius:8px;border:1px solid #222">
+<div class="grid">
+<div><label class="label">Character Name</label><input id="charName" placeholder="e.g. Neha"></div>
+<div><label class="label">Seed (Face Lock Number)</label><input id="charSeed" type="number" placeholder="e.g. 12345 (same seed = same face)"></div>
+</div>
+<label class="label">Face Description (Locked Look)</label><input id="charFace" placeholder="e.g. Beautiful Indian, 24, long black hair, sharp nose, dusky skin, big eyes">
+<label class="label">Body / Style</label><input id="charBody" placeholder="e.g. curvy, slim, 5'4, natural">
+<div class="flex"><button class="btn btn-primary" style="padding:6px 10px" onclick="saveChar()">Save Character</button><button class="btn btn-ghost" style="padding:6px 10px" onclick="cancelEdit()">Cancel</button><button class="btn btn-ghost" style="padding:6px 10px" onclick="randomSeed()">🎲 Random Seed</button></div>
+</div>
+<div class="small" style="margin-top:6px">Selected: <b id="selectedInfo">🔓 No Lock - Random face each time (generate any character)</b></div>
+</div>
+
+<div class="card">
+<div class="flex" style="justify-content:space-between;align-items:center">
+<label class="label">✨ Prompt - With Character Lock</label>
+<div class="toggle">
+<button id="btnSexy" class="active" onclick="setMode('sexy')">💃 Sexy</button>
+<button id="btnNude" onclick="setMode('nude')">🔥 Nude</button>
+</div>
+</div>
+<textarea id="prompt" placeholder="Example: Neha standing in bedroom doorway, shy smile, soft light, realistic... (face will be locked if character selected)"></textarea>
+<div class="grid">
+<div><label class="label">Model</label><select id="model"><option value="lustify-sdxl" selected>Lustify SDXL - Adult Best</option><option value="fluently-xl">Fluently XL - Realistic Face</option><option value="flux-dev-uncensored">Flux Dev Uncensored - Quality</option><option value="venice-sd35">Venice SD35 - Fast</option></select></div>
+<div><label class="label">Size</label><select id="size"><option value="768x1024" selected>Portrait 768x1024 (char best)</option><option value="832x1216">Tall 832x1216 (nude best)</option><option value="1024x1024">Square</option></select></div>
+</div>
+<label class="label">Negative</label><input id="negPrompt" value="blurry, deformed, bad anatomy, extra fingers, cartoon, low quality">
+<div class="flex">
+<button class="btn btn-nude" id="genBtn" onclick="generateImage()">🎨 Generate with Lock</button>
+<button class="btn btn-ghost" onclick="document.getElementById('prompt').value=''">Clear</button>
+</div>
+<div id="status" class="small" style="margin-top:6px"></div>
+<div id="errorBox" class="error hidden"></div>
+<div id="successBox" class="success hidden"></div>
+</div>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px"><label class="label">🖼️ Result + Gallery (Auto-Save)</label><div class="flex"><button class="btn btn-green" style="padding:6px 10px;font-size:10px" onclick="downloadImage()">💾 Download</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="openInNewTab()">🔗 Open Tab</button></div></div>
+<div class="imgbox" id="imgBox"><span class="small">No image yet. Select character or No Lock, then generate.</span></div>
+<div id="imgInfo" class="small" style="margin-top:6px"></div>
+<div class="small" style="margin-top:6px">📱 Long press image → Save to Photos (always works)</div>
+<div id="galleryBox" class="hidden"><label class="label" style="margin-top:10px">📸 Recent Gallery (click image to reload)</label><div class="gallery" id="gallery"></div></div>
+</div>
+
+<div class="card" style="background:#121214">
+<label class="label">💡 How Multi-Character Lock Works (Answers your question)</label>
+<div class="small" style="line-height:1.6">
+<b>Q: Will character lock stop me generating other characters?</b><br>
+<b>A: No! You can save UNLIMITED characters:</b><br>
+• Create Neha (seed 12345) → always same Neha face<br>
+• Create Priya (seed 67890) → always same Priya face (different)<br>
+• Create Ravi (seed 11111) → male character<br>
+• Click "No Lock" → random new face each time, any character<br><br>
+<b>How it works:</b> Same seed + same face description = same face every generation, but pose/clothes/nude can change. Different seed = different person.<br><br>
+<b>Workflow:</b> Select Neha → prompt "Neha in kitchen" → generates Neha. Select Priya → same prompt "Priya in kitchen" → generates Priya. Select No Lock → "random girl" → new face.<br>
+• You can also generate 2 chars: prompt "Neha and Priya together..." (select one as base lock, mention second in prompt)<br>
+</div>
+</div>
+
+</div>
+<script>
+let chars=[]; let selectedChar=null; let currentMode='sexy'; let lastImageUrl=null; let galleryItems=[];
+
+function initAll(){
+  const ak=document.getElementById('apiKey');
+  const sk=localStorage.getItem('venice_api_key');
+  if(ak && sk) ak.value=sk;
+  if(ak){ const s=()=>{ const v=ak.value.trim(); if(v.length>10) localStorage.setItem('venice_api_key',v); }; ak.addEventListener('input',s); ak.addEventListener('blur',s); }
+  loadChars();
+  loadGallery();
+  setMode('sexy');
+  selectNoLock();
+}
+
+function loadChars(){
+  try{
+    const saved=localStorage.getItem('venice_chars_v3');
+    if(saved) chars=JSON.parse(saved);
+  }catch(e){}
+  renderCharList();
+}
+function saveChars(){ localStorage.setItem('venice_chars_v3', JSON.stringify(chars)); }
+function renderCharList(){
+  const list=document.getElementById('charList');
+  list.innerHTML='';
+  if(chars.length===0) list.innerHTML='<span class="small">No characters saved yet. Click + New Character to create Neha, Priya etc.</span>';
+  chars.forEach((c, idx)=>{
+    const div=document.createElement('div');
+    div.className='char-card'+(selectedChar && selectedChar.seed===c.seed?' active':'');
+    div.innerHTML=`<div class="name">${c.name}</div><div class="seed">Seed: ${c.seed}</div><div class="small" style="font-size:9px;margin-top:2px">${c.face.slice(0,30)}...</div><div class="del" onclick="deleteChar(${idx}, event)">✕</div>`;
+    div.onclick=()=>selectChar(idx);
+    list.appendChild(div);
+  });
+}
+function createNewChar(){ document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=''; document.getElementById('charFace').value='Beautiful Indian woman, 24, long black hair, fair skin, sharp features'; document.getElementById('charBody').value='curvy, 5\'4, natural'; randomSeed(); document.getElementById('charName').focus(); }
+function randomSeed(){ document.getElementById('charSeed').value=Math.floor(Math.random()*1000000); }
+function cancelEdit(){ document.getElementById('charEditor').classList.add('hidden'); }
+function saveChar(){
+  const name=document.getElementById('charName').value.trim()||'Character '+(chars.length+1);
+  const seed=parseInt(document.getElementById('charSeed').value)||Math.floor(Math.random()*1000000);
+  const face=document.getElementById('charFace').value.trim()||'Beautiful Indian woman';
+  const body=document.getElementById('charBody').value.trim()||'';
+  // update if exists same name
+  const existingIdx=chars.findIndex(c=>c.name===name);
+  const charObj={name, seed, face, body, created:Date.now()};
+  if(existingIdx>=0) chars[existingIdx]=charObj; else chars.push(charObj);
+  saveChars(); renderCharList(); cancelEdit(); selectChar(chars.findIndex(c=>c.seed===seed));
+  showSuccess(`Saved ${name} with seed ${seed} - now locked!`);
+}
+function deleteChar(idx, e){ e.stopPropagation(); if(!confirm('Delete '+chars[idx].name+'?')) return; chars.splice(idx,1); saveChars(); renderCharList(); if(selectedChar && chars.length===0) selectNoLock(); }
+function clearAllChars(){ if(!confirm('Delete ALL characters?')) return; chars=[]; saveChars(); renderCharList(); selectNoLock(); }
+function selectChar(idx){ selectedChar=chars[idx]; document.querySelectorAll('.char-card').forEach((el,i)=>el.classList.toggle('active', i===idx)); document.getElementById('selectedInfo').innerHTML=`🔒 Locked: <b>${selectedChar.name}</b> (Seed ${selectedChar.seed}) - Same face every time. Prompt will auto-add face.`; document.getElementById('btnNoLock').style.borderColor=''; }
+function selectNoLock(){ selectedChar=null; document.querySelectorAll('.char-card').forEach(el=>el.classList.remove('active')); document.getElementById('selectedInfo').textContent='🔓 No Lock - Random face each time (generate any character you want)'; document.getElementById('btnNoLock').style.borderColor='#ff3b5c'; }
+
+function setMode(m){ currentMode=m; document.getElementById('btnSexy').classList.toggle('active', m==='sexy'); document.getElementById('btnNude').classList.toggle('active', m==='nude'); const mod=document.getElementById('model'); if(m==='nude' && mod.value!=='lustify-sdxl') mod.value='lustify-sdxl'; }
+
+async function generateImage(){
+  const apiKey=document.getElementById('apiKey').value.trim();
+  let prompt=document.getElementById('prompt').value.trim();
+  const neg=document.getElementById('negPrompt').value.trim();
+  const model=document.getElementById('model').value;
+  const size=document.getElementById('size').value;
+  if(!apiKey) return showError('Enter Venice API Key');
+  if(!prompt) return showError('Write prompt');
+  hideMsg();
+  // Build locked prompt
+  let finalPrompt=prompt;
+  let seedToUse=null;
+  if(selectedChar){
+    finalPrompt=`${selectedChar.face}, ${selectedChar.body}, ${prompt}, realistic photo, highly detailed, sharp focus, natural skin, consistent face`;
+    seedToUse=selectedChar.seed;
+  } else {
+    finalPrompt=prompt + ', realistic photo, highly detailed, 8k';
+  }
+
+  document.getElementById('genBtn').disabled=true;
+  document.getElementById('status').textContent='Generating '+(selectedChar?selectedChar.name:'random')+' with seed '+(seedToUse||'random')+'...';
+  document.getElementById('imgBox').innerHTML='<span class="small">🎨 Generating... 20-40 sec...</span>';
+
+  try{
+    const [w,h]=size.split('x').map(n=>parseInt(n));
+    const bodyPayload={model,prompt:finalPrompt,negative_prompt:neg,width:w,height:h,steps:currentMode==='nude'?32:28,cfg_scale:7.0,safe_mode:false,hide_watermark:false,return_binary:false};
+    if(seedToUse) bodyPayload.seed=seedToUse;
+    const res=await fetch('https://api.venice.ai/api/v1/image/generate',{method:'POST',headers:{'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'},body:JSON.stringify(bodyPayload)});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,400));
+    let imgSrc=null;
+    if(data.images && data.images[0]){
+      const f=data.images[0]; imgSrc=f.startsWith('http')?f:f.startsWith('data:')?f:'data:image/png;base64,'+f;
+    } else if(data.data && data.data[0]) imgSrc=data.data[0].url||'data:image/png;base64,'+data.data[0].b64_json;
+    else if(data.image_url) imgSrc=data.image_url;
+    else throw new Error('Unknown format');
+    
+    lastImageUrl=imgSrc;
+    document.getElementById('imgBox').innerHTML=`<img src="${imgSrc}" id="genImg"><div class="small" style="margin-top:6px">${selectedChar?'🔒 '+selectedChar.name+' (Seed '+selectedChar.seed+') - Same face':'🔓 Random'} | Long press to save</div>`;
+    document.getElementById('imgInfo').textContent=`Prompt: ${finalPrompt.slice(0,120)}... | Seed: ${seedToUse||'random'}`;
+    addToGallery(imgSrc, selectedChar?selectedChar.name:'Random', finalPrompt);
+    showSuccess(`Generated ${selectedChar?selectedChar.name:'random'}! Seed ${seedToUse||'random'} locks face. Generate again with same character for same face, different pose.`);
+  }catch(e){ showError('Failed: '+e.message); document.getElementById('imgBox').innerHTML='<span class="small">Failed: '+e.message.slice(0,200)+'</span>'; }
+  finally{ document.getElementById('genBtn').disabled=false; document.getElementById('status').textContent=''; }
+}
+
+function addToGallery(url, charName, prompt){
+  galleryItems.unshift({url, charName, prompt, time:Date.now()});
+  if(galleryItems.length>20) galleryItems.pop();
+  localStorage.setItem('venice_gallery_v3', JSON.stringify(galleryItems.map(g=>({...g, url: g.url.length>5000 ? '' : g.url})))); // don't save huge base64
+  renderGallery();
+}
+function loadGallery(){ try{ const saved=localStorage.getItem('venice_gallery_v3'); if(saved) galleryItems=JSON.parse(saved); }catch(e){} renderGallery(); }
+function renderGallery(){
+  const box=document.getElementById('galleryBox'); const g=document.getElementById('gallery');
+  if(galleryItems.length===0){ box.classList.add('hidden'); return; }
+  box.classList.remove('hidden'); g.innerHTML='';
+  galleryItems.forEach((item, i)=>{
+    if(!item.url) return;
+    const img=document.createElement('img'); img.src=item.url; img.title=item.charName;
+    img.onclick=()=>{ lastImageUrl=item.url; document.getElementById('imgBox').innerHTML=`<img src="${item.url}">`; document.getElementById('imgInfo').textContent=item.prompt.slice(0,100); };
+    g.appendChild(img);
+  });
+}
+
+function downloadImage(){
+  if(!lastImageUrl) return showError('No image');
+  try{
+    if(lastImageUrl.startsWith('data:')){
+      const byteString=atob(lastImageUrl.split(',')[1]); const mime=lastImageUrl.split(',')[0].split(':')[1].split(';')[0];
+      const ab=new ArrayBuffer(byteString.length); const ia=new Uint8Array(ab);
+      for(let i=0;i<byteString.length;i++) ia[i]=byteString.charCodeAt(i);
+      const blob=new Blob([ab],{type:mime}); const url=URL.createObjectURL(blob);
+      const a=document.createElement('a'); a.href=url; a.download='venice-'+(selectedChar?selectedChar.name:'random')+'-'+Date.now()+'.png'; document.body.appendChild(a); a.click(); setTimeout(()=>{document.body.removeChild(a); URL.revokeObjectURL(url);},100);
+      showSuccess('Download started! If not, long press image → Save');
+    } else { window.open(lastImageUrl,'_blank'); showSuccess('Opened new tab - long press to save'); }
+  }catch(e){ openInNewTab(); }
+}
+function openInNewTab(){ if(!lastImageUrl) return showError('No image'); const win=window.open(); win.document.write(`<html><body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh"><img src="${lastImageUrl}" style="max-width:100%"><p style="color:#fff;position:fixed;bottom:10px;background:rgba(0,0,0,.7);padding:8px 12px;border-radius:20px;font-size:12px">Long press → Save</p></body></html>`); }
+
+function showError(m){ document.getElementById('errorBox').textContent=m; document.getElementById('errorBox').classList.remove('hidden'); document.getElementById('successBox').classList.add('hidden'); }
+function showSuccess(m){ document.getElementById('successBox').textContent=m; document.getElementById('successBox').classList.remove('hidden'); document.getElementById('errorBox').classList.add('hidden'); setTimeout(()=>document.getElementById('successBox').classList.add('hidden'),5000); }
+function hideMsg(){ document.getElementById('errorBox').classList.add('hidden'); document.getElementById('successBox').classList.add('hidden'); }
+
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initAll); else initAll();
+</script>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+</html>

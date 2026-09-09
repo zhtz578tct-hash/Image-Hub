@@ -23,232 +23,121 @@
 }
 </style>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Venice Image v2.1 - Fixed Download</title>
+<title>Venice Image v2.2 - Final Nav</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Inter,system-ui;background:#0f0f12;color:#eee;padding:18px;min-height:100vh}
+body{font-family:Inter,system-ui;background:#0f0f12;color:#eee;padding:16px;min-height:100vh}
 .container{max-width:800px;margin:0 auto}
-h1{text-align:center;color:#ff3b5c;font-size:1.9em;margin:10px 0}
-.sub{text-align:center;color:#777;font-size:12px;margin-bottom:14px}
-.card{background:#1a1a1f;border:1px solid #2a2a32;border-radius:14px;padding:18px;margin-bottom:14px}
-.label{color:#ff3b5c;font-weight:700;font-size:11px;text-transform:uppercase;margin:10px 0 5px;display:block}
-input,select,textarea{width:100%;background:#24242c;border:1px solid #333;color:#fff;padding:11px;border-radius:8px;font-size:14px;margin-bottom:7px}
-textarea{min-height:90px;resize:vertical}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+h1{text-align:center;color:#ff3b5c;font-size:1.8em;margin:8px 0}
+.sub{text-align:center;color:#777;font-size:11px;margin-bottom:10px}
+.nav{display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+.nav a{color:#ff3b5c;text-decoration:none;font-size:10px;border:1px solid #ff3b5c44;padding:5px 10px;border-radius:20px;background:#1a1a1f}
+.nav a.active{background:#ff3b5c;color:#fff}
+.card{background:#1a1a1f;border:1px solid #2a2a32;border-radius:12px;padding:14px;margin-bottom:12px}
+.label{color:#ff3b5c;font-weight:700;font-size:10px;text-transform:uppercase;margin:8px 0 4px;display:block}
+input,select,textarea{width:100%;background:#24242c;border:1px solid #333;color:#fff;padding:10px;border-radius:8px;font-size:13px;margin-bottom:6px}
+textarea{min-height:80px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 @media(max-width:700px){.grid{grid-template-columns:1fr}}
-.btn{padding:12px 16px;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px}
+.btn{padding:10px 14px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px}
 .btn-primary{background:#ff3b5c;color:#fff;flex:1}
 .btn-ghost{background:#2a2a32;color:#fff}
-.btn-nude{background:linear-gradient(135deg,#ff3b5c,#8a2a5a);color:#fff;flex:1}
 .btn-green{background:#1a8a4a;color:#fff}
-.imgbox{background:#121214;border:1px solid #222;border-radius:12px;min-height:420px;display:flex;align-items:center;justify-content:center;padding:10px;position:relative;overflow:hidden;flex-direction:column}
-.imgbox img{max-width:100%;max-height:650px;border-radius:8px;margin-bottom:10px}
-.small{color:#777;font-size:11px}
+.btn-nude{background:linear-gradient(135deg,#ff3b5c,#8a2a5a);color:#fff;flex:1}
+.imgbox{background:#121214;border:1px solid #222;border-radius:10px;min-height:380px;display:flex;align-items:center;justify-content:center;padding:10px;flex-direction:column}
+.imgbox img{max-width:100%;max-height:600px;border-radius:8px}
+.small{color:#777;font-size:10px}
 .api{background:rgba(255,193,7,.08);border:1px solid rgba(255,193,7,.2)}
-.flex{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.flex{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .hidden{display:none !important}
-.error{background:rgba(255,59,92,.1);border:1px solid rgba(255,59,92,.3);color:#ff6b7a;padding:10px;border-radius:8px;margin-top:8px;font-size:13px}
-.success{background:rgba(40,200,120,.1);border:1px solid rgba(40,200,120,.3);color:#5cffb0;padding:10px;border-radius:8px;margin-top:8px;font-size:13px}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
-.chip{padding:6px 10px;border-radius:20px;background:#24242c;border:1px solid #333;cursor:pointer;font-size:11px}
-.chip:hover{border-color:#ff3b5c}
-.toggle{display:flex;background:#24242c;border:1px solid #333;border-radius:30px;padding:3px;width:fit-content;margin:8px 0}
-.toggle button{padding:8px 18px;border-radius:20px;border:none;background:transparent;color:#777;cursor:pointer;font-weight:700;font-size:12px}
+.error{background:rgba(255,59,92,.1);border:1px solid rgba(255,59,92,.3);color:#ff6b7a;padding:8px;border-radius:8px;margin-top:6px;font-size:11px}
+.success{background:rgba(40,200,120,.1);border:1px solid rgba(40,200,120,.3);color:#5cffb0;padding:8px;border-radius:8px;margin-top:6px;font-size:11px}
+.toggle{display:flex;background:#24242c;border:1px solid #333;border-radius:20px;padding:2px;width:fit-content;margin:6px 0}
+.toggle button{padding:6px 14px;border-radius:20px;border:none;background:transparent;color:#777;cursor:pointer;font-weight:700;font-size:11px}
 .toggle button.active{background:#ff3b5c;color:#fff}
-.nude-badge{background:rgba(255,59,92,.15);border:1px solid rgba(255,59,92,.3);color:#ff7a90;padding:6px 10px;border-radius:8px;font-size:11px;margin-top:8px}
-.prompt-idea{background:#1e1e2a;padding:8px 10px;border-radius:8px;font-size:11px;color:#aaa;margin:3px 0;cursor:pointer;border:1px solid #2a2a32}
-.prompt-idea:hover{border-color:#ff3b5c44;color:#fff}
-.download-help{background:rgba(40,200,120,.08);border:1px solid rgba(40,200,120,.2);color:#7affaa;padding:10px;border-radius:8px;font-size:12px;margin-top:10px;line-height:1.6}
+.nude-badge{background:rgba(255,59,92,.15);border:1px solid rgba(255,59,92,.3);color:#ff7a90;padding:6px 10px;border-radius:8px;font-size:10px;margin-top:6px}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>🎨 Venice Image v2.1</h1>
-<p class="sub">Fixed Download for Phone • Nude Mode • Same Key</p>
-
-<div style="text-align:center;margin-bottom:10px;display:flex;gap:8px;justify-content:center">
-<a href="index.html" style="color:#ff3b5c;text-decoration:none;font-size:11px;border:1px solid #ff3b5c44;padding:5px 12px;border-radius:20px">📚 Story App</a>
-<a href="convert.html" style="color:#ff3b5c;text-decoration:none;font-size:11px;border:1px solid #ff3b5c44;padding:5px 12px;border-radius:20px">🔤 Converter</a>
+<h1>🎨 Simple Image v2.2</h1>
+<p class="sub">Fixed Download • Nude Mode • Navigation Fixed</p>
+<div class="nav">
+<a href="index.html">📚 Story</a>
+<a href="characters.html" style="background:#ff3b5c;color:#fff">🎭 Multi-Char Lock (NEW BEST)</a>
+<a href="convert.html">🔤 Converter</a>
+<a href="data:text/html;base64,PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KPGhlYWQ+CjxtZXRhIGNoYXJzZXQ9IlVURi04Ij48bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLGluaXRpYWwtc2NhbGU9MSI+Cjx0aXRsZT5IdWIgLSBBbGwgQXBwczwvdGl0bGU+CjxzdHlsZT4KYm9keXtmb250LWZhbWlseTpJbnRlcixzeXN0ZW0tdWk7YmFja2dyb3VuZDojMGYwZjEyO2NvbG9yOiNlZWU7cGFkZGluZzoyMHB4O21pbi1oZWlnaHQ6MTAwdmg7ZGlzcGxheTpmbGV4O2FsaWduLWl0ZW1zOmNlbnRlcjtqdXN0aWZ5LWNvbnRlbnQ6Y2VudGVyfQouY2FyZHtiYWNrZ3JvdW5kOiMxYTFhMWY7Ym9yZGVyOjFweCBzb2xpZCAjMmEyYTMyO2JvcmRlci1yYWRpdXM6MTZweDtwYWRkaW5nOjI0cHg7bWF4LXdpZHRoOjUwMHB4O3dpZHRoOjEwMCU7dGV4dC1hbGlnbjpjZW50ZXJ9Cmgxe2NvbG9yOiNmZjNiNWM7bWFyZ2luLWJvdHRvbTo2cHh9Ci5zdWJ7Y29sb3I6Izc3Nztmb250LXNpemU6MTJweDttYXJnaW4tYm90dG9tOjE4cHh9Ci5hcHB7IGRpc3BsYXk6YmxvY2s7YmFja2dyb3VuZDojMjQyNDJjO2JvcmRlcjoxcHggc29saWQgIzMzMztib3JkZXItcmFkaXVzOjEycHg7cGFkZGluZzoxNHB4O21hcmdpbjo4cHggMDt0ZXh0LWRlY29yYXRpb246bm9uZTtjb2xvcjojZmZmO3RleHQtYWxpZ246bGVmdH0KLmFwcDpob3Zlcntib3JkZXItY29sb3I6I2ZmM2I1Y30KLmFwcCAudGl0bGV7Zm9udC13ZWlnaHQ6NzAwO2ZvbnQtc2l6ZToxNHB4fQouYXBwIC5kZXNje2ZvbnQtc2l6ZToxMXB4O2NvbG9yOiM3Nzc7bWFyZ2luLXRvcDoycHh9Ci5iYWRnZXtkaXNwbGF5OmlubGluZS1ibG9jaztwYWRkaW5nOjJweCA4cHg7Ym9yZGVyLXJhZGl1czoxMHB4O2ZvbnQtc2l6ZTo5cHg7Zm9udC13ZWlnaHQ6NzAwO21hcmdpbi1sZWZ0OjZweH0KLmJhZGdlLW5ld3tiYWNrZ3JvdW5kOiNmZjNiNWM7Y29sb3I6I2ZmZn0KLmJhZGdlLWZpeGVke2JhY2tncm91bmQ6IzFhOGE0YTtjb2xvcjojZmZmfQo8L3N0eWxlPgo8L2hlYWQ+Cjxib2R5Pgo8ZGl2IGNsYXNzPSJjYXJkIj4KPGgxPvCfk5ogQWR1bHQgU3RvcnkgQXBwIFN1aXRlPC9oMT4KPHAgY2xhc3M9InN1YiI+QWxsIGFwcHMgY29ubmVjdGVkIOKAoiBTYW1lIFZlbmljZSBLZXkg4oCiIEF1dG8tU2F2ZSBPTjwvcD4KCjxhIGNsYXNzPSJhcHAiIGhyZWY9ImluZGV4Lmh0bWwiPgo8ZGl2IGNsYXNzPSJ0aXRsZSI+8J+TmiBTdG9yeSBFbmdpbmUgdjEwLjIgPHNwYW4gY2xhc3M9ImJhZGdlIGJhZGdlLWZpeGVkIj5GSVhFRCBOQVYgKyBBVVRPLVNBVkU8L3NwYW4+PC9kaXY+CjxkaXYgY2xhc3M9ImRlc2MiPkdlbmVyYXRlIHVuY2Vuc29yZWQgSGluZGkvSGluZ2xpc2ggc3RvcmllcyDigKIgQXV0by1zYXZlcywgbmV2ZXIgbG9zZXMgc3Rvcnkgd2hlbiBzd2l0Y2hpbmcgYXBwczwvZGl2Pgo8L2E+Cgo8YSBjbGFzcz0iYXBwIiBocmVmPSJjaGFyYWN0ZXJzLmh0bWwiPgo8ZGl2IGNsYXNzPSJ0aXRsZSI+8J+OrSBNdWx0aS1DaGFyYWN0ZXIgTG9jayB2MyA8c3BhbiBjbGFzcz0iYmFkZ2UgYmFkZ2UtbmV3Ij5ORVcgQkVTVDwvc3Bhbj48L2Rpdj4KPGRpdiBjbGFzcz0iZGVzYyI+U2F2ZSB1bmxpbWl0ZWQgY2hhcmFjdGVycyAoTmVoYSwgUHJpeWEsIFJhdmkpIOKAoiBTYW1lIGZhY2UgZXZlcnkgdGltZSDigKIgTHVzdGlmeSBudWRlIHF1YWxpdHkg4oCiIEdhbGxlcnk8L2Rpdj4KPC9hPgoKPGEgY2xhc3M9ImFwcCIgaHJlZj0iaW1hZ2UuaHRtbCI+CjxkaXYgY2xhc3M9InRpdGxlIj7wn46oIFNpbXBsZSBJbWFnZSB2Mi4yIDxzcGFuIGNsYXNzPSJiYWRnZSBiYWRnZS1maXhlZCI+RklYRUQgRE9XTkxPQUQ8L3NwYW4+PC9kaXY+CjxkaXYgY2xhc3M9ImRlc2MiPlF1aWNrIHNpbmdsZSBpbWFnZSDigKIgU2V4eSBNb2RlICsgTnVkZSBNb2RlIOKAoiBGaXhlZCBwaG9uZSBkb3dubG9hZDwvZGl2Pgo8L2E+Cgo8YSBjbGFzcz0iYXBwIiBocmVmPSJjb252ZXJ0Lmh0bWwiPgo8ZGl2IGNsYXNzPSJ0aXRsZSI+8J+UpCBDb252ZXJ0ZXIgdjIuMyA8c3BhbiBjbGFzcz0iYmFkZ2UgYmFkZ2UtZml4ZWQiPkZJWEVEIEJBQ0sgQlVUVE9OPC9zcGFuPjwvZGl2Pgo8ZGl2IGNsYXNzPSJkZXNjIj5IaW5nbGlzaCDihpQgSGluZGkgY29udmVydGVyIOKAoiBBdXRvLWxvYWRzIHN0b3J5IGZyb20gU3RvcnkgQXBwIOKAoiBCYWNrIGJ1dHRvbiBzYWZlPC9kaXY+CjwvYT4KCjxkaXYgc3R5bGU9Im1hcmdpbi10b3A6MTZweDtmb250LXNpemU6MTFweDtjb2xvcjojNTU1O2xpbmUtaGVpZ2h0OjEuNiI+CvCfkqEgPGI+SG93IHRvIHVzZTo8L2I+PGJyPgoxLiBTdGFydCBhdCBTdG9yeSBBcHAg4oaSIGdlbmVyYXRlIHN0b3J5IChhdXRvLXNhdmVkKTxicj4KMi4gR28gdG8gQ2hhcmFjdGVycyBBcHAg4oaSIGNyZWF0ZSBOZWhhLCBQcml5YSDihpIgZ2VuZXJhdGUgdGhlaXIgcGhvdG9zPGJyPgozLiBHbyB0byBDb252ZXJ0ZXIg4oaSIHN0b3J5IGF1dG8tbG9hZGVkIOKGkiBjb252ZXJ0PGJyPgo0LiBTd2l0Y2ggYW55dGltZSDigJQgbm90aGluZyBpcyBsb3N0ITxicj48YnI+CktleTogPHNwYW4gaWQ9ImtleVN0YXR1cyIgc3R5bGU9ImNvbG9yOiM3NzciPkNoZWNraW5nLi4uPC9zcGFuPgo8L2Rpdj4KPC9kaXY+CjxzY3JpcHQ+CmNvbnN0IGs9bG9jYWxTdG9yYWdlLmdldEl0ZW0oJ3ZlbmljZV9hcGlfa2V5Jyk7CmRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdrZXlTdGF0dXMnKS50ZXh0Q29udGVudD1rPyfinIUgU2F2ZWQgKCcray5zbGljZSgwLDE1KSsnLi4uKSc6J+KdjCBOb3Qgc2F2ZWQgeWV0IC0gZW50ZXIgaW4gYW55IGFwcCc7CmRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdrZXlTdGF0dXMnKS5zdHlsZS5jb2xvcj1rPycjNWNmZmIwJzonI2ZmNmI3YSc7Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4K">🏠 Hub</a>
 </div>
 
 <div class="card api">
-<label class="label">🔑 Venice API Key</label>
+<label class="label">🔑 Venice Key (shared across all apps)</label>
 <input type="password" id="apiKey" placeholder="VENICE_INFERENCE_KEY_...">
 </div>
 
 <div class="card" style="border:1px solid #ff3b5c44">
-<label class="label">🔥 Mode Select</label>
-<div class="toggle" id="modeToggle">
-<button id="btnSexy" class="active" onclick="setMode('sexy')">💃 Sexy Mode</button>
-<button id="btnNude" onclick="setMode('nude')">🔥 Nude Mode</button>
-</div>
-<div id="modeInfo" class="nude-badge">
-💃 <b>Sexy Mode:</b> Saree, wet, curvy - clothed sexy. Always works.
-</div>
+<label class="label">🔥 Mode</label>
+<div class="toggle"><button id="btnSexy" class="active" onclick="setMode('sexy')">💃 Sexy</button><button id="btnNude" onclick="setMode('nude')">🔥 Nude (wearing nothing)</button></div>
+<div id="modeInfo" class="nude-badge">💃 Sexy Mode: Saree, wet, curvy - clothed. Always works.</div>
 </div>
 
 <div class="card">
 <label class="label">✨ Prompt</label>
-<textarea id="prompt" placeholder="Example: Indian bhabhi in wet red saree, realistic, highly detailed..."></textarea>
-<label class="label">🚫 Negative Prompt</label>
-<input id="negPrompt" value="blurry, deformed, bad anatomy, extra fingers, cartoon, anime, ugly, low quality">
+<textarea id="prompt" placeholder="Example: Indian bhabhi in wet red saree, realistic..."></textarea>
 <div class="grid">
-<div>
-<label class="label">🤖 Model (auto-set)</label>
-<select id="model">
-<option value="fluently-xl">Fluently XL - Realistic</option>
-<option value="flux-dev-uncensored">Flux Dev Uncensored - Best Quality</option>
-<option value="venice-sd35">Venice SD35 - Fast</option>
-<option value="lustify-sdxl">Lustify SDXL - Adult/Nude Specialist</option>
-<option value="hidream">HiDream - Artistic</option>
-</select>
+<div><label class="label">Model</label><select id="model"><option value="lustify-sdxl" selected>Lustify SDXL - Best Nude</option><option value="fluently-xl">Fluently XL - Realistic</option><option value="flux-dev-uncensored">Flux Dev Uncensored</option><option value="venice-sd35">Venice SD35</option></select></div>
+<div><label class="label">Size</label><select id="size"><option value="768x1024" selected>Portrait 768x1024</option><option value="832x1216">Tall 832x1216 (nude best)</option><option value="1024x1024">Square</option></select></div>
 </div>
-<div>
-<label class="label">Size</label>
-<select id="size"><option value="768x1024" selected>Portrait 768x1024</option><option value="832x1216">Tall 832x1216 (best for nude)</option><option value="1024x1024">Square 1024x1024</option></select>
-</div>
-</div>
-<div class="flex">
-<button class="btn btn-nude" id="genBtn" onclick="generateImage()">🎨 Generate</button>
-<button class="btn btn-ghost" onclick="clearAll()">Clear</button>
-</div>
-<div id="status" class="small" style="margin-top:8px"></div>
+<label class="label">Negative</label><input id="negPrompt" value="blurry, deformed, bad anatomy, extra fingers, cartoon, low quality">
+<div class="flex"><button class="btn btn-nude" id="genBtn" onclick="generateImage()">🎨 Generate</button><button class="btn btn-ghost" onclick="document.getElementById('prompt').value=''">Clear</button></div>
+<div id="status" class="small" style="margin-top:6px"></div>
 <div id="errorBox" class="error hidden"></div>
 <div id="successBox" class="success hidden"></div>
 </div>
 
 <div class="card">
-<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-<label class="label">🖼️ Result - FIXED DOWNLOAD</label>
-<div class="flex">
-<button class="btn btn-green" style="padding:8px 14px;font-size:12px" onclick="downloadImage()">💾 Download (Fixed)</button>
-<button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="openInNewTab()">🔗 Open in New Tab</button>
-</div>
-</div>
+<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px"><label class="label">🖼️ Result - Fixed Download</label><div class="flex"><button class="btn btn-green" style="padding:6px 10px;font-size:10px" onclick="downloadImage()">💾 Download Fixed</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px" onclick="openInNewTab()">🔗 New Tab</button></div></div>
 <div class="imgbox" id="imgBox"><span class="small">No image yet.</span></div>
-<div id="imgInfo" class="small" style="margin-top:8px"></div>
-<div id="downloadHelp" class="download-help hidden">
-<b>📱 Phone Download - 3 Ways (if button doesn't work):</b><br>
-1. <b>Long Press</b> on image → "Add to Photos" / "Save Image"<br>
-2. Click <b>"Open in New Tab"</b> → then long press image → Save<br>
-3. On iPhone: After image appears, tap share icon → Save to Files / Photos<br>
+<div id="imgInfo" class="small" style="margin-top:6px"></div>
+<div class="small" style="margin-top:6px">📱 Long press image → Add to Photos (100% works on iPhone)</div>
 </div>
-</div>
-
 </div>
 <script>
-let lastImageUrl=null; let currentMode='sexy';
-
+let lastImageUrl=null, currentMode='sexy';
 function initAll(){
-  const ak=document.getElementById('apiKey');
-  const sk=localStorage.getItem('venice_api_key');
-  if(ak && sk) ak.value=sk;
+  const ak=document.getElementById('apiKey'); const sk=localStorage.getItem('venice_api_key'); if(ak && sk) ak.value=sk;
   if(ak){ const s=()=>{ const v=ak.value.trim(); if(v.length>10) localStorage.setItem('venice_api_key',v); }; ak.addEventListener('input',s); ak.addEventListener('blur',s); }
   setMode('sexy');
 }
-function setMode(mode){
-  currentMode=mode;
-  document.getElementById('btnSexy').classList.toggle('active', mode==='sexy');
-  document.getElementById('btnNude').classList.toggle('active', mode==='nude');
-  const modelSel=document.getElementById('model');
-  const info=document.getElementById('modeInfo');
-  if(mode==='nude'){
-    modelSel.value='lustify-sdxl';
-    info.innerHTML='🔥 <b>Nude Mode ACTIVE:</b> Model = Lustify SDXL (allows wearing nothing). Artistic nude works.';
-  } else {
-    modelSel.value='fluently-xl';
-    info.innerHTML='💃 <b>Sexy Mode:</b> Clothed sexy - saree, wet, curvy. Model: Fluently XL.';
-  }
-}
-function clearAll(){ document.getElementById('prompt').value=''; document.getElementById('imgBox').innerHTML='<span class="small">No image yet.</span>'; hideMsg(); document.getElementById('downloadHelp').classList.add('hidden'); }
-
+function setMode(m){ currentMode=m; document.getElementById('btnSexy').classList.toggle('active', m==='sexy'); document.getElementById('btnNude').classList.toggle('active', m==='nude'); const info=document.getElementById('modeInfo'); if(m==='nude'){ document.getElementById('model').value='lustify-sdxl'; info.innerHTML='🔥 Nude Mode: Model Lustify SDXL, allows "wearing nothing" artistic nude.'; } else { document.getElementById('model').value='fluently-xl'; info.innerHTML='💃 Sexy Mode: Clothed sexy, best realistic faces.'; } }
 async function generateImage(){
-  const apiKey=document.getElementById('apiKey').value.trim();
-  const prompt=document.getElementById('prompt').value.trim();
-  const negPrompt=document.getElementById('negPrompt').value.trim();
-  const model=document.getElementById('model').value;
-  const size=document.getElementById('size').value;
-  if(!apiKey) return showError('Enter Venice API Key');
-  if(!prompt) return showError('Write prompt');
-  hideMsg(); document.getElementById('genBtn').disabled=true;
-  document.getElementById('status').textContent='Generating... 20-40 sec...';
-  document.getElementById('imgBox').innerHTML='<span class="small">🎨 Generating...</span>';
-  document.getElementById('downloadHelp').classList.add('hidden');
-
+  const apiKey=document.getElementById('apiKey').value.trim(); const prompt=document.getElementById('prompt').value.trim(); const neg=document.getElementById('negPrompt').value.trim(); const model=document.getElementById('model').value; const size=document.getElementById('size').value;
+  if(!apiKey) return showError('Enter Venice Key'); if(!prompt) return showError('Write prompt');
+  hideMsg(); document.getElementById('genBtn').disabled=true; document.getElementById('status').textContent='Generating...'; document.getElementById('imgBox').innerHTML='<span class="small">🎨 Generating...</span>';
   try{
     const [w,h]=size.split('x').map(n=>parseInt(n));
-    const res=await fetch('https://api.venice.ai/api/v1/image/generate',{
-      method:'POST',
-      headers:{'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'},
-      body:JSON.stringify({model,prompt,negative_prompt:negPrompt,width:w,height:h,steps:currentMode==='nude'?30:25,cfg_scale:7.0,safe_mode:false,hide_watermark:false,return_binary:false})
-    });
-    const data=await res.json();
-    if(!res.ok) throw new Error(data.error?.message || JSON.stringify(data).slice(0,400));
-    let imgSrc=null;
-    if(data.images && data.images.length>0){
-      const first=data.images[0];
-      if(first.startsWith('http')) imgSrc=first;
-      else if(first.startsWith('data:')) imgSrc=first;
-      else imgSrc='data:image/png;base64,'+first;
-    } else if(data.data && data.data.length>0){
-      imgSrc=data.data[0].url || 'data:image/png;base64,'+data.data[0].b64_json;
-    } else if(data.image_url){ imgSrc=data.image_url; }
-    else throw new Error('Unknown format');
-
-    lastImageUrl=imgSrc;
-    document.getElementById('imgBox').innerHTML='<img src="'+imgSrc+'" id="genImg" style="max-width:100%"><div class="small" style="margin-top:8px">👆 Long press this image → Save to Photos</div>';
-    document.getElementById('imgInfo').textContent='Mode: '+currentMode+' | Model: '+model+' | Ready to save';
-    document.getElementById('downloadHelp').classList.remove('hidden');
-    showSuccess('Generated! Now: 1) Tap Download button OR 2) Long press image → Save to Photos (works 100% on phone)');
-  }catch(e){
-    showError('Failed: '+e.message);
-    document.getElementById('imgBox').innerHTML='<span class="small">Failed: '+e.message.slice(0,200)+'</span>';
-  }finally{
-    document.getElementById('genBtn').disabled=false;
-    document.getElementById('status').textContent='';
-  }
+    const res=await fetch('https://api.venice.ai/api/v1/image/generate',{method:'POST',headers:{'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'},body:JSON.stringify({model,prompt,negative_prompt:neg,width:w,height:h,steps:currentMode==='nude'?32:25,cfg_scale:7,safe_mode:false,hide_watermark:false,return_binary:false})});
+    const data=await res.json(); if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,400));
+    let imgSrc=null; if(data.images&&data.images[0]){ const f=data.images[0]; imgSrc=f.startsWith('http')?f:f.startsWith('data:')?f:'data:image/png;base64,'+f; } else if(data.data&&data.data[0]) imgSrc=data.data[0].url||'data:image/png;base64,'+data.data[0].b64_json; else if(data.image_url) imgSrc=data.image_url; else throw new Error('Unknown');
+    lastImageUrl=imgSrc; document.getElementById('imgBox').innerHTML=`<img src="${imgSrc}"><div class="small" style="margin-top:6px">Long press to save</div>`; document.getElementById('imgInfo').textContent=`Model: ${model} | Mode: ${currentMode}`; showSuccess('Generated! Use Download or Long press.');
+  }catch(e){ showError('Failed: '+e.message); document.getElementById('imgBox').innerHTML='<span class="small">Failed: '+e.message.slice(0,200)+'</span>'; }
+  finally{ document.getElementById('genBtn').disabled=false; document.getElementById('status').textContent=''; }
 }
-
-// FIXED DOWNLOAD FOR PHONE
 function downloadImage(){
-  if(!lastImageUrl) return showError('No image yet');
-  try{
-    // For base64 data URL - convert to blob for mobile download
-    if(lastImageUrl.startsWith('data:')){
-      const byteString = atob(lastImageUrl.split(',')[1]);
-      const mimeString = lastImageUrl.split(',')[0].split(':')[1].split(';')[0];
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-      for(let i=0;i<byteString.length;i++){ ia[i]=byteString.charCodeAt(i); }
-      const blob = new Blob([ab], {type: mimeString});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'venice-'+currentMode+'-'+Date.now()+'.png';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
-      showSuccess('Download started! Check Downloads folder or Photos. If not, use Long Press method below.');
-    } else {
-      // http url - open in new tab
-      window.open(lastImageUrl, '_blank');
-      showSuccess('Opened in new tab - long press image there to save');
-    }
-  }catch(e){
-    showError('Download failed, use Long Press method: '+e.message);
-    openInNewTab();
-  }
-}
-function openInNewTab(){
   if(!lastImageUrl) return showError('No image');
-  const win = window.open();
-  win.document.write('<html><head><title>Venice Image</title></head><body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh"><img src="'+lastImageUrl+'" style="max-width:100%;max-height:100vh"><p style="color:#fff;position:fixed;bottom:10px;background:rgba(0,0,0,.7);padding:8px 12px;border-radius:20px;font-size:12px">Long press image → Save to Photos</p></body></html>');
-  showSuccess('Opened in new tab - now long press image → Add to Photos / Save Image');
+  try{
+    if(lastImageUrl.startsWith('data:')){
+      const byteString=atob(lastImageUrl.split(',')[1]); const mime=lastImageUrl.split(',')[0].split(':')[1].split(';')[0];
+      const ab=new ArrayBuffer(byteString.length); const ia=new Uint8Array(ab); for(let i=0;i<byteString.length;i++) ia[i]=byteString.charCodeAt(i);
+      const blob=new Blob([ab],{type:mime}); const url=URL.createObjectURL(blob);
+      const a=document.createElement('a'); a.href=url; a.download='venice-'+currentMode+'-'+Date.now()+'.png'; document.body.appendChild(a); a.click(); setTimeout(()=>{document.body.removeChild(a); URL.revokeObjectURL(url);},100);
+      showSuccess('Download started! Check Downloads or use Long press method.');
+    } else { window.open(lastImageUrl,'_blank'); }
+  }catch(e){ openInNewTab(); }
 }
+function openInNewTab(){ if(!lastImageUrl) return showError('No image'); const win=window.open(); win.document.write(`<html><body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh"><img src="${lastImageUrl}" style="max-width:100%"><p style="color:#fff;position:fixed;bottom:10px;background:rgba(0,0,0,.7);padding:8px 12px;border-radius:20px;font-size:12px">Long press → Save</p></body></html>`); }
 function showError(m){ document.getElementById('errorBox').textContent=m; document.getElementById('errorBox').classList.remove('hidden'); document.getElementById('successBox').classList.add('hidden'); }
 function showSuccess(m){ document.getElementById('successBox').textContent=m; document.getElementById('successBox').classList.remove('hidden'); document.getElementById('errorBox').classList.add('hidden'); }
 function hideMsg(){ document.getElementById('errorBox').classList.add('hidden'); document.getElementById('successBox').classList.add('hidden'); }
-
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initAll); else initAll();
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
