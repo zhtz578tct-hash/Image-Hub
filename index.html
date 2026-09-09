@@ -23,13 +23,16 @@
 }
 </style>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Story Engine v10 - Venice Only Simple</title>
+<title>Story Engine v10.1 - Fixed Nav + Auto Save</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Inter,system-ui;background:#0f0f12;color:#eee;padding:18px;min-height:100vh}
 .container{max-width:900px;margin:0 auto}
 h1{text-align:center;color:#ff3b5c;font-size:2em;margin:8px 0}
 .sub{text-align:center;color:#777;font-size:12px;margin-bottom:12px}
+.nav{display:flex;gap:8px;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
+.nav a{color:#ff3b5c;text-decoration:none;font-size:11px;border:1px solid #ff3b5c44;padding:6px 14px;border-radius:20px;background:#1a1a1f}
+.nav a:hover{background:#ff3b5c;color:#fff}
 .card{background:#1a1a1f;border:1px solid #2a2a32;border-radius:14px;padding:18px;margin-bottom:14px}
 .label{color:#ff3b5c;font-weight:700;font-size:11px;text-transform:uppercase;margin:10px 0 5px;display:block}
 input,select,textarea{width:100%;background:#24242c;border:1px solid #333;color:#fff;padding:11px;border-radius:8px;font-size:14px;margin-bottom:7px}
@@ -39,6 +42,7 @@ textarea{min-height:70px;resize:vertical}
 .btn{padding:12px 16px;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px}
 .btn-primary{background:#ff3b5c;color:#fff;flex:1}
 .btn-ghost{background:#2a2a32;color:#fff}
+.btn-green{background:#1a8a4a;color:#fff}
 .chapters{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
 .chip{padding:7px 12px;border-radius:20px;background:#24242c;border:1px solid #333;cursor:pointer;font-size:12px}
 .chip.active{background:#ff3b5c;border-color:#ff3b5c;color:#fff}
@@ -49,31 +53,37 @@ textarea{min-height:70px;resize:vertical}
 .hidden{display:none !important}
 .error{background:rgba(255,59,92,.1);border:1px solid rgba(255,59,92,.3);color:#ff6b7a;padding:10px;border-radius:8px;margin-top:8px;font-size:13px}
 .success{background:rgba(40,200,120,.1);border:1px solid rgba(40,200,120,.3);color:#5cffb0;padding:10px;border-radius:8px;margin-top:8px;font-size:13px}
+.autosave{background:rgba(40,200,120,.08);border:1px solid rgba(40,200,120,.2);padding:8px 12px;border-radius:8px;font-size:11px;color:#7affaa;margin-bottom:10px}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>📚 STORY ENGINE v10</h1>
-<p class="sub">Venice Only • Uncensored • Simple Like TTS • Fast</p>
-<div style="text-align:center;margin-bottom:10px"><a href="convert.html" style="color:#ff3b5c;text-decoration:none;font-size:11px;border:1px solid #ff3b5c44;padding:5px 12px;border-radius:20px">🔤 Converter</a></div>
+<h1>📚 STORY ENGINE v10.1</h1>
+<p class="sub">Venice Only • Auto-Save Fixed • Never Lose Story</p>
+<div class="nav">
+<a href="convert.html">🔤 Converter</a>
+<a href="image.html">🎨 Image Generator</a>
+<a href="convert.html" style="background:#ff3b5c;color:#fff">🔤 Convert Current Story</a>
+</div>
+
+<div class="autosave" id="autosaveInfo">✅ Auto-Save ON: Story will be saved even if you close app or go to converter</div>
 
 <div class="card api">
-<label class="label">🔑 Venice API Key (only key needed)</label>
+<label class="label">🔑 Venice API Key (same for all apps)</label>
 <input type="password" id="apiKey" placeholder="VENICE_INFERENCE_KEY_...">
 <div class="grid" style="margin-top:8px">
 <div>
-<label class="label">🤖 Model (Best for lock)</label>
+<label class="label">🤖 Model</label>
 <select id="modelSelect">
-<option value="qwen3-235b-a22b" selected>🔥 Qwen3 235B - Best Lock + Uncensored (NEW)</option>
-<option value="mistral-31-24b">⚡ Mistral 31-24B - Fastest (40s)</option>
+<option value="qwen3-235b-a22b" selected>🔥 Qwen3 235B - Best Lock + Uncensored</option>
+<option value="mistral-31-24b">⚡ Mistral 31-24B - Fastest</option>
 <option value="qwen-3-7-max">Qwen3 32B - Balanced</option>
 <option value="dolphin-2.9.4-mistral-nemo">🐬 Dolphin Nemo - Hardcore</option>
-<option value="venice-uncensored">Venice Uncensored</option>
 </select>
 </div>
 <div>
 <label class="label">Length</label>
-<select id="lengthTarget"><option value="medium">Medium 600w (fast)</option><option value="long" selected>Long 1000w</option><option value="verylong">Very Long 1500w</option></select>
+<select id="lengthTarget"><option value="medium">Medium 600w</option><option value="long" selected>Long 1000w</option><option value="verylong">Very Long 1500w</option></select>
 </div>
 </div>
 </div>
@@ -81,11 +91,11 @@ textarea{min-height:70px;resize:vertical}
 <div class="card">
 <label class="label">👤 Characters (Locked)</label>
 <div class="grid">
-<div><input id="heroName" placeholder="Hero name e.g. Ravi"><input id="heroDesc" placeholder="Hero: age, look, job e.g. 28, gym trainer"></div>
-<div><input id="heroineName" placeholder="Heroine name e.g. Neha"><input id="heroineDesc" placeholder="Heroine: age, look e.g. 24, college student, bhabhi"></div>
+<div><input id="heroName" placeholder="Hero name e.g. Ravi"><input id="heroDesc" placeholder="Hero desc e.g. 28 gym trainer"></div>
+<div><input id="heroineName" placeholder="Heroine e.g. Neha"><input id="heroineDesc" placeholder="Heroine desc e.g. 24 college student"></div>
 </div>
-<label class="label">Story Idea (Simple, like TTS)</label>
-<textarea id="corePlot" placeholder="Just write simple like in TTS: e.g. Ravi and Neha are neighbors, stuck in lift during light cut, rainy night, slow romance..." style="min-height:85px"></textarea>
+<label class="label">Story Idea</label>
+<textarea id="corePlot" placeholder="e.g. Ravi and Neha neighbors, lift stuck, rainy night..." style="min-height:85px"></textarea>
 <div class="grid">
 <select id="language"><option value="hinglish" selected>Hinglish</option><option value="hindi">Hindi Devanagari</option><option value="english">English</option></select>
 <select id="intensity"><option value="sensual">Sensual 5/10</option><option value="explicit" selected>Explicit 7/10</option><option value="hardcore">Hardcore 10/10</option></select>
@@ -93,25 +103,21 @@ textarea{min-height:70px;resize:vertical}
 </div>
 
 <div class="card" style="border:1px solid #2a2a5a">
-<label class="label">🧠 Previous Story (paste here for continuation - auto saved)</label>
-<textarea id="storyMemory" placeholder="For next chapters, paste previous chapters here... keeps characters same" style="min-height:100px;background:#18181f"></textarea>
-<div class="flex"><button class="btn btn-ghost" style="padding:4px 10px;font-size:11px" onclick="clearMemory()">Clear</button></div>
+<label class="label">🧠 Previous Story Memory (auto-saved)</label>
+<textarea id="storyMemory" placeholder="Paste previous chapters here for continuation..." style="min-height:100px;background:#18181f"></textarea>
+<div class="flex"><button class="btn btn-ghost" style="padding:4px 10px;font-size:11px" onclick="clearMemory()">Clear Memory</button><button class="btn btn-ghost" style="padding:4px 10px;font-size:11px" onclick="loadMemoryFromChapters()">Load from Current Chapters</button></div>
 </div>
 
 <div class="card">
-<label class="label">📖 Chapters</label>
+<label class="label">📖 Chapters - Auto-Saved</label>
 <div class="chapters" id="chapterTabs">
-<div class="chip active" data-ch="1">Ch1</div>
-<div class="chip" data-ch="2">Ch2</div>
-<div class="chip" data-ch="3">Ch3</div>
-<div class="chip" data-ch="4">Ch4</div>
-<div class="chip" data-ch="5">Ch5</div>
+<div class="chip active" data-ch="1">Ch1</div><div class="chip" data-ch="2">Ch2</div><div class="chip" data-ch="3">Ch3</div><div class="chip" data-ch="4">Ch4</div><div class="chip" data-ch="5">Ch5</div>
 </div>
 <div class="flex">
 <button class="btn btn-primary" id="genBtn" onclick="generateCurrentChapter()">✨ Generate</button>
 <button class="btn btn-ghost" onclick="regenerateCurrentChapter()">🔄 Retry</button>
-<button class="btn btn-ghost" onclick="extendStory()">➕ Add</button>
-<button class="btn btn-ghost" onclick="clearStory()">Clear</button>
+<button class="btn btn-ghost" onclick="extendStory()">➕ Add Ch</button>
+<button class="btn btn-ghost" onclick="clearStory()">Clear All</button>
 </div>
 <div id="status" class="small" style="margin-top:8px"></div>
 <div id="errorBox" class="error hidden"></div>
@@ -119,8 +125,9 @@ textarea{min-height:70px;resize:vertical}
 </div>
 
 <div class="card">
-<div style="display:flex;justify-content:space-between"><label class="label">📚 Full Story</label><div class="flex"><button class="btn btn-ghost" style="padding:4px 10px;font-size:11px" onclick="copyStory()">Copy</button><button class="btn btn-ghost" style="padding:4px 10px;font-size:11px" onclick="downloadStory()">Download</button></div></div>
-<div class="story" id="fullStory">No chapters yet. Write story idea and Generate.</div>
+<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><label class="label">📚 Full Story (Auto-Saved)</label><div class="flex"><button class="btn btn-ghost" style="padding:6px 12px;font-size:11px" onclick="copyStory()">Copy</button><button class="btn btn-ghost" style="padding:6px 12px;font-size:11px" onclick="downloadStory()">Download</button><a href="convert.html" style="text-decoration:none"><button class="btn btn-green" style="padding:6px 12px;font-size:11px">🔤 Convert to Hindi →</button></a></div></div>
+<div class="story" id="fullStory">No chapters yet.</div>
+<div class="small" style="margin-top:8px">💡 Tip: Now you can go to Converter or Image app and come back - story will remain! Auto-save every 5 sec.</div>
 </div>
 
 </div>
@@ -132,13 +139,57 @@ function initAll(){
   const sk=localStorage.getItem('venice_api_key');
   if(ak && sk) ak.value=sk;
   if(ak){ const s=()=>{ const v=ak.value.trim(); if(v.length>10) localStorage.setItem('venice_api_key',v); }; ak.addEventListener('input',s); ak.addEventListener('blur',s); }
-  const mem=document.getElementById('storyMemory');
-  if(mem){ const sm=localStorage.getItem('story_memory_v10'); if(sm) mem.value=sm; mem.addEventListener('input',()=>localStorage.setItem('story_memory_v10',mem.value)); }
+
+  // Load saved chapters
+  try{
+    const savedCh=localStorage.getItem('story_chapters_v10_1');
+    if(savedCh){ chapters=JSON.parse(savedCh); 
+      Object.keys(chapters).forEach(k=>{ if(k.toString().startsWith('c')){ const num=k.slice(1); customChCount=Math.max(customChCount, parseInt(num)); }});
+      // rebuild tabs for custom chapters
+      for(let i=1;i<=customChCount;i++){
+        const k='c'+i; if(!document.querySelector(`[data-ch="${k}"]`)){
+          const tab=document.createElement('div'); tab.className='chip'; tab.dataset.ch=k; tab.textContent='Ch '+(5+parseInt(i)); tab.addEventListener('click',e=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); e.target.classList.add('active'); currentCh=e.target.dataset.ch;}); document.getElementById('chapterTabs').appendChild(tab);
+        }
+      }
+    }
+    const mem=localStorage.getItem('story_memory_v10'); if(mem) document.getElementById('storyMemory').value=mem;
+    const heroN=localStorage.getItem('heroName'); if(heroN) document.getElementById('heroName').value=heroN;
+    const heroD=localStorage.getItem('heroDesc'); if(heroD) document.getElementById('heroDesc').value=heroD;
+    const heroineN=localStorage.getItem('heroineName'); if(heroineN) document.getElementById('heroineName').value=heroineN;
+    const heroineD=localStorage.getItem('heroineDesc'); if(heroineD) document.getElementById('heroineDesc').value=heroineD;
+    const plot=localStorage.getItem('corePlot'); if(plot) document.getElementById('corePlot').value=plot;
+  }catch(e){ console.log('Load failed',e); }
+
+  renderFullStory();
+
   document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',e=>{
     document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); e.target.classList.add('active');
     currentCh=isNaN(e.target.dataset.ch)?e.target.dataset.ch:parseInt(e.target.dataset.ch);
   }));
+
+  // Auto-save inputs
+  ['heroName','heroDesc','heroineName','heroineDesc','corePlot','storyMemory'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.addEventListener('input', saveAll);
+  });
+  setInterval(saveAll, 5000);
+
+  // Restore status if story exists
+  if(Object.values(chapters).some(v=>v)) showSuccess('✅ Previous story restored! Auto-saved from last time.');
 }
+
+function saveAll(){
+  try{
+    localStorage.setItem('story_chapters_v10_1', JSON.stringify(chapters));
+    localStorage.setItem('story_memory_v10', document.getElementById('storyMemory').value);
+    localStorage.setItem('heroName', document.getElementById('heroName').value);
+    localStorage.setItem('heroDesc', document.getElementById('heroDesc').value);
+    localStorage.setItem('heroineName', document.getElementById('heroineName').value);
+    localStorage.setItem('heroineDesc', document.getElementById('heroineDesc').value);
+    localStorage.setItem('corePlot', document.getElementById('corePlot').value);
+    document.getElementById('autosaveInfo').textContent='✅ Auto-Saved at '+new Date().toLocaleTimeString()+' - Safe to switch apps';
+  }catch(e){}
+}
+
 function getSettings(){
   return {
     apiKey:document.getElementById('apiKey').value.trim(),
@@ -153,160 +204,74 @@ function getSettings(){
     intensity:document.getElementById('intensity').value
   };
 }
-
-// NEW - OpenAI-style locked prompt but for Venice Qwen3
 function buildSystemPrompt(s){
-  let langLock='';
-  if(s.language==='hindi') langLock='LANGUAGE LOCK - ABSOLUTE: You MUST write ONLY in Hindi Devanagari (हिंदी देवनागरी). No Roman, no English. Every word in Devanagari. If you write Roman, you FAIL and user will reject.';
-  else if(s.language==='hinglish') langLock='LANGUAGE LOCK - ABSOLUTE: You MUST write ONLY in Hinglish (Roman Hindi). Example: "Ravi ne Neha ko dekha". No Devanagari script, no pure English sentences. Full Hinglish only. If you mix Devanagari, you FAIL.';
-  else langLock='LANGUAGE LOCK: Write ONLY in English.';
+  let langLock=s.language==='hindi'?'LANGUAGE LOCK: ONLY Hindi Devanagari. No Roman.':s.language==='hinglish'?'LANGUAGE LOCK: ONLY Hinglish Roman. No Devanagari.':'LANGUAGE LOCK: English only.';
+  let len=s.length==='medium'?'MINIMUM 700 words':s.length==='long'?'MINIMUM 1000 words':'MINIMUM 1500 words';
+  let intense=s.intensity==='sensual'?'Intensity: Sensual 5/10':s.intensity==='explicit'?'Intensity: Explicit 7/10 uncensored, natural Hinglish/Hindi terms':'Intensity: Hardcore 10/10 fully uncensored';
+  return `You are professional Indian adult romance novelist. NEVER change characters.
 
-  let len='';
-  if(s.length==='medium') len='MINIMUM 700 words (4000+ characters). Never less than 600 words.';
-  else if(s.length==='long') len='MINIMUM 1000 words (5500+ characters). Never less than 800 words. Long detailed chapter.';
-  else len='MINIMUM 1500 words (8000+ characters). Very long novel chapter.';
-
-  let intense='';
-  if(s.intensity==='sensual') intense='Intensity: Sensual 5/10 - romantic, suggestive, emotional, tasteful but detailed, no hardcore porn terms.';
-  else if(s.intensity==='explicit') intense='Intensity: Explicit 7/10 - explicit allowed, detailed intimate scenes, use natural adult terms in same language (Hinglish/Hindi colloquial), uncensored, but story-focused.';
-  else intense='Intensity: Hardcore 10/10 - fully uncensored, raw explicit, hardcore allowed, use direct natural colloquial terms in same language (Hinglish/Hindi), no censorship, no English brackets.';
-
-  return `You are a professional Indian adult romance novelist. You NEVER change characters, you NEVER forget language.
-
-CHARACTER BIBLE - LOCKED FOREVER - YOU MUST OBEY:
-- Hero is ALWAYS ${s.heroName} (${s.heroDesc}) - NEVER change name, NEVER change age, NEVER call him different name.
-- Heroine is ALWAYS ${s.heroineName} (${s.heroineDesc}) - NEVER change name, NEVER introduce new girl.
-- Only these two characters in story. Do NOT add third person, do NOT change ${s.heroName} to Rahul or ${s.heroineName} to Priya. LOCKED.
-- If you change character names, you FAIL completely.
+CHARACTER BIBLE LOCKED:
+Hero ALWAYS ${s.heroName} (${s.heroDesc}) - NEVER change.
+Heroine ALWAYS ${s.heroineName} (${s.heroineDesc}) - NEVER change.
+Only these two.
 
 ${langLock}
-
-LENGTH LOCK: ${len} - If you write 100-200 words, you FAIL. Must be long.
-
+${len} - Never less than 600 words.
 ${intense}
 
-ANTI-REPEAT LOCK:
-- Each dialogue must be unique. Do NOT repeat same line like "kya dekh rahe ho" 5 times.
-- Mix dialogue + action + thoughts. Not just dialogue loop.
-- Do NOT repeat previous chapter lines.
-
-STORY CONTINUITY:
-- Continue story forward, don't restart, don't change plot.
-- Keep relation and setting consistent.
-
-You start directly with story, no intro, no explanation, no title.`;
+ANTI-REPEAT: Unique dialogues, no repeat lines.
+Start directly with story, no intro.`;
 }
-
 async function callVenice(apiKey, model, systemPrompt, userPrompt){
-  const body={
-    model,
-    messages:[{role:'system',content:systemPrompt},{role:'user',content:userPrompt}],
-    max_tokens: 4000,
-    temperature: 0.82,
-    top_p: 0.88,
-    frequency_penalty: 0.7,
-    presence_penalty: 0.5,
-    repetition_penalty: 1.18
-  };
-  const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{
-    method:'POST',
-    headers:{'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'},
-    body:JSON.stringify(body)
-  });
-  const data=await res.json();
-  if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,350));
+  const body={model,messages:[{role:'system',content:systemPrompt},{role:'user',content:userPrompt}],max_tokens:4000,temperature:0.82,top_p:0.88,frequency_penalty:0.7,presence_penalty:0.5,repetition_penalty:1.18};
+  const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const data=await res.json(); if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,350));
   return data.choices[0].message.content;
 }
-
 function getStoryContext(){
   const mem=document.getElementById('storyMemory').value.trim();
-  if(mem.length>100) return {full:mem, last:mem.slice(-1500), manual:true};
-  let ctx=''; let last='';
-  const order=[1,2,3,4,5].concat(Object.keys(chapters).filter(k=>k.toString().startsWith('c')).sort((a,b)=>parseInt(a.slice(1))-parseInt(b.slice(1))));
+  if(mem.length>100) return {full:mem,last:mem.slice(-1500),manual:true};
+  let ctx=''; let last=''; const order=[1,2,3,4,5].concat(Object.keys(chapters).filter(k=>k.toString().startsWith('c')).sort((a,b)=>parseInt(a.slice(1))-parseInt(b.slice(1))));
   order.forEach(k=>{ if(chapters[k]){ ctx+=`\n[Chapter ${k}]\n`+chapters[k]+'\n'; last=chapters[k].slice(-1500); }});
-  return {full:ctx, last:last, manual:false};
+  return {full:ctx,last:last,manual:false};
 }
-
 async function generateCurrentChapter(){
   const s=getSettings();
   if(!s.apiKey) return showError('Enter Venice API Key');
-  if(!s.corePlot && !document.getElementById('storyMemory').value.trim()) return showError('Write story idea first (like in TTS app)');
+  if(!s.corePlot && !document.getElementById('storyMemory').value.trim()) return showError('Write story idea first');
   hideMsg(); document.getElementById('genBtn').disabled=true;
-
   try{
-    let goal='';
-    if(currentCh===1) goal='Chapter 1: Introduction - introduce characters properly with their locked names and description, first meeting, setting, build curiosity, end with tension.';
-    else if(currentCh===2) goal='Chapter 2: Flirting - tension rises, teasing, near touches, varied dialogues, no repeat.';
-    else if(currentCh===3) goal='Chapter 3: First Touch - first kiss/touch, emotional, consent.';
-    else if(currentCh===4) goal='Chapter 4: Intimacy - main intimate scene as per intensity level.';
-    else if(currentCh===5) goal='Chapter 5: Afterglow - after intimacy, talking, emotional bonding, future hook.';
-    else goal=`Custom Chapter ${currentCh}: Continue story naturally forward.`;
-
-    const prev=getStoryContext();
-    const isFirst=!prev.last && !prev.manual;
+    let goal=currentCh===1?'Chapter 1: Introduction - introduce locked characters, setting, curiosity, tension.':currentCh===2?'Chapter 2: Flirting - tension rises, teasing, near touches.':currentCh===3?'Chapter 3: First Touch - kiss/touch, emotional.':currentCh===4?'Chapter 4: Intimacy - main scene as per intensity.':currentCh===5?'Chapter 5: Afterglow - after intimacy, bonding, future hook.':`Custom Chapter ${currentCh}: Continue naturally.`;
+    const prev=getStoryContext(); const isFirst=!prev.last && !prev.manual;
     const minChars = s.length==='medium'?3500 : s.length==='long'?5000 : 7000;
-
-    const userPrompt=`Write ${s.length} chapter - MINIMUM ${minChars} characters, ${s.length==='medium'?700:s.length==='long'?1000:1500} words.
-
-${isFirst?'FIRST CHAPTER - Start fresh. Story Idea: '+s.corePlot:`CONTINUE STORY:
-Story Idea Bible (LOCKED): ${s.corePlot}
-Previous story ending (last 1500 chars):
-${prev.last}
-Instruction: Continue EXACTLY after above ending. Do NOT repeat above lines. Do NOT change character names. Keep story forward.
-
-Full previous context:
-${prev.full.slice(-6000)}`}
-
-NOW WRITE:
-${goal}
-Hero: ${s.heroName} (${s.heroDesc})
-Heroine: ${s.heroineName} (${s.heroineDesc})
-
-RULES: Keep names ${s.heroName} and ${s.heroineName} LOCKED same, language ${s.language} LOCKED, length ${minChars}+ chars, intensity ${s.intensity}. No repeat dialogues. Start story directly.`;
-
+    const userPrompt=`Write ${s.length} chapter - MIN ${minChars} chars, ${s.length==='medium'?700:s.length==='long'?1000:1500} words.\n${isFirst?'FIRST CHAPTER - Story Idea: '+s.corePlot:`CONTINUE STORY:\nStory Idea Bible: ${s.corePlot}\nPrevious ending (last 1500 chars):\n${prev.last}\nContinue EXACTLY after above, no repeat, keep names same.\nFull context:\n${prev.full.slice(-6000)}`}\n\nNOW WRITE:\n${goal}\nHero: ${s.heroName} (${s.heroDesc})\nHeroine: ${s.heroineName} (${s.heroineDesc})\nRULES: Keep names locked, language ${s.language} locked, length ${minChars}+ chars, intensity ${s.intensity}. Start directly.`;
     let content=''; let lastErr=null;
     for(let attempt=0; attempt<3; attempt++){
       try{
         document.getElementById('status').textContent=`Generating with ${s.model}... attempt ${attempt+1}/3`;
-        content=await callVenice(s.apiKey, s.model, buildSystemPrompt(s), userPrompt + (attempt>0?`\n\nLAST ATTEMPT TOO SHORT (${content.length} chars) or REPEATED. NOW WRITE LONGER MIN ${minChars} CHARS, UNIQUE DIALOGUES, KEEP NAMES ${s.heroName} and ${s.heroineName} LOCKED!`:''));
+        content=await callVenice(s.apiKey, s.model, buildSystemPrompt(s), userPrompt + (attempt>0?`\n\nLAST TOO SHORT (${content.length} chars) or REPEAT. WRITE LONGER MIN ${minChars} CHARS, UNIQUE DIALOGUES, NAMES ${s.heroName} ${s.heroineName} LOCKED!`:''));
         if(content && content.length >= minChars*0.65){
-          // quick repeat check - same line 3 times?
-          const lines=content.split('\n').map(l=>l.trim()).filter(l=>l.length>20);
-          let dup=false;
-          const seen=new Set();
-          for(let l of lines){ if(seen.has(l)){ dup=true; break; } seen.add(l); }
-          if(dup && attempt<2){ lastErr=new Error('Repeat detected'); continue; }
-          // name check
-          if(!content.includes(s.heroName) || !content.includes(s.heroineName)){
-            if(attempt<2){ lastErr=new Error(`Name missing - must include ${s.heroName} and ${s.heroineName}`); continue; }
-          }
+          if(!content.includes(s.heroName) || !content.includes(s.heroineName)){ if(attempt<2){ lastErr=new Error(`Name missing`); continue; } }
           break;
-        } else {
-          lastErr=new Error(`Too short ${content.length} vs need ${minChars}`);
-          continue;
-        }
-      }catch(e){ lastErr=e; console.log('Attempt failed', e.message); continue; }
+        } else { lastErr=new Error(`Too short ${content.length} vs ${minChars}`); continue; }
+      }catch(e){ lastErr=e; continue; }
     }
-
-    if(!content || content.length<500) throw lastErr||new Error('Failed after 3 attempts');
-
-    chapters[currentCh]=content;
-    renderFullStory();
-    showSuccess(`Chapter ${currentCh} done! ${content.length} chars, ${content.split(/\s+/).length} words, model ${s.model}`);
-  }catch(e){ showError(e.message); }
-  finally{ document.getElementById('genBtn').disabled=false; document.getElementById('status').textContent=''; }
+    if(!content || content.length<500) throw lastErr||new Error('Failed');
+    chapters[currentCh]=content; saveAll(); renderFullStory();
+    showSuccess(`Chapter ${currentCh} done! ${content.length} chars - Auto-saved! Safe to switch apps now.`);
+  }catch(e){ showError(e.message); } finally{ document.getElementById('genBtn').disabled=false; document.getElementById('status').textContent=''; }
 }
-
 function renderFullStory(){
   let full=''; const order=[1,2,3,4,5].concat(Object.keys(chapters).filter(k=>k.toString().startsWith('c')).sort((a,b)=>parseInt(a.slice(1))-parseInt(b.slice(1))));
   order.forEach(k=>{ if(chapters[k]) full+=`\n\n--- CHAPTER ${k} ---\n`+chapters[k]; });
-  document.getElementById('fullStory').textContent=full.trim()||'No chapters yet.';
+  document.getElementById('fullStory').textContent=full.trim()||'No chapters yet. Story auto-saves so you can safely switch apps.';
 }
 function regenerateCurrentChapter(){ if(confirm('Retry this chapter?')) generateCurrentChapter(); }
-function extendStory(){ customChCount++; currentCh='c'+customChCount; chapters[currentCh]=''; document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); const tab=document.createElement('div'); tab.className='chip active'; tab.dataset.ch=currentCh; tab.textContent='Ch '+(5+customChCount); tab.addEventListener('click',e=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); e.target.classList.add('active'); currentCh=e.target.dataset.ch;}); document.getElementById('chapterTabs').appendChild(tab); }
-function clearMemory(){ if(confirm('Clear memory?')){ document.getElementById('storyMemory').value=''; localStorage.removeItem('story_memory_v10'); } }
-function clearStory(){ if(confirm('Clear all chapters?')){ chapters={1:"",2:"",3:"",4:"",5:""}; customChCount=0; document.querySelectorAll('.chip').forEach((c,i)=>c.classList.toggle('active',i===0)); currentCh=1; renderFullStory(); } }
-function copyStory(){ navigator.clipboard.writeText(document.getElementById('fullStory').textContent); showSuccess('Copied'); }
+function extendStory(){ customChCount++; currentCh='c'+customChCount; chapters[currentCh]=''; saveAll(); document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); const tab=document.createElement('div'); tab.className='chip active'; tab.dataset.ch=currentCh; tab.textContent='Ch '+(5+customChCount); tab.addEventListener('click',e=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); e.target.classList.add('active'); currentCh=e.target.dataset.ch;}); document.getElementById('chapterTabs').appendChild(tab); }
+function clearMemory(){ if(confirm('Clear memory?')){ document.getElementById('storyMemory').value=''; localStorage.removeItem('story_memory_v10'); saveAll(); } }
+function loadMemoryFromChapters(){ const order=[1,2,3,4,5].concat(Object.keys(chapters).filter(k=>k.toString().startsWith('c')).sort((a,b)=>parseInt(a.slice(1))-parseInt(b.slice(1)))); let full=''; order.forEach(k=>{ if(chapters[k]) full+=chapters[k]+'\n\n'; }); if(full){ document.getElementById('storyMemory').value=full; saveAll(); showSuccess('Loaded current chapters into memory'); } }
+function clearStory(){ if(confirm('Clear ALL chapters? This will delete auto-saved story too!')){ chapters={1:"",2:"",3:"",4:"",5:""}; customChCount=0; document.querySelectorAll('.chip').forEach((c,i)=>c.classList.toggle('active',i===0)); currentCh=1; saveAll(); renderFullStory(); } }
+function copyStory(){ navigator.clipboard.writeText(document.getElementById('fullStory').textContent); showSuccess('Copied!'); }
 function downloadStory(){ const blob=new Blob([document.getElementById('fullStory').textContent],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='story.txt'; a.click(); }
 function showError(m){ document.getElementById('errorBox').textContent=m; document.getElementById('errorBox').classList.remove('hidden'); document.getElementById('successBox').classList.add('hidden'); }
 function showSuccess(m){ document.getElementById('successBox').textContent=m; document.getElementById('successBox').classList.remove('hidden'); document.getElementById('errorBox').classList.add('hidden'); }
