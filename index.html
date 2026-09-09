@@ -57,6 +57,7 @@ textarea{min-height:80px;resize:vertical}
 <div class="container">
 <h1>📚 PRO STORY ENGINE</h1>
 <p class="sub">Uncensored • Chapter-based • Extendable • Character Memory</p>
+<div style="text-align:center;margin-bottom:15px"><a href="convert.html" style="color:#ff3b5c;text-decoration:none;font-size:13px;border:1px solid #ff3b5c44;padding:6px 14px;border-radius:20px">🔤 Open Hinglish → Devanagari Converter</a></div>
 
 <div class="card api">
 <label class="label">🔑 Venice API Key (saved auto)</label>
@@ -135,7 +136,7 @@ textarea{min-height:80px;resize:vertical}
 </div>
 
 <div class="card">
-<div style="display:flex;justify-content:space-between"><label class="label">📚 Full Story (chronological)</label><div class="flex"><button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" onclick="copyStory()">📋 Copy</button><button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" onclick="downloadStory()">💾 Download</button></div></div>
+<div style="display:flex;justify-content:space-between"><label class="label">📚 Full Story (chronological)</label><div class="flex"><button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" onclick="copyStory()">📋 Copy</button><button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" onclick="downloadStory()">💾 Download</button><button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;background:#ff3b5c22;border:1px solid #ff3b5c44" onclick="sendToConverter()">🔤 Convert to Hindi</button></div></div>
 <div class="story" id="fullStory">No chapters yet.</div>
 </div>
 
@@ -325,6 +326,13 @@ function clearPrompts(){ if(confirm('Clear plot?')){ document.getElementById('co
 function clearMemory(){ if(confirm('Clear Story Memory?')){ document.getElementById('storyMemory').value=''; localStorage.removeItem('story_memory'); showSuccess('Memory cleared'); } }
 function loadMemoryToView(){ const txt=document.getElementById('storyMemory').value.trim(); if(!txt){ showError('Paste story first'); return; } document.getElementById('fullStory').textContent=txt; showSuccess('Loaded to view'); }
 function clearStory(){ if(confirm('Clear all chapters?')){ chapters={1:"",2:"",3:"",4:"",5:""}; customChCount=0; document.querySelectorAll('.chip').forEach((c,i)=>{ c.classList.toggle('active', i===0); }); currentCh=1; renderFullStory(); } }
+function sendToConverter(){
+  const txt = document.getElementById('fullStory').textContent;
+  if(!txt || txt==='No chapters yet.' || txt.length<20){ showError('Generate story first'); return; }
+  localStorage.setItem('story_to_convert', txt);
+  showSuccess('Story saved! Opening converter...');
+  setTimeout(()=>{ window.open('convert.html','_blank'); }, 800);
+}
 function copyStory(){ navigator.clipboard.writeText(document.getElementById('fullStory').textContent); showSuccess('Copied!'); }
 function downloadStory(){ const blob=new Blob([document.getElementById('fullStory').textContent],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='story.txt'; a.click(); }
 function showError(m){ document.getElementById('errorBox').textContent=m; document.getElementById('errorBox').classList.remove('hidden'); document.getElementById('successBox').classList.add('hidden'); }

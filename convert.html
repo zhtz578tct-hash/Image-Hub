@@ -91,6 +91,14 @@ Exact same as Hinglish, only script changed." readonly></textarea>
 </div>
 
 <script>
+window.addEventListener('DOMContentLoaded', ()=>{
+  const saved = localStorage.getItem('story_to_convert');
+  if(saved && saved.length>50){
+    document.getElementById('hinglish').value = saved;
+    document.getElementById('status').textContent = '📥 Story auto-loaded from main app! Click Convert.';
+  }
+});
+
 async function transliterateWord(word){
   // Use Google Input Tools API for accurate Hinglish->Hindi
   try{
