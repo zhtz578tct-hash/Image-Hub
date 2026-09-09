@@ -67,7 +67,7 @@ textarea{min-height:80px;resize:vertical}
 </div>
 
 <div class="card">
-<label class="label">👤 Characters</label>
+<div style="display:flex;justify-content:space-between;align-items:center"><label class="label">👤 Characters</label><button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" onclick="clearCharacters()">🧹 Clear Characters & Setting</button></div>
 <div class="grid">
 <div><input id="heroName" placeholder="Hero name (e.g. Ravi)"><input id="heroAge" placeholder="Age (e.g. 28)"><input id="heroDesc" placeholder="Hero personality / look"></div>
 <div><input id="heroineName" placeholder="Heroine name (e.g. Neha)"><input id="heroineAge" placeholder="Age"><input id="heroineDesc" placeholder="Heroine personality / look"></div>
@@ -85,8 +85,27 @@ textarea{min-height:80px;resize:vertical}
 <input id="mood" placeholder="Mood (e.g. tension, first time, reunion after years)">
 </div>
 
-<label class="label">📝 Core Plot (What should happen?)</label>
+<div style="display:flex;justify-content:space-between;align-items:center"><label class="label">📝 Core Plot (What should happen?)</label><button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" onclick="clearPrompts()">🧹 Clear Plot & Extra</button></div>
 <textarea id="corePlot" placeholder="Example: Ravi and Neha stuck in office during power cut. Slow buildup, lots of dialogue..."></textarea>
+</div>
+
+
+<div class="card" style="border:1px solid #ff3b5c55">
+<label class="label">🧠 STORY MEMORY - What happened so far (paste your saved story here)</label>
+<small class="small" style="margin-bottom:8px;display:block">Paste ALL previous chapters you saved earlier. No word limit. AI will read this FULL text and continue exactly from its end. Leave empty if this is first chapter. This REPLACES the short summary.</small>
+<textarea id="storyMemory" placeholder="Paste here your previously generated and saved story, e.g.:
+--- CHAPTER 1 ---
+Ravi ne...
+
+--- CHAPTER 2 ---
+... etc
+
+If you paste here, AI will use THIS as full context, not summary. Leave empty for fresh story." style="min-height:200px;background:#18181f"></textarea>
+<div class="flex" style="margin-top:8px">
+<button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" onclick="document.getElementById('storyMemory').value=''; localStorage.removeItem('story_memory'); showSuccess('Memory cleared')">🧹 Clear Memory</button>
+<button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" onclick="loadMemoryToChapters()">📥 Load Memory as Base</button>
+</div>
+<small class="small">Auto-saved locally, so even if you close browser it stays.</small>
 </div>
 
 <div class="card">
@@ -243,11 +262,30 @@ async function callVenice(apiKey, model, messages){
 }
 
 function getStoryContext(){
+  const memoryEl = document.getElementById('storyMemory');
+  const manualMemory = memoryEl ? memoryEl.value.trim() : '';
+  if(manualMemory.length > 100){
+    // User pasted full story - use it directly as context
+    const lastEnding = manualMemory.slice(-1500);
+    return {full: manualMemory, lastEnding, isManual:true};
+  }
+ // Give FULL previous chapters as summary + EXACT last 1000 chars of immediate previous chapter to prevent repeat
  let ctx = '';
- for(let i=1;i<=5;i++) if(chapters[i]) ctx += `\n[Chapter ${i} so far:]\n`+chapters[i].slice(0,800)+'\n';
- Object.keys(chapters).filter(k=>k.toString().startsWith('c')).forEach(k=>{ if(chapters[k]) ctx += `\n[Custom ${k} so far:]\n`+chapters[k].slice(0,800)+'\n'; });
- return ctx;
+ let lastEnding = '';
+ const order = [1,2,3,4,5].concat(Object.keys(chapters).filter(k=>k.toString().startsWith('c')).sort((a,b)=>parseInt(a.slice(1))-parseInt(b.slice(1))));
+ order.forEach(k=>{
+   if(chapters[k]){
+     ctx += `
+[Chapter ${k} ${chapters[k].length} chars]:
+`+chapters[k]+'
+';
+     lastEnding = chapters[k].slice(-1500);
+   }
+ });
+ return {full: ctx, lastEnding, isManual:false};
 }
+
+
 
 
 async function generateCurrentChapter(){
@@ -275,7 +313,9 @@ async function generateCurrentChapter(){
   else if(currentCh===5) chapterGoal = 'Chapter 5: Afterglow & Next - After moment, talking, emotional connection, hint for next meeting.';
   else chapterGoal = `Custom Chapter ${currentCh} - Continue story naturally. User extra instruction: ${s.extra}`;
 
-  const prevContext = getStoryContext();
+  const prevObj = getStoryContext();
+  const prevContext = prevObj.full;
+  const lastEnding = prevObj.lastEnding;
   const userPrompt = `MINIMUM LENGTH: 500 WORDS (3000+ characters). Do not give short answer.\n\nSTORY SO FAR (for memory):\n${prevContext || 'This is first chapter, no previous context.'}\n\nNOW WRITE: ${chapterGoal}\nCore Plot: ${s.corePlot}\nExtra instruction for this chapter: ${s.extra || 'None'}\n\nRemember: ${s.heroName} and ${s.heroineName}, relation ${s.relation}, location ${s.location}.`;
 
   let model = 'venice-uncensored';
@@ -311,13 +351,39 @@ async function generateCurrentChapter(){
 
 function renderFullStory(){
  let full='';
- [1,2,3,4,5].forEach(i=>{ if(chapters[i]) full+= `\n\n--- CHAPTER ${i} ---\n`+chapters[i]; });
- Object.keys(chapters).filter(k=>k.toString().startsWith('c')).sort().forEach(k=>{ full+= `\n\n--- CUSTOM CHAPTER ${k.slice(1)} ---\n`+chapters[k]; });
+ // Chronological order: 1..5 then custom in creation order
+ const order = [1,2,3,4,5].concat(Object.keys(chapters).filter(k=>k.toString().startsWith('c')).sort((a,b)=>parseInt(a.slice(1))-parseInt(b.slice(1))));
+ order.forEach(k=>{
+   if(chapters[k]){
+     full += `\n\n--- CHAPTER ${k} ---\n`+chapters[k];
+   }
+ });
  document.getElementById('fullStory').textContent = full.trim() || 'No chapters yet.';
+ // Auto-scroll to bottom after new chapter
+ const el=document.getElementById('fullStory');
+ el.scrollTop = el.scrollHeight;
 }
+
 
 function regenerateCurrentChapter(){ if(confirm('Regenerate current chapter?')) generateCurrentChapter(); }
 function extendStory(){ customChCount++; currentCh='c'+customChCount; chapters[currentCh]=''; document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); const tab=document.createElement('div'); tab.className='chip active'; tab.dataset.ch=currentCh; tab.textContent='Custom '+customChCount; document.getElementById('chapterTabs').appendChild(tab); updateLabel(); }
+function clearCharacters(){
+ if(confirm('Clear all character & setting fields?')){
+  ['heroName','heroAge','heroDesc','heroineName','heroineAge','heroineDesc','customRelation','location','mood'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('relation').selectedIndex=0;
+  document.getElementById('language').selectedIndex=1;
+  document.getElementById('intensity').selectedIndex=1;
+  document.getElementById('customRelation').classList.add('hidden');
+  showSuccess('Characters & setting cleared');
+ }
+}
+function clearPrompts(){
+ if(confirm('Clear core plot and extra prompts?')){
+  document.getElementById('corePlot').value='';
+  document.getElementById('extraPrompt').value='';
+  showSuccess('Plots cleared');
+ }
+}
 function clearStory(){ if(confirm('Clear all chapters?')){ chapters={1:"",2:"",3:"",4:"",5:""}; customChCount=0; renderFullStory(); }}
 function copyStory(){ navigator.clipboard.writeText(document.getElementById('fullStory').textContent); showSuccess('Copied!'); }
 function downloadStory(){ const blob=new Blob([document.getElementById('fullStory').textContent],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='story.txt'; a.click(); }
