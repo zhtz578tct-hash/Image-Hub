@@ -155,18 +155,29 @@ let currentCh = 1;
 let customChCount = 0;
 
 
-// Save/load API key
-const apiInput = document.getElementById('apiKey');
-const savedKey = localStorage.getItem('venice_api_key');
-if(savedKey){ apiInput.value = savedKey; }
-apiInput.addEventListener('input', ()=>{
-  const v = apiInput.value.trim();
-  if(v) localStorage.setItem('venice_api_key', v);
-});
-apiInput.addEventListener('change', ()=>{
-  const v = apiInput.value.trim();
-  if(v) localStorage.setItem('venice_api_key', v);
-});
+// Save/load API key - robust version
+function initSavedKeys(){
+  const apiInput = document.getElementById('apiKey');
+  if(apiInput){
+    const savedKey = localStorage.getItem('venice_api_key');
+    if(savedKey && savedKey.length>10){ apiInput.value = savedKey; console.log('Loaded saved key'); }
+    const saveFn = ()=>{
+      const v = apiInput.value.trim();
+      if(v && v.length>10){ localStorage.setItem('venice_api_key', v); console.log('Key saved'); }
+    };
+    apiInput.addEventListener('input', saveFn);
+    apiInput.addEventListener('change', saveFn);
+    apiInput.addEventListener('blur', saveFn);
+  }
+  const memEl = document.getElementById('storyMemory');
+  if(memEl){
+    const savedMem = localStorage.getItem('story_memory');
+    if(savedMem) memEl.value = savedMem;
+    memEl.addEventListener('input', ()=>{ localStorage.setItem('story_memory', memEl.value); });
+  }
+}
+if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', initSavedKeys); } else { initSavedKeys(); }
+
 
 document.querySelectorAll('.chip').forEach(c=>{
  c.addEventListener('click',()=>{
