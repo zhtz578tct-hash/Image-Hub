@@ -371,16 +371,25 @@ function downloadImage(){ if(!lastImageUrl) return showImgError('No image'); if(
 
 // CONVERT
 function setConv(m){ convMode=m; document.getElementById('convH2D').classList.toggle('active', m==='h2d'); document.getElementById('convD2H').classList.toggle('active', m==='d2h'); }
-function loadStoryToConv(){ document.getElementById('convInput').value=document.getElementById('storyBox').textContent.slice(0,5000); }
+function loadStoryToConv(){ const box=document.getElementById('storyBox').textContent; const inp=document.getElementById('convInput'); if(box && box.length>20) inp.value=box.slice(0,5000); else inp.value=document.getElementById('storyBox').textContent||''; document.getElementById('convStatus').textContent='Loaded story ('+inp.value.length+' chars) - now tap Convert'; }
 async function convertText(){
   const inp=document.getElementById('convInput').value.trim(); const key=document.getElementById('apiKey').value.trim();
-  if(!inp) return; if(!key) return document.getElementById('convStatus').textContent='Need Venice key';
-  document.getElementById('convStatus').textContent='Converting...';
+  const model=document.getElementById('storyModel')?.value||'mistral-31-24b';
+  if(!inp){ document.getElementById('convStatus').textContent='Paste text first'; return; }
+  if(!key){ document.getElementById('convStatus').textContent='Need Venice key in Settings'; return; }
+  document.getElementById('convStatus').textContent=`Converting with ${model}... (${inp.length} chars)`;
+  document.getElementById('convOutput').value='Converting... please wait...';
   try{
-    const prompt=convMode==='h2d'?`Convert this Hinglish (Roman Hindi) to proper Hindi Devanagari script, keep meaning same, output only Hindi:\n${inp}`:`Convert this Hindi Devanagari to Hinglish (Roman English Hindi), output only Hinglish:\n${inp}`;
-    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen3-4b',messages:[{role:'user',content:prompt}],max_tokens:1500})});
-    const data=await res.json(); const out=data.choices?.[0]?.message?.content||''; document.getElementById('convOutput').value=out; document.getElementById('convStatus').textContent='Done!'; 
-  }catch(e){ document.getElementById('convStatus').textContent='Failed: '+e.message; }
+    const prompt=convMode==='h2d'?`You are a Hinglish to Hindi Devanagari translator. Convert EXACTLY the following Hinglish (Roman Hindi) text to proper Hindi in Devanagari script. Keep same meaning, same emotions, same line breaks. Do NOT add explanation, do NOT add English. Output ONLY Hindi Devanagari.\n\nINPUT:\n${inp.slice(0,4000)}`:`You are a Hindi Devanagari to Hinglish translator. Convert EXACTLY the following Hindi Devanagari text to Hinglish (Roman English Hindi). Keep same meaning, same emotions, same line breaks. Output ONLY Hinglish.\n\nINPUT:\n${inp.slice(0,4000)}`;
+    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:model,messages:[{role:'system',content:'You are a precise translator. Output only the translated text, nothing else.'},{role:'user',content:prompt}],temperature:0.2,max_tokens:3000})});
+    const data=await res.json(); 
+    console.log('Convert response', data);
+    if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,400));
+    let out=data.choices?.[0]?.message?.content || data.choices?.[0]?.message?.reasoning_content || data.choices?.[0]?.text || data.choices?.[0]?.delta?.content || '';
+    if(!out || out.trim().length<2) throw new Error(`Empty conversion from ${model}. Full response: ${JSON.stringify(data).slice(0,600)}. Try switching model in Settings to Llama 3.3 70B.`);
+    document.getElementById('convOutput').value=out.trim(); 
+    document.getElementById('convStatus').textContent=`Done! ${out.length} chars converted with ${model} - Tap Copy Output`; 
+  }catch(e){ document.getElementById('convOutput').value=''; document.getElementById('convStatus').textContent='Failed: '+e.message; console.error(e); }
 }
 function copyConv(){ navigator.clipboard.writeText(document.getElementById('convOutput').value).then(()=>document.getElementById('convStatus').textContent='Copied!'); }
 function updateStats(){ const storyLen=document.getElementById('storyBox').textContent.length; document.getElementById('dataStats').innerHTML=`Story chars: ${storyLen}<br>Characters saved: ${chars.length}<br>Gallery images: ${galleryItems.length}<br>Key: ${localStorage.getItem('venice_api_key')?'✅ Saved':'❌ Not saved'}`; }
