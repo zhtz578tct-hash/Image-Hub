@@ -88,6 +88,11 @@ textarea{min-height:80px;resize:vertical}
 <div id="keyTest" class="small" style="margin-top:6px"></div>
 </div>
 <div class="card">
+<label class="label">🤖 Story Model - Change if Empty Response</label>
+<select id="storyModel"><option value="mistral-31-24b" selected>Mistral 31 24B - Most Reliable (Fixes Empty Response)</option><option value="llama-3.3-70b">Llama 3.3 70B - Best Story Quality</option><option value="qwen3-4b">Qwen3 4B - Fast but sometimes empty</option><option value="dolphin-2.9.2-qwen2-72b">Dolphin Qwen2 72B - Uncensored Best</option><option value="llama-3.2-3b">Llama 3.2 3B - Fastest</option></select>
+<div class="small">If you got Empty response, switch to Mistral or Llama 3.3. Your screenshot error = Qwen3 bug, this fixes it.</div>
+</div>
+<div class="card">
 <label class="label">📊 Your Data</label>
 <div class="small" id="dataStats">Loading...</div>
 </div>
@@ -102,18 +107,22 @@ textarea{min-height:80px;resize:vertical}
 <div><label class="label">Language</label><select id="storyLang"><option value="hinglish" selected>Hinglish</option><option value="hindi">Hindi Devanagari</option><option value="english">English</option></select></div>
 </div>
 <div class="grid">
-<div><label class="label">Characters (optional)</label><input id="storyChars" placeholder="e.g. Neha 24, Ravi 28..."></div>
-<div><label class="label">Chapter Focus</label><input id="chapterFocus" placeholder="e.g. first meeting in kitchen..."></div>
+<div><label class="label">Characters (optional)</label><input id="storyChars" placeholder="e.g. Nikki 32, Ravi 35..."></div>
+<div><label class="label">Chapter Focus</label><input id="chapterFocus" placeholder="e.g. Both met after long, talking about college days..."></div>
 </div>
-<div class="flex">
+<label class="label">📜 What Happened So Far - Paste previous story / context (Optional - helps AI continue)</label>
+<textarea id="whatSoFar" style="min-height:90px" placeholder="Paste previous chapters here if you want AI to remember... or leave empty for new story. Example: Chapter 1: Nikki and Ravi were college friends..."></textarea>
+<div class="flex" style="margin-top:6px">
 <button class="btn btn-primary" id="storyGenBtn" onclick="generateStory()">✨ Generate Chapter</button>
 <button class="btn btn-ghost" onclick="retryChapter()">🔄 Retry</button>
 <button class="btn btn-ghost" onclick="addChapter()">+ Ch</button>
+<button class="btn btn-ghost" onclick="loadSoFarFromStory()" style="font-size:10px">Load from Full Story ↓</button>
 <button class="btn btn-ghost" onclick="clearStory()" style="font-size:10px">Clear All</button>
 </div>
 <div id="storyStatus" class="small" style="margin-top:6px"></div>
 <div id="storyError" class="error hidden"></div>
 <div id="storySuccess" class="success hidden"></div>
+<div class="small" style="margin-top:4px;color:#888">💡 Tip: If you get Empty response, try changing Model in Settings → Story Model. Current: <span id="currentModelLabel">mistral-31-24b</span></div>
 </div>
 <div class="card">
 <div style="display:flex;justify-content:space-between"><label class="label">📖 Full Story (Auto-Saved, Spam Protected)</label><div class="flex"><button class="btn btn-ghost" style="padding:4px 8px;font-size:10px" onclick="copyStory()">Copy</button><button class="btn btn-ghost" style="padding:4px 8px;font-size:10px" onclick="downloadStory()">Download</button><button class="btn btn-green" style="padding:4px 8px;font-size:10px" onclick="switchTab('convert')">Convert →</button></div></div>
@@ -186,18 +195,40 @@ function initAll(){
   if(ak){ const s=()=>{ const v=ak.value.trim(); if(v.length>10) localStorage.setItem('venice_api_key',v); }; ak.addEventListener('input',s); ak.addEventListener('blur',s); }
   loadChars(); loadGallery(); loadStory(); renderChapters(); updateStoryBox();
   setImgMode('sexy'); setConv('h2d'); selectNoLock();
+  // model listener
+  const sm=document.getElementById('storyModel'); if(sm){ sm.addEventListener('change', ()=>{ saveStory(); document.getElementById('currentModelLabel').textContent=sm.value; }); const ml=document.getElementById('currentModelLabel'); if(ml) ml.textContent=sm.value; }
+  // what so far auto-save
+  const wsf=document.getElementById('whatSoFar'); if(wsf){ wsf.addEventListener('input', saveStory); }
   // auto-save every 3 sec
   setInterval(saveStory, 3000);
 }
 function testKey(){ const k=document.getElementById('apiKey').value.trim(); const out=document.getElementById('keyTest'); if(!k) return out.textContent='Enter key'; out.textContent='Key length '+k.length+' - saved. Try generating Story Ch1 to test.'; }
 
 // STORY LOGIC - FIXED ANTI-SPAM
-function loadStory(){ try{ const s=localStorage.getItem('super_story_v1'); if(s){ const d=JSON.parse(s); storyData={...storyData,...d}; document.getElementById('storyIdea').value=d.idea||''; document.getElementById('storyLang').value=d.lang||'hinglish'; }}catch(e){} }
+function loadStory(){ 
+  try{ 
+    const s=localStorage.getItem('super_story_v1'); 
+    if(s){ const d=JSON.parse(s); storyData={...storyData,...d}; 
+      document.getElementById('storyIdea').value=d.idea||''; 
+      document.getElementById('storyLang').value=d.lang||'hinglish'; 
+      if(d.whatSoFar) document.getElementById('whatSoFar').value=d.whatSoFar;
+      if(d.model) document.getElementById('storyModel').value=d.model;
+    }
+  }catch(e){} 
+}
 function saveStory(){
   storyData.idea=document.getElementById('storyIdea').value||storyData.idea;
   storyData.lang=document.getElementById('storyLang').value||storyData.lang;
+  storyData.whatSoFar=document.getElementById('whatSoFar').value||'';
+  storyData.model=document.getElementById('storyModel').value||'mistral-31-24b';
   localStorage.setItem('super_story_v1', JSON.stringify(storyData));
   document.getElementById('saveStatus').textContent='Auto-saved '+new Date().toLocaleTimeString();
+  const ml=document.getElementById('currentModelLabel'); if(ml) ml.textContent=storyData.model;
+}
+function loadSoFarFromStory(){
+  const full=document.getElementById('storyBox').textContent;
+  if(full && full.length>20){ document.getElementById('whatSoFar').value=full.slice(-3000); saveStory(); document.getElementById('storyStatus').textContent='Loaded last 3000 chars from Full Story into What Happened So Far'; }
+  else document.getElementById('whatSoFar').value='';
 }
 function renderChapters(){
   const c=document.getElementById('chapterChips'); c.innerHTML='';
@@ -221,48 +252,55 @@ function isSpam(text){
   const spamWords=['premium quality','gold standard','benchmark reference','monopoly exclusive','counterfeit fake','replica imitation','password biometric','fingerprint retina','multi factor verification'];
   const lower=text.toLowerCase(); let count=0; spamWords.forEach(w=>{ if(lower.includes(w)) count++; });
   const uniqueWords=new Set(lower.split(/\s+/)).size; const totalWords=lower.split(/\s+/).length;
-  // spam if many buzzwords or very low uniqueness or extremely long ( >8000 chars for one chapter is abnormal)
   return count>=2 || totalWords>0 && (uniqueWords/totalWords<0.2) || text.length>8000 || (text.includes('tier elite class') && text.length>500);
 }
 async function generateStory(){
-  const idea=document.getElementById('storyIdea').value.trim(); const lang=document.getElementById('storyLang').value;
-  const chars=document.getElementById('storyChars').value.trim(); const focus=document.getElementById('chapterFocus').value.trim();
+  const idea=document.getElementById('storyIdea').value.trim(); 
+  const lang=document.getElementById('storyLang').value;
+  const chars=document.getElementById('storyChars').value.trim(); 
+  const focus=document.getElementById('chapterFocus').value.trim();
+  const whatSoFar=document.getElementById('whatSoFar').value.trim();
+  const model=document.getElementById('storyModel').value||'mistral-31-24b';
   const apiKey=document.getElementById('apiKey').value.trim();
   if(!apiKey) return showStoryError('Enter Venice Key in Settings tab');
   if(!idea) return showStoryError('Enter Main Idea');
   const chapterIdx=storyData.current;
-  // Build context - FIXED: only last 1500 chars of previous chapter, not whole story
-  let prevContext=''; if(chapterIdx>0 && storyData.chapters[chapterIdx-1]){ prevContext=storyData.chapters[chapterIdx-1].slice(-1500); }
+  let prevContext=''; 
+  if(whatSoFar) prevContext=whatSoFar.slice(-2000);
+  else if(chapterIdx>0 && storyData.chapters[chapterIdx-1]) prevContext=storyData.chapters[chapterIdx-1].slice(-1500);
+  
   const langPrompt=lang==='hindi'?'in Hindi Devanagari script':lang==='hinglish'?'in Hinglish (Hindi in Roman English, like "wo boli")':'in English';
-  const prompt=`Write Chapter ${chapterIdx+1} only, ${langPrompt}, 700-900 words, adult romantic story. Main idea: ${idea}. Characters: ${chars||'not specified'}. This chapter focus: ${focus||'continue story'}. Previous chapter tail for continuity: "${prevContext.slice(0,800)}". Write ONLY Chapter ${chapterIdx+1} story text, no preamble, no word list, no SEO keywords. Story must be narrative, dialogues, scenes.`;
+  const prompt=`Write Chapter ${chapterIdx+1} only, ${langPrompt}, 700-900 words, adult romantic story. Main idea: ${idea}. Characters: ${chars||'not specified'}. This chapter focus: ${focus||'continue story'}. What happened so far: "${prevContext.slice(0,1500)}". Write ONLY Chapter ${chapterIdx+1} story text, narrative with dialogues and scenes, no word lists, no SEO spam.`;
   
   document.getElementById('storyGenBtn').disabled=true;
-  document.getElementById('storyStatus').textContent=`Generating Ch${chapterIdx+1}... (1500 chars context only to avoid spam)`;
+  document.getElementById('storyStatus').textContent=`Generating Ch${chapterIdx+1} with ${model}... (using What Happened So Far: ${prevContext.length} chars)`;
   hideStoryMsg();
   try{
-    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen3-4b',messages:[{role:'system',content:'You are an adult romantic story writer. Write only story narrative, no lists, no SEO spam, no keyword stuffing. Each chapter 700-900 words max.'},{role:'user',content:prompt}],temperature:0.85,top_p:0.9,max_tokens:1200,frequency_penalty:0.6,presence_penalty:0.3})});
-    const data=await res.json(); if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,300));
-    let text=data.choices?.[0]?.message?.content||'';
-    if(!text) throw new Error('Empty response');
-    // Spam detection
-    if(isSpam(text)){
-      throw new Error('Model generated spam word-list (like "premium quality gold standard"). Retrying with cleaner prompt... This happens when context too long. Auto-retrying.');
+    const payload={model:model,messages:[{role:'system',content:'You are an adult romantic story writer. Write only story narrative, no lists, no SEO spam, no keyword stuffing. Each chapter 700-900 words max. Never output word lists.'},{role:'user',content:prompt}],temperature:0.85,top_p:0.9,max_tokens:2000,frequency_penalty:0.5,presence_penalty:0.3};
+    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const data=await res.json(); 
+    console.log('Venice response', data);
+    if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,400));
+    let text=data.choices?.[0]?.message?.content || data.choices?.[0]?.message?.reasoning_content || data.choices?.[0]?.text || '';
+    if(!text || text.trim().length<10){
+      // try alternative fields
+      if(data.choices?.[0]?.delta?.content) text=data.choices[0].delta.content;
+      else throw new Error(`Empty response from ${model}. Venice returned: ${JSON.stringify(data).slice(0,500)} - Try switching model to Mistral or Llama in Settings.`);
     }
-    // trim to 4000 chars max per chapter
-    if(text.length>5000) text=text.slice(0,5000)+'\n...[trimmed]';
+    if(isSpam(text)){
+      throw new Error('Model generated spam word-list (like "premium quality gold standard"). Try switching to Mistral 31 24B in Settings - it never does this.');
+    }
+    if(text.length>6000) text=text.slice(0,6000)+'\n...[trimmed]';
     storyData.chapters[chapterIdx]=text;
-    if(storyData.chapters.length<=chapterIdx) storyData.chapters[chapterIdx]=text;
-    storyData.idea=idea; storyData.lang=lang;
+    storyData.idea=idea; storyData.lang=lang; storyData.whatSoFar=whatSoFar; storyData.model=model;
     renderChapters(); updateStoryBox(); saveStory();
-    showStorySuccess(`Ch${chapterIdx+1} done! ${text.length} chars - Auto-saved. Spam protection ON.`);
-    // auto-advance
-    if(chapterIdx===storyData.chapters.length-1 && storyData.chapters.length<10) addChapter();
+    showStorySuccess(`Ch${chapterIdx+1} done! ${text.length} chars with ${model} - Auto-saved.`);
+    if(chapterIdx===storyData.chapters.length-1 && storyData.chapters.length<15) addChapter();
   }catch(e){
     showStoryError(e.message);
-    document.getElementById('storyStatus').textContent='Failed - try Retry';
+    document.getElementById('storyStatus').textContent='Failed - '+e.message.slice(0,200);
   }finally{
     document.getElementById('storyGenBtn').disabled=false;
-    document.getElementById('storyStatus').textContent='';
   }
 }
 function retryChapter(){ generateStory(); }
