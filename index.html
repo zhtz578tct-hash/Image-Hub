@@ -73,7 +73,6 @@ textarea{min-height:80px;resize:vertical}
 <div class="tabs">
 <div class="tab active" onclick="switchTab('story')">📚 Story</div>
 <div class="tab" onclick="switchTab('char')">🎭 Characters</div>
-<div class="tab" onclick="switchTab('image')">🎨 Image</div>
 <div class="tab" onclick="switchTab('convert')">🔤 Convert</div>
 <div class="tab" onclick="switchTab('settings')">⚙️ Settings</div>
 </div>
@@ -144,22 +143,14 @@ textarea{min-height:80px;resize:vertical}
 <div id="imgStatus" class="small"></div><div id="imgError" class="error hidden"></div><div id="imgSuccess" class="success hidden"></div>
 </div>
 <div class="card">
-<div style="display:flex;justify-content:space-between"><label class="label">🖼️ Result - Long press to Save</label><div class="flex"><button class="btn btn-green" style="padding:6px 10px;font-size:10px" onclick="downloadImage()">💾 Download</button></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center"><label class="label">🖼️ Result - Long press to Save</label><div class="flex"><button class="btn btn-green" style="padding:6px 10px;font-size:10px" onclick="downloadImage()">💾 Download</button><button class="btn btn-ghost" style="padding:6px 10px;font-size:10px;background:#331a1a" onclick="clearGallery()">🗑️ Clear All</button></div></div>
 <div class="imgbox" id="imgBox"><span class="small">No image yet. Select character then generate.</span></div>
+<div id="galleryClear" class="flex hidden" style="justify-content:space-between;margin-top:8px"><span class="small">Tap X on image to delete single. Or clear all.</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:9px;background:#331a1a" onclick="clearGallery()">Clear Gallery (${galleryItems.length})</button></div>
 <div class="gallery" id="gallery"></div>
 </div>
 </div>
 
 <!-- IMAGE SIMPLE -->
-<div id="view-image" class="view">
-<div class="card"><div class="small">Quick Image tab - Same as Characters tab but without character lock logic. Use Characters tab for best Lustify results with same face. This tab is for random one-offs.</div>
-<label class="label">Quick Prompt</label><textarea id="quickPrompt" placeholder="Random girl, realistic..."></textarea>
-<div class="flex"><button class="btn btn-nude" onclick="quickImage()">Generate Quick</button></div>
-<div id="quickStatus" class="small"></div>
-<div class="imgbox" id="quickBox"><span class="small">Quick result here</span></div>
-</div>
-</div>
-
 <!-- CONVERT -->
 <div id="view-convert" class="view">
 <div class="card">
@@ -182,9 +173,7 @@ let storyData={chapters:[], current:0, idea:'', lang:'hinglish'}, lastImageUrl=n
 function switchTab(t){
   currentTab=t;
   document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll(`.tab`).forEach(el=>{ if(el.textContent.toLowerCase().includes(t) || (t==='char'&&el.textContent.includes('Characters')) || (t==='story'&&el.textContent.includes('Story')) || (t==='convert'&&el.textContent.includes('Convert')) || (t==='image'&&el.textContent.includes('Image')&&!el.textContent.includes('Char')) || (t==='settings'&&el.textContent.includes('Settings'))) {} });
-  // simpler: activate by index
-  const tabMap={story:0,char:1,image:2,convert:3,settings:4};
+  const tabMap={story:0,char:1,convert:2,settings:3};
   document.querySelectorAll('.tab')[tabMap[t]].classList.add('active');
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+t).classList.add('active');
@@ -286,12 +275,31 @@ function downloadStory(){ const blob=new Blob([document.getElementById('storyBox
 // CHARACTERS LOGIC
 function loadChars(){ try{ const s=localStorage.getItem('venice_chars_super'); if(s) chars=JSON.parse(s); }catch(e){} renderCharList(); }
 function saveChars(){ localStorage.setItem('venice_chars_super', JSON.stringify(chars)); }
-function renderCharList(){ const list=document.getElementById('charList'); list.innerHTML=''; if(chars.length===0) list.innerHTML='<span class="small">No chars yet. + New to create Neha, Priya etc. Same seed = same face.</span>'; chars.forEach((c,i)=>{ const d=document.createElement('div'); d.className='char-card'+(selectedChar&&selectedChar.seed===c.seed?' active':''); d.innerHTML=`<div class="name">${c.name}</div><div class="seed">Seed ${c.seed}</div>`; d.onclick=()=>selectChar(i); list.appendChild(d); }); }
-function createNewChar(){ document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=''; document.getElementById('charFace').value='Beautiful Indian woman, 24, long black hair, fair'; document.getElementById('charBody').value='curvy'; randomSeed(); }
+let editingIndex=-1;
+function renderCharList(){ 
+  const list=document.getElementById('charList'); list.innerHTML=''; 
+  if(chars.length===0) list.innerHTML='<span class="small">No chars yet. + New to create Neha, Priya etc. Same seed = same face.</span>'; 
+  chars.forEach((c,i)=>{ 
+    const d=document.createElement('div'); d.className='char-card'+(selectedChar&&selectedChar.seed===c.seed?' active':''); 
+    d.innerHTML=`<div class="name">${c.name} <span style="float:right"><span onclick="event.stopPropagation(); editChar(${i})" style="cursor:pointer;margin-left:4px">✏️</span><span onclick="event.stopPropagation(); deleteChar(${i})" style="cursor:pointer;margin-left:4px">🗑️</span></span></div><div class="seed">Seed ${c.seed}</div><div class="small" style="font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.face.slice(0,30)}</div>`; 
+    d.onclick=()=>selectChar(i); list.appendChild(d); 
+  }); 
+}
+function createNewChar(){ editingIndex=-1; document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=''; document.getElementById('charFace').value='Beautiful Indian woman, 24, long black hair, fair'; document.getElementById('charBody').value='curvy'; randomSeed(); document.getElementById('charName').focus(); }
+function editChar(idx){ editingIndex=idx; const c=chars[idx]; document.getElementById('charEditor').classList.remove('hidden'); document.getElementById('charName').value=c.name; document.getElementById('charSeed').value=c.seed; document.getElementById('charFace').value=c.face; document.getElementById('charBody').value=c.body||''; }
+function deleteChar(idx){ if(!confirm(`Delete character "${chars[idx].name}"?`)) return; if(selectedChar && selectedChar.seed===chars[idx].seed) selectNoLock(); chars.splice(idx,1); saveChars(); renderCharList(); }
 function randomSeed(){ document.getElementById('charSeed').value=Math.floor(Math.random()*900000)+10000; }
-function cancelEdit(){ document.getElementById('charEditor').classList.add('hidden'); }
-function saveChar(){ const name=document.getElementById('charName').value.trim()||'Char '+(chars.length+1); const seed=parseInt(document.getElementById('charSeed').value)||Math.floor(Math.random()*900000); const face=document.getElementById('charFace').value.trim()||'Beautiful Indian'; const body=document.getElementById('charBody').value.trim(); const obj={name,seed,face,body}; const idx=chars.findIndex(c=>c.name===name); if(idx>=0) chars[idx]=obj; else chars.push(obj); saveChars(); renderCharList(); cancelEdit(); selectChar(chars.findIndex(c=>c.seed===seed)); }
-function selectChar(idx){ selectedChar=chars[idx]; document.querySelectorAll('.char-card').forEach((el,i)=>el.classList.toggle('active', i===idx)); document.getElementById('selectedInfo').innerHTML=`🔒 Locked: <b>${selectedChar.name}</b> Seed ${selectedChar.seed} - Same face every time`; }
+function cancelEdit(){ document.getElementById('charEditor').classList.add('hidden'); editingIndex=-1; }
+function saveChar(){ 
+  const name=document.getElementById('charName').value.trim()||'Char '+(chars.length+1); 
+  const seed=parseInt(document.getElementById('charSeed').value)||Math.floor(Math.random()*900000); 
+  const face=document.getElementById('charFace').value.trim()||'Beautiful Indian'; 
+  const body=document.getElementById('charBody').value.trim(); 
+  const obj={name,seed,face,body}; 
+  if(editingIndex>=0){ chars[editingIndex]=obj; } else { const idx=chars.findIndex(c=>c.name.toLowerCase()===name.toLowerCase()); if(idx>=0) chars[idx]=obj; else chars.push(obj); }
+  saveChars(); renderCharList(); cancelEdit(); selectChar(chars.findIndex(c=>c.seed===seed)); 
+}
+function selectChar(idx){ selectedChar=chars[idx]; document.querySelectorAll('.char-card').forEach((el,i)=>el.classList.toggle('active', i===idx)); document.getElementById('selectedInfo').innerHTML=`🔒 Locked: <b>${selectedChar.name}</b> Seed ${selectedChar.seed} - Same face every time <button class="btn btn-ghost" style="padding:2px 6px;font-size:9px;margin-left:6px" onclick="editChar(${idx})">✏️ Edit</button><button class="btn btn-ghost" style="padding:2px 6px;font-size:9px" onclick="deleteChar(${idx})">🗑️ Delete</button>`; }
 function selectNoLock(){ selectedChar=null; document.querySelectorAll('.char-card').forEach(el=>el.classList.remove('active')); document.getElementById('selectedInfo').textContent='🔓 No Lock - Random face'; }
 function setImgMode(m){ imgMode=m; document.getElementById('btnSexy').classList.toggle('active', m==='sexy'); document.getElementById('btnNude').classList.toggle('active', m==='nude'); document.getElementById('imgModel').value=m==='nude'?'lustify-sdxl':'fluently-xl'; }
 async function generateImage(){
@@ -310,11 +318,18 @@ async function generateImage(){
 function showImgError(m){ document.getElementById('imgError').textContent=m; document.getElementById('imgError').classList.remove('hidden'); document.getElementById('imgSuccess').classList.add('hidden'); }
 function showImgSuccess(m){ document.getElementById('imgSuccess').textContent=m; document.getElementById('imgSuccess').classList.remove('hidden'); document.getElementById('imgError').classList.add('hidden'); }
 function hideImgMsg(){ document.getElementById('imgError').classList.add('hidden'); document.getElementById('imgSuccess').classList.add('hidden'); }
-function addToGallery(url, name){ galleryItems.unshift({url,name,time:Date.now()}); if(galleryItems.length>30) galleryItems.pop(); renderGallery(); localStorage.setItem('super_gallery', JSON.stringify(galleryItems.map(g=>({...g,url:g.url.length>5000?'':g.url})))); }
+function addToGallery(url, name){ galleryItems.unshift({url,name,time:Date.now()}); if(galleryItems.length>50) galleryItems.pop(); renderGallery(); try{ localStorage.setItem('super_gallery', JSON.stringify(galleryItems.map(g=>({...g,url:g.url.length>5000?'':g.url})))); }catch(e){} }
 function loadGallery(){ try{ const s=localStorage.getItem('super_gallery'); if(s) galleryItems=JSON.parse(s); }catch(e){} renderGallery(); }
-function renderGallery(){ const g=document.getElementById('gallery'); g.innerHTML=''; galleryItems.forEach(it=>{ if(!it.url) return; const img=document.createElement('img'); img.src=it.url; img.onclick=()=>{ lastImageUrl=it.url; document.getElementById('imgBox').innerHTML=`<img src="${it.url}">`; }; g.appendChild(img); }); }
+function renderGallery(){ 
+  const g=document.getElementById('gallery'); g.innerHTML=''; 
+  galleryItems.forEach((it,idx)=>{ if(!it.url) return; const wrap=document.createElement('div'); wrap.style.position='relative'; const img=document.createElement('img'); img.src=it.url; img.style.width='100%'; img.style.height='100px'; img.style.objectFit='cover'; img.style.borderRadius='6px'; img.style.border='1px solid #333'; img.style.cursor='pointer'; img.onclick=()=>{ lastImageUrl=it.url; document.getElementById('imgBox').innerHTML=`<img src="${it.url}"><div class="small">${it.name} - long press to save</div>`; }; const del=document.createElement('span'); del.textContent='✕'; del.style.position='absolute'; del.style.top='2px'; del.style.right='2px'; del.style.background='rgba(0,0,0,.7)'; del.style.color='#fff'; del.style.borderRadius='50%'; del.style.width='18px'; del.style.height='18px'; del.style.display='flex'; del.style.alignItems='center'; del.style.justifyContent='center'; del.style.fontSize='10px'; del.style.cursor='pointer'; del.onclick=(e)=>{ e.stopPropagation(); deleteGalleryItem(idx); }; wrap.appendChild(img); wrap.appendChild(del); g.appendChild(wrap); 
+  }); 
+  const clearDiv=document.getElementById('galleryClear'); if(clearDiv) clearDiv.style.display=galleryItems.length>0?'flex':'none';
+}
+function deleteGalleryItem(idx){ galleryItems.splice(idx,1); saveGallery(); renderGallery(); }
+function clearGallery(){ if(!confirm(`Clear all ${galleryItems.length} generated pictures? This cannot be undone.`)) return; galleryItems=[]; saveGallery(); renderGallery(); document.getElementById('imgBox').innerHTML='<span class="small">Gallery cleared.</span>'; lastImageUrl=null; }
+function saveGallery(){ try{ localStorage.setItem('super_gallery', JSON.stringify(galleryItems.map(g=>({...g,url:g.url.length>5000?'':g.url})))); }catch(e){} }
 function downloadImage(){ if(!lastImageUrl) return showImgError('No image'); if(lastImageUrl.startsWith('data:')){ const b=atob(lastImageUrl.split(',')[1]); const m=lastImageUrl.split(',')[0].split(':')[1].split(';')[0]; const ab=new ArrayBuffer(b.length); const ia=new Uint8Array(ab); for(let i=0;i<b.length;i++) ia[i]=b.charCodeAt(i); const blob=new Blob([ab],{type:m}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='venice-'+Date.now()+'.png'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); } else window.open(lastImageUrl,'_blank'); }
-async function quickImage(){ const p=document.getElementById('quickPrompt').value.trim(); document.getElementById('imgPrompt').value=p; switchTab('char'); await generateImage(); }
 
 // CONVERT
 function setConv(m){ convMode=m; document.getElementById('convH2D').classList.toggle('active', m==='h2d'); document.getElementById('convD2H').classList.toggle('active', m==='d2h'); }
