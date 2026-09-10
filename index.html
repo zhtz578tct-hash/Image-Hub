@@ -54,7 +54,7 @@ textarea{min-height:80px}
 </style>
 </head>
 <body>
-<div class="header"><b style="color:#ff3b5c">🔥 VENICE V17 - FIXED PAGES + EXPLICIT</b><div class="small">V17: Fixed Black Pages + Added Spreading + Explicit</div></div>
+<div class="header"><b style="color:#ff3b5c">🔥 VENICE V18 - FACE SWAP FIXED</b><div class="small">V18: Fixed Face Swap iframe blank</div></div>
 
 <div class="tabs" id="tabs">
 <div class="tab active" data-tab="studio">🎭 Studio</div>
@@ -145,22 +145,35 @@ textarea{min-height:80px}
 </div>
 </div>
 
+
 <div id="view-faceswap" class="view">
-<div class="card" style="border-color:#ffcc00;background:rgba(255,204,0,.07)"><b style="color:#ffcc00">🤗 HF Face Swap - WORKING (Fixed 404)</b><br><span class="small">Old links deleted. New working links:</span>
+<div class="card"><b>🔄 Face Swap - FIXED (No iframe - Opens in new tab for iPhone)</b><br>
+<div class="small" style="color:#ffcc00;margin-top:6px">iPhone Safari blocks face-swap.co inside app (shows only upgrade banner as in your screenshot). Now opens in new tab where it works. Use 3 free options below.</div>
 <div class="flex" style="margin-top:10px">
-<button class="btn btn-hf" onclick="window.open('https://huggingface.co/spaces/tonyassi/face-swap','_blank')">🤗 tonyassi/face-swap</button>
-<button class="btn btn-hf" onclick="window.open('https://huggingface.co/spaces/tonyassi/video-face-swap','_blank')">🤗 Video Face Swap</button>
-<button class="btn btn-hf" onclick="window.open('https://huggingface.co/spaces/tonyassi/face-swap','_blank')">🤗 face-swap.co</button>
+<button class="btn btn-primary" onclick="window.open('https://huggingface.co/spaces/tonyassi/face-swap','_blank')">🤗 Open face-swap.co (Free)</button>
+<button class="btn btn-ghost" onclick="window.open('https://huggingface.co/spaces/tonyassi/video-face-swap','_blank')">🎬 Video Face Swap (Free)</button>
+<button class="btn btn-ghost" onclick="window.open('https://www.face-swap.co','_blank')">🌐 face-swap.co HD</button>
+</div>
+<div class="flex" style="margin-top:8px">
+<button class="btn btn-ghost" onclick="window.open('https://huggingface.co/spaces/andy6804tw/face-swap','_blank')">🔄 Backup - Andy (Free no watermark)</button>
+<button class="btn btn-ghost" onclick="window.open('https://huggingface.co/spaces/EvilEngine/face-swap','_blank')">🔄 Backup - EvilEngine</button>
+</div>
+<div class="card" style="margin-top:12px;background:#1a1a2e;border:1px dashed #444">
+<div class="small" style="font-weight:800">📱 How to use on iPhone (Your screenshot fix):</div>
+<div class="small" style="margin-top:6px;line-height:1.4">
+1. Tap Open face-swap.co (Free) → opens in Safari<br>
+2. Upload Source Face + Target → Tap Swap → Wait 10-20 sec<br>
+3. If upgrade banner shows, scroll down - free preview still works<br>
+4. Or use Backup - Andy (no watermark)<br>
 </div>
 </div>
-<div class="card"><b>🔄 Face Swap</b><br>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-<div><div class="face-box" onclick="document.getElementById('sourceFace').click()"><div>📸 Source Face</div><img id="sourcePreview" style="display:none"><input type="file" id="sourceFace" accept="image/*" style="display:none" onchange="preview(this,'sourcePreview')"></div></div>
-<div><div class="face-box" onclick="document.getElementById('targetFace').click()"><div>🎯 Target</div><img id="targetPreview" style="display:none"><input type="file" id="targetFace" accept="image/*" style="display:none" onchange="preview(this,'targetPreview')"></div></div>
 </div>
-<div class="flex" style="margin-top:10px"><button class="btn btn-green" onclick="doFaceSwap()">🔄 Swap</button></div>
-<div id="faceSwapStatus" class="small"></div>
-<div class="card" style="margin-top:10px"><b>Result</b><div class="imgbox" id="faceSwapBox"><span class="small">Result here</span></div></div>
+<div class="card" style="margin-top:8px"><b>Local Quick Swap (Experimental)</b><br>
+<div class="small" style="margin-top:6px">Upload 2 images - basic overlay (use HF for best AI quality)</div>
+<div class="flex" style="margin-top:8px"><input type="file" id="fsSource" accept="image/*"><input type="file" id="fsTarget" accept="image/*"></div>
+<button class="btn btn-ghost" style="margin-top:8px" onclick="localFaceSwap()">🔄 Try Local Swap</button>
+<canvas id="fsCanvas" style="width:100%;margin-top:8px;border-radius:10px;display:none"></canvas>
+<div id="fsLocalResult" class="small" style="margin-top:6px"></div>
 </div>
 </div>
 
@@ -404,7 +417,30 @@ function loadGallery(){
     });
   }catch(e){}
 }
+
+function localFaceSwap(){
+  const src=document.getElementById('fsSource').files[0];
+  const tgt=document.getElementById('fsTarget').files[0];
+  if(!src||!tgt){ alert('Upload both Source and Target images'); return; }
+  const canvas=document.getElementById('fsCanvas');
+  const ctx=canvas.getContext('2d');
+  const img1=new Image(); const img2=new Image();
+  img1.onload=()=>{
+    img2.onload=()=>{
+      canvas.width=800; canvas.height=800;
+      canvas.style.display='block';
+      ctx.drawImage(img2,0,0,canvas.width,canvas.height);
+      const faceSize=canvas.width*0.4;
+      ctx.globalAlpha=0.9;
+      ctx.drawImage(img1, canvas.width/2-faceSize/2, canvas.height/2-faceSize/2 - 50, faceSize, faceSize);
+      document.getElementById('fsLocalResult').innerHTML='Basic overlay done. <a href="#" onclick="const a=document.createElement(\'a\'); a.href=document.getElementById(\'fsCanvas\').toDataURL(); a.download=\'swap.png\'; a.click(); return false;" style="color:#4aff8a">Download</a>';
+    };
+    img2.src=URL.createObjectURL(tgt);
+  };
+  img1.src=URL.createObjectURL(src);
+}
 function deleteGalleryItem(i){
+
   try{
     let g=JSON.parse(localStorage.getItem('venice_gallery')||'[]');
     g.splice(i,1);
