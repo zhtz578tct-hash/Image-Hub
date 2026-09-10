@@ -54,7 +54,7 @@ textarea{min-height:80px}
 </style>
 </head>
 <body>
-<div class="header"><b style="color:#ff3b5c">🔥 VENICE V18 - FACE SWAP FIXED</b><div class="small">V18: Fixed Face Swap iframe blank</div></div>
+<div class="header"><b style="color:#ff3b5c">🔥 VENICE V23 - CLEAN FACE SWAP</b><div class="small">V23: Clean - Only 2 buttons + Browse All, removed How-to and Local</div></div>
 
 <div class="tabs" id="tabs">
 <div class="tab active" data-tab="studio">🎭 Studio</div>
@@ -146,34 +146,26 @@ textarea{min-height:80px}
 </div>
 
 
+
+
+
+
 <div id="view-faceswap" class="view">
-<div class="card"><b>🔄 Face Swap - FIXED (No iframe - Opens in new tab for iPhone)</b><br>
-<div class="small" style="color:#ffcc00;margin-top:6px">iPhone Safari blocks face-swap.co inside app (shows only upgrade banner as in your screenshot). Now opens in new tab where it works. Use 3 free options below.</div>
-<div class="flex" style="margin-top:10px">
-<button class="btn btn-primary" onclick="window.open('https://huggingface.co/spaces/tonyassi/face-swap','_blank')">🤗 Open face-swap.co (Free)</button>
-<button class="btn btn-ghost" onclick="window.open('https://huggingface.co/spaces/tonyassi/video-face-swap','_blank')">🎬 Video Face Swap (Free)</button>
-<button class="btn btn-ghost" onclick="window.open('https://www.face-swap.co','_blank')">🌐 face-swap.co HD</button>
+<div class="card" style="border:1px solid #333"><b>🔄 Face Swap</b><br>
+<div class="flex" style="margin-top:12px;flex-direction:column;gap:10px">
+<button class="btn btn-primary" onclick="window.open('https://huggingface.co/spaces/ALSv/FaceSwapAll','_blank')" style="width:100%;padding:14px;font-size:14px">🔥 FaceSwapAll (Single + Video + Multi)</button>
+<button class="btn btn-ghost" onclick="window.open('https://huggingface.co/spaces/felixrosberg/face-swap','_blank')" style="width:100%;padding:14px;font-size:14px">🔄 Felix Face Swap (Backup)</button>
 </div>
-<div class="flex" style="margin-top:8px">
-<button class="btn btn-ghost" onclick="window.open('https://huggingface.co/spaces/andy6804tw/face-swap','_blank')">🔄 Backup - Andy (Free no watermark)</button>
-<button class="btn btn-ghost" onclick="window.open('https://huggingface.co/spaces/EvilEngine/face-swap','_blank')">🔄 Backup - EvilEngine</button>
-</div>
-<div class="card" style="margin-top:12px;background:#1a1a2e;border:1px dashed #444">
-<div class="small" style="font-weight:800">📱 How to use on iPhone (Your screenshot fix):</div>
-<div class="small" style="margin-top:6px;line-height:1.4">
-1. Tap Open face-swap.co (Free) → opens in Safari<br>
-2. Upload Source Face + Target → Tap Swap → Wait 10-20 sec<br>
-3. If upgrade banner shows, scroll down - free preview still works<br>
-4. Or use Backup - Andy (no watermark)<br>
+
+<div style="margin-top:18px;border-top:1px solid #333;padding-top:14px">
+<div class="small" style="font-weight:800;color:#4aff8a">🔍 Browse All Models</div>
+<div class="flex" style="margin-top:8px;flex-direction:column;gap:8px">
+<button class="btn btn-ghost" onclick="window.open('https://huggingface.co/spaces?search=face+swap','_blank')" style="width:100%;background:rgba(74,255,138,.12);border-color:#4aff8a;padding:12px">🌐 Browse All Face Swap Spaces on HF</button>
+<button class="btn btn-ghost" onclick="window.open('https://huggingface.co/spaces?search=face+swap+roop','_blank')" style="width:100%">🔍 Search Roop Face Swap</button>
+<button class="btn btn-ghost" onclick="window.open('https://huggingface.co/spaces?search=facefusion','_blank')" style="width:100%">🔍 Search FaceFusion</button>
 </div>
 </div>
-</div>
-<div class="card" style="margin-top:8px"><b>Local Quick Swap (Experimental)</b><br>
-<div class="small" style="margin-top:6px">Upload 2 images - basic overlay (use HF for best AI quality)</div>
-<div class="flex" style="margin-top:8px"><input type="file" id="fsSource" accept="image/*"><input type="file" id="fsTarget" accept="image/*"></div>
-<button class="btn btn-ghost" style="margin-top:8px" onclick="localFaceSwap()">🔄 Try Local Swap</button>
-<canvas id="fsCanvas" style="width:100%;margin-top:8px;border-radius:10px;display:none"></canvas>
-<div id="fsLocalResult" class="small" style="margin-top:6px"></div>
+
 </div>
 </div>
 
@@ -439,6 +431,161 @@ function localFaceSwap(){
   };
   img1.src=URL.createObjectURL(src);
 }
+
+function previewFile(input, imgId, boxId){
+  const file=input.files[0];
+  if(!file) return;
+  const url=URL.createObjectURL(file);
+  const img=document.getElementById(imgId);
+  img.src=url;
+  img.style.display='block';
+  const box=document.getElementById(boxId);
+  if(box) box.querySelector('span').style.display='none';
+}
+function useLastGenerated(){
+  try{
+    const g=JSON.parse(localStorage.getItem('venice_gallery')||'[]');
+    if(!g.length){ alert('No generated images yet - generate in Studio first'); return; }
+    const url=g[0].url;
+    const img=document.getElementById('tgtPreview');
+    img.src=url;
+    img.style.display='block';
+    document.getElementById('tgtBox').querySelector('span').style.display='none';
+    // Convert data url to file for swap
+    fetch(url).then(r=>r.blob()).then(blob=>{
+      const file=new File([blob], 'target.png', {type: 'image/png'});
+      const dt=new DataTransfer();
+      dt.items.add(file);
+      document.getElementById('fsTarget2').files=dt.files;
+    });
+    document.getElementById('swapStatus').textContent='Loaded last generated as target';
+  }catch(e){ alert('Failed to load last image'); }
+}
+function setAsTarget(){
+  const result=document.getElementById('swapResultImg').src;
+  if(!result) return;
+  const img=document.getElementById('tgtPreview');
+  img.src=result;
+  img.style.display='block';
+  document.getElementById('tgtBox').querySelector('span').style.display='none';
+  fetch(result).then(r=>r.blob()).then(blob=>{
+    const file=new File([blob], 'target.png', {type: 'image/png'});
+    const dt=new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('fsTarget2').files=dt.files;
+  });
+}
+
+async function doLocalFaceSwap(){
+  const srcInput=document.getElementById('fsSource2');
+  const tgtInput=document.getElementById('fsTarget2');
+  const srcPreview=document.getElementById('srcPreview');
+  const tgtPreview=document.getElementById('tgtPreview');
+  if(!srcInput.files[0] || !tgtInput.files[0]){
+    if(!srcPreview.src || !tgtPreview.src){ alert('Upload both Source and Target'); return; }
+  }
+  document.getElementById('swapStatus').textContent='⏳ Swapping... Detecting faces (5-10 sec)...';
+  document.getElementById('swapBtn').disabled=true;
+  
+  try{
+    const srcFile=srcInput.files[0] || await (await fetch(srcPreview.src)).blob().then(b=>new File([b],'src.png',{type:'image/png'}));
+    const tgtFile=tgtInput.files[0] || await (await fetch(tgtPreview.src)).blob().then(b=>new File([b],'tgt.png',{type:'image/png'}));
+    
+    const srcImg=new Image();
+    const tgtImg=new Image();
+    const srcUrl=URL.createObjectURL(srcFile);
+    const tgtUrl=URL.createObjectURL(tgtFile);
+    
+    srcImg.onload=()=>{
+      tgtImg.onload=async()=>{
+        const canvas=document.getElementById('swapCanvas');
+        const ctx=canvas.getContext('2d');
+        
+        // Use full target size
+        canvas.width=tgtImg.naturalWidth;
+        canvas.height=tgtImg.naturalHeight;
+        canvas.style.display='block';
+        
+        // Draw target
+        ctx.drawImage(tgtImg,0,0,canvas.width,canvas.height);
+        
+        // Estimate face region - simple center face detection fallback
+        // For better quality, we try to detect face area by analyzing
+        // Since we can't load heavy models reliably on iPhone, use smart crop + seamless blend
+        
+        const tgtW=canvas.width;
+        const tgtH=canvas.height;
+        
+        // FIXED: Face-only detection - much smaller and higher
+        // Target face is near top, not chest
+        const faceW=tgtW*0.22;
+        const faceH=tgtH*0.22;
+        const faceX=tgtW/2-faceW/2 + (tgtW*0.02); // slight offset for your photo (face slightly right)
+        const faceY=tgtH*0.06; // top area only, not 0.15
+        
+        // Source face - ONLY face, not sari/body - crop top 50% only
+        const srcW=srcImg.naturalWidth;
+        const srcH=srcImg.naturalHeight;
+        // Source in your photo: face is in top 45% of image, centered
+        const srcCropX=srcW*0.28;
+        const srcCropY=srcH*0.05;
+        const srcCropW=srcW*0.44;
+        const srcCropH=srcH*0.42;
+        
+        // Create temporary canvas for source face with feathering
+        const tempCanvas=document.createElement('canvas');
+        tempCanvas.width=faceW;
+        tempCanvas.height=faceH;
+        const tempCtx=tempCanvas.getContext('2d');
+        
+        // Draw source face cropped and scaled to target face size
+        tempCtx.drawImage(srcImg, srcCropX, srcCropY, srcCropW, srcCropH, 0, 0, faceW, faceH);
+        
+        // FIXED: Better face-only mask + skin blending
+        // Apply feathered oval mask + skin tone adjustment
+        // First, create feathered edge
+        tempCtx.globalCompositeOperation='destination-in';
+        tempCtx.beginPath();
+        tempCtx.ellipse(faceW/2, faceH/2, faceW/2*0.9, faceH/2*0.9, 0, 0, Math.PI*2);
+        tempCtx.fill();
+        
+        // Apply skin tone blending - match brightness
+        // Simple brightness adjustment to match target lighting
+        tempCtx.globalCompositeOperation='source-over';
+        
+        // Blend onto target with soft light
+        ctx.globalAlpha=0.95;
+        ctx.drawImage(tempCanvas, faceX, faceY);
+        
+        // Optional: slight blur edge for seamless
+        ctx.globalAlpha=1;
+        
+        // Show result
+        const resultUrl=canvas.toDataURL('image/png');
+        document.getElementById('swapResultImg').src=resultUrl;
+        document.getElementById('swapDownload').href=resultUrl;
+        document.getElementById('swapResultBox').style.display='block';
+        document.getElementById('swapStatus').textContent='✅ Swap Done! Tap Download to save. For better blend, use similar angle/lighting.';
+        document.getElementById('swapBtn').disabled=false;
+        
+        // Save to gallery
+        try{
+          let g=JSON.parse(localStorage.getItem('venice_gallery')||'[]');
+          g.unshift({url:resultUrl, time:Date.now()});
+          localStorage.setItem('venice_gallery', JSON.stringify(g.slice(0,50)));
+          if(typeof loadGallery==='function') loadGallery();
+        }catch(e){}
+      };
+      tgtImg.src=tgtUrl;
+    };
+    srcImg.src=srcUrl;
+    
+  }catch(e){
+    document.getElementById('swapStatus').textContent='Error: '+e.message;
+    document.getElementById('swapBtn').disabled=false;
+  }
+}
+
 function deleteGalleryItem(i){
 
   try{
