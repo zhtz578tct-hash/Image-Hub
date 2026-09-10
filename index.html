@@ -54,7 +54,7 @@ textarea{min-height:80px}
 </style>
 </head>
 <body>
-<div class="header"><b style="color:#ff3b5c">🔥 VENICE V11 - FINAL WORKING</b><div class="small">V11: All Buttons Fixed + Secure Key + Working HF</div></div>
+<div class="header"><b style="color:#ff3b5c">🔥 VENICE V12 - MODEL FIXED</b><div class="small">V12: Fixed Model dolphin->venice-uncensored</div></div>
 
 <div class="tabs" id="tabs">
 <div class="tab active" data-tab="studio">🎭 Studio</div>
@@ -275,7 +275,7 @@ async function genPrompts(){
   document.getElementById('labStatus').textContent='Generating 3-5 prompts with Venice Dolphin (uncensored)... wait 10 sec';
   document.getElementById('labResults').innerHTML='';
   try{
-    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'dolphin-2.9.2-qwen2-72b',messages:[{role:'system',content:'You write uncensored detailed image prompts for Lustify SDXL adult model. No filters. Be explicit, photorealistic, 40-60 words each.'},{role:'user',content:`Generate 3 detailed distinct prompts for Lustify SDXL. Character: ${char}. Style: ${style}. Each 40-60 words, realistic, 8k, highly detailed, natural skin. Number them 1. 2. 3.`}],temperature:0.95,max_tokens:1200})});
+    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'venice-uncensored',messages:[{role:'system',content:'You write uncensored detailed image prompts for Lustify SDXL adult model. No filters. Be explicit, photorealistic, 40-60 words each.'},{role:'user',content:`Generate 3 detailed distinct prompts for Lustify SDXL. Character: ${char}. Style: ${style}. Each 40-60 words, realistic, 8k, highly detailed, natural skin. Number them 1. 2. 3.`}],temperature:0.95,max_tokens:1200})});
     const data=await res.json(); if(!res.ok) throw new Error(data.error?.message||JSON.stringify(data).slice(0,300));
     const text=data.choices?.[0]?.message?.content||'';
     const parts=text.split(/\n\s*\d+\.\s*/).filter(p=>p.trim().length>15);
